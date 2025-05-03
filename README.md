@@ -2,7 +2,7 @@
 
 ## Setup
 
-The code for this lesson servers as the display (template in MVT or view in MVC) for the Django backend code from the [_Django Cat Collector Final_](https://git.generalassemb.ly/seb-quokkas/django-catcollector-final) lesson.
+The code for this lesson servers as the display (template in MVT or view in MVC) for the Django backend code from the [_Django Cat Collector Final_](https://github.com/RaulJiminian/django-catcollector-final) lesson.
 
 1. Fork and Clone
 2. cd into the new directory
