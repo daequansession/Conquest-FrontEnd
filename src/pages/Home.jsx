@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../services/users.js";
 import "../css/Home.css";
 // 
+import { UserContext } from "../context/UserContext.jsx";
 
-function Home({ setUser }) {
+function Home() {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const [form, setForm] = useState({
     username: "",
@@ -57,37 +59,50 @@ function Home({ setUser }) {
   };
 
   return (
-    <div className="home-container">
-      <div>
-        <form className="home-form" onSubmit={handleSubmit}>
-          <h1>Login</h1>
-          <input
-            type="text"
-            name="username"
-            value={form.username}
-            placeholder="Enter Username"
-            onChange={handleChange}
-            required
-            autoComplete="off"
-          />
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            placeholder="Enter Password"
-            onChange={handleChange}
-            required
-            autoComplete="off"
-          />
-
-          {renderError()}
-
-          <Link to="/register">
-            <p>No account? Sign up here!</p>
-          </Link>
-        </form>
+    <>
+      <div className="landing-main">
+        <div className="greet-msg">
+          <h1>Conquest</h1>
+          <p>
+            <em>Conquest</em> Lorem, ipsum dolor sit amet consectetur
+            adipisicing elit. Eius obcaecati enim vel corrupti veritatis natus,
+            tempore fugit dolore aliquam illo praesentium libero debitis sed
+            rem, aspernatur facere eum quos mollitia?
+          </p>
+        </div>
       </div>
-    </div>
+      <div className="home-container">
+        <div>
+          <form className="home-form" onSubmit={handleSubmit}>
+            <h1>Login</h1>
+            <input
+              type="text"
+              name="username"
+              value={form.username}
+              placeholder="Enter Username"
+              onChange={handleChange}
+              required
+              autoComplete="off"
+            />
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              placeholder="Enter Password"
+              onChange={handleChange}
+              required
+              autoComplete="off"
+            />
+
+            {renderError()}
+
+            <Link to="/register">
+              <p>No account? Sign up here!</p>
+            </Link>
+          </form>
+        </div>
+      </div>
+    </>
   );
 }
 

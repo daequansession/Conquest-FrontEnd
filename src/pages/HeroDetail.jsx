@@ -174,7 +174,10 @@ function HeroDetail() {
       </div>
       <div className="hero-detail-bottom-container">
         <div className="hero-owned-weapons-container">
-          <h2>{hero.name}'s Weapons</h2>
+          <h2>
+            {hero.name}
+            {"'s"} Weapons
+          </h2>
           {hero.weapons && hero.weapons.length > 0 ? (
             hero.weapons.map((weapon) => (
               <div key={weapon.id} className="hero-personal-owned-weapons">
@@ -196,7 +199,10 @@ function HeroDetail() {
         </div>
 
         <div className="hero-owned-shields-container">
-          <h2>{hero.name}'s Shields</h2>
+          <h2>
+            {hero.name}
+            {"'s"} Shields
+          </h2>
           {hero.shields && hero.shields.length > 0 ? (
             hero.shields.map((shield) => (
               <div key={shield.id} className="hero-personal-owned-shields">

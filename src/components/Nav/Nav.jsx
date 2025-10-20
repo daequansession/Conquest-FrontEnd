@@ -1,22 +1,14 @@
 import { NavLink } from "react-router-dom";
-import "./Nav.css";
-function Nav({ user }) {
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
+
+function Nav() {
+  const { user } = useContext(UserContext);
+
   const authenticatedOptions = (
     <>
       <NavLink className="nav-link" to="/heroes">
         Heroes
-      </NavLink>
-      <NavLink className="nav-link" to="/heroes/add">
-        Add Hero
-      </NavLink>
-      <NavLink className="nav-link" to="/weapons">
-        Weapons
-      </NavLink>
-      <NavLink className="nav-link" to="/weapons/add">
-        Add Weapon
-      </NavLink>
-      <NavLink className="nav-link" to="/shields">
-        Shields
       </NavLink>
       <NavLink className="nav-link" to="/shields/add">
         Add Shield
