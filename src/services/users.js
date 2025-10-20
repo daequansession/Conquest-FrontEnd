@@ -6,7 +6,8 @@ export const signUp = async (credentials) => {
     localStorage.setItem("token", resp.data.access);
     return resp.data.user;
   } catch (error) {
-    throw error;
+    console.error(error);
+    return error;
   }
 };
 
@@ -16,7 +17,8 @@ export const signIn = async (credentials) => {
     localStorage.setItem("token", resp.data.access);
     return resp.data.user;
   } catch (error) {
-    throw error;
+    console.error(error);
+    return error;
   }
 };
 
@@ -25,7 +27,8 @@ export const signOut = async () => {
     localStorage.removeItem("token");
     return true;
   } catch (error) {
-    throw error;
+    console.error(error);
+    return error;
   }
 };
 
