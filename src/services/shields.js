@@ -18,18 +18,18 @@ export const getShield = async (id) => {
   }
 };
 
-export const createShield = async (toyData) => {
+export const createShield = async (weaponData) => {
   try {
-    const response = await api.post("/shield/", toyData);
+    const response = await api.post("/shield/", weaponData);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const updateShield = async (id, toyData) => {
+export const updateShield = async (id, weaponData) => {
   try {
-    const response = await api.put(`/shield/${id}/`, toyData);
+    const response = await api.put(`/shield/${id}/`, weaponData);
     return response.data;
   } catch (error) {
     throw error;

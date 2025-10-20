@@ -1,46 +1,40 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
-  getCat,
-  deleteCat,
-  addToyForCat,
-  removeToyFromCat,
-} from "../services/cats.js";
-import { getCatFeedings, addCatFeeding } from "../services/feedings.js";
-import FeedingsTable from "../components/FeedingsTable.jsx";
-import catDetailAvatar from "../assets/cat-detail.png";
+  getHero,
+  deleteHero,
+  addShieldToHero,
+  removeShieldFromHero,
+} from "../services/heroes.js";
+
 
 function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);
-  // const [catFeedings, setCatFeedings] = useState([])
   const [toggle, setToggle] = useState(false);
 
-  // const [feeding, setFeeding] = useState({
-  //   date: "",
-  //   meal: "Breakfast"
-  // });
+  
 
   let { heroId } = useParams();
   let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCat = async () => {
-      const heroData = await getCat(heroId);
-      // const feedingsData = await getCatFeedings(catId)
-      setCatDetail(catData);
-      // setCatFeedings(feedingsData)
+    const fetchHero = async () => {
+      const heroData = await getHero(heroId);
+     
+      setHeroDetail(heroData);
+     
     };
 
     fetchHero();
   }, [heroId, toggle]);
 
   const handleDelete = async () => {
-    await deleteCat(heroId);
+    await deleteHero(heroId);
     navigate("/heroes");
   };
 
   const handleAddShield = async (shieldId) => {
-    await addToyForCat(heroId, shieldId);
+    await addShieldToHero(heroId, shieldId);
     setToggle((prev) => !prev);
   };
 
@@ -49,42 +43,11 @@ function HeroDetail() {
     setToggle((prev) => !prev);
   };
 
-  // const handleDateAndMealChange = (e) => {
-  //   const { name, value } = e.target
-
-  //   setFeeding((prevFeeding) => ({
-  //     ...prevFeeding,
-  //     [name]: value
-  //   }))
-  // };
-
-  // const handleFeedingSubmit = async (e) => {
-  //   e.preventDefault()
-
-  //   const mealMap = {
-  //     Breakfast: 'B',
-  //     Lunch: 'L',
-  //     Dinner: 'D'
-  //   };
-
-  //   const { date, meal } = feeding
-
-  //   const finalFeeding = {
-  //     date,
-  //     meal: mealMap[meal]
-  //   } // mealMap[meal] Converts "Breakfast" to "B" for django model
-
-  //   const createdFeeding = await addCatFeeding(catId, finalFeeding)
-
-  //   if (createdFeeding) {
-  //     setToggle(prev => !prev)
-  //   }
-  // }
 
   return (
     <div className="hero-detail-root">
       <div className="hero-detail-container">
-        <img src={heroDetailAvatar} alt="hero avatar" />
+      
         <div>
           <h2>{heroDetail?.hero?.name}</h2>
           <p>{heroDetail?.hero?.character}</p>
@@ -98,68 +61,31 @@ function HeroDetail() {
           </div>
         </div>
       </div>
-      <div className="cat-detail-bottom-container">
-        <div className="feedings-container">
-          <h2>Feedings</h2>
-          <h3>Add a Feeding</h3>
-          {catDetail?.cat?.fed_for_today ? (
-            <p>{catDetail?.cat?.name} has been fed all their meals today! 🥰</p>
-          ) : (
-            <p>Looks like {catDetail?.cat?.name} is still hungry 😔</p>
-          )}
-          <form onSubmit={handleFeedingSubmit}>
-            <div>
-              <label htmlFor="feeding-date">Feeding Date: </label>
-              <input
-                type="date"
-                name="date"
-                id="feeding-date"
-                value={feeding.date}
-                onChange={handleDateAndMealChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="feeding-meal">Meal: </label>
-              <select
-                name="meal"
-                id="feeding-meal"
-                value={feeding.meal}
-                onChange={handleDateAndMealChange}
-              >
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-              </select>
-            </div>
-            <button type="submit">Add Feeding</button>
-          </form>
-          <h3>Past Feedings</h3>
-          <FeedingsTable feedings={catFeedings} />
-        </div>
-        <div className="cat-toys-container">
-          <h2>Toys</h2>
-          <h3>{catDetail?.cat?.name}'s Toys</h3>
-          {catDetail &&
-            catDetail.cat.toys.map((toy) => (
-              <div key={toy.id} className="cats-personal-owned-toys">
-                <div style={{ background: toy?.color }}></div>
+      <div className="hero-detail-bottom-container">
+      <div className="hero-weapons-container">
+          <h2>Weapons</h2>
+          <h3>{heroDetail?.hero?.name}'s Weapons</h3>
+          {heroDetail &&
+            heroDetail.hero.weapons.map((weapon) => (
+              <div key={weapon.id} className="hero-personal-owned-weapons">
+                <div style={{ background: weapon?.color }}></div>
                 <p>
-                  A {toy.color} {toy.name}
+                  A {weapon.color} {weapon.name}
                 </p>
-                <button onClick={() => handleRemoveToy(toy.id)}>
-                  Remove Toy
+                <button onClick={() => handleRemoveWeapon(weapon.id)}>
+                  Remove Weapon
                 </button>
               </div>
             ))}
-          <h3>Available Toys</h3>
-          {catDetail &&
-            catDetail?.toys_not_associated.map((toy) => (
-              <div key={toy.id} className="cats-personal-toys">
-                <div style={{ background: toy?.color }}></div>
+          <h3>Available Weapons</h3>
+          {heroDetail &&
+            heroDetail.hero.weapons_not_associated.map((weapon) => (
+              <div key={weapon.id} className="hero-available-weapons">
+                <div style={{ background: weapon?.color }}></div>
                 <p>
-                  A {toy.color} {toy.name}
+                  A {weapon.color} {weapon.name}
                 </p>
-                <button onClick={() => handleAddToy(toy.id)}>Give Toy</button>
+                <button onClick={() => handleAddWeapon(weapon.id)}>Give Weapon</button>
               </div>
             ))}
         </div>
@@ -168,4 +94,4 @@ function HeroDetail() {
   );
 }
 
-export default CatDetail;
+export default HeroDetail;

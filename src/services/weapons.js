@@ -18,18 +18,18 @@ export const getWeapon = async (id) => {
   }
 };
 
-export const createWeapon = async (toyData) => {
+export const createWeapon = async (weaponData) => {
   try {
-    const response = await api.post("/weapon/", toyData);
+    const response = await api.post("/weapon/", weaponData);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const updateWeapon = async (id, toyData) => {
+export const updateWeapon = async (id, weaponData) => {
   try {
-    const response = await api.put(`/weapon/${id}/`, toyData);
+    const response = await api.put(`/weapon/${id}/`, weaponData);
     return response.data;
   } catch (error) {
     throw error;

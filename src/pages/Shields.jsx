@@ -18,7 +18,7 @@ function Shields() {
 
   return (
     <div className="shields-root">
-      <h2>All Cat shields</h2>
+      <h2>All shields</h2>
       <div className="shields-container">
         {shields.length &&
           shields.map((shield) => (
