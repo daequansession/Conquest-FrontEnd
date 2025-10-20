@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWeapon } from "../services/weapons.js";
+import "../css/CreateWeapon.css";
 
 function CreateWeapon() {
   let navigate = useNavigate();

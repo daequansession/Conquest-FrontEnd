@@ -1,19 +1,20 @@
-/* Dark Theme for Nav Component - Matching HeroDetail Style */
+/* Nav Component - Matching HeroDetail Dark Theme */
 
 nav {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
   border-bottom: 3px solid #4a4a7a;
   padding: 12px 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   min-height: 60px;
-  overflow: hidden;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Welcome Message */
@@ -26,30 +27,33 @@ nav {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-right: 20px;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Navigation Links Container */
 .nav-links {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-items: center;
   flex-wrap: nowrap;
   height: 100%;
 }
 
-/* Navigation Link Styling */
+/* Navigation Link Styling - Matching HeroDetail button style */
 .nav-link {
-  background: #708ad4;
+  background: linear-gradient(135deg, #4a4a7a, #2a2a5a);
   color: #fff;
   text-decoration: none;
-  padding: 0 16px;
+  padding: 12px 20px;
   border-radius: 8px;
-  border: 2px solid #8ba3e0;
-  font-weight: 500;
+  border: 2px solid #6a5acd;
+  font-weight: bold;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  text-transform: capitalize;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
@@ -59,58 +63,58 @@ nav {
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover Effects */
+/* Hover Effects - Matching HeroDetail style */
 .nav-link:hover {
-  background: linear-gradient(135deg, #1976d2, #1565c0);
-  border-color: #a3bae8;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  border-color: #6a5acd;
   color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
 }
 
 /* Active Link Styling */
 .nav-link.active {
-  background: #708ad4;
-  border-color: #a3bae8;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  border-color: #6a5acd;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(112, 138, 212, 0.5);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
 }
 
 .nav-link.active:hover {
   background: linear-gradient(135deg, #1976d2, #1565c0);
-  border-color: #b8cded;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
 }
 
-/* Special Styling for Log Out Link */
+/* Special Styling for Log Out Link - Matching HeroDetail delete button */
 .nav-link[href*="sign-out"] {
-  background: #c55409;
-  border-color: #d1221c;
+  background: linear-gradient(135deg, #f44336, #da190b);
+  border-color: #6a5acd;
   color: white;
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
 }
 
 .nav-link[href*="sign-out"]:hover {
-  background: linear-gradient(135deg, #e90707, #790404);
-  border-color: #a3bae8;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+  background: linear-gradient(135deg, #da190b, #c62828);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
 }
 
-/* Special Styling for Add Links */
+/* Special Styling for Add Links - Matching HeroDetail edit button */
 .nav-link[href*="add"] {
-  background: #708ad4;
-  border-color: #8ba3e0;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  border-color: #6a5acd;
   color: white;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .nav-link[href*="add"]:hover {
-  background: linear-gradient(135deg, #1976d2, #1565c0);
-  border-color: #a3bae8;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
 }
 
 /* Responsive Design */
@@ -123,7 +127,8 @@ nav {
   }
   
   .welcome {
-    margin-right: 0;
+    position: static;
+    transform: none;
     margin-bottom: 10px;
     text-align: center;
     font-size: 1.1rem;
@@ -135,8 +140,8 @@ nav {
   }
   
   .nav-link {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: 10px 16px;
+    font-size: 0.8rem;
   }
 }
 
@@ -154,7 +159,7 @@ nav {
   .nav-link {
     width: 100%;
     text-align: center;
-    padding: 10px 15px;
+    padding: 12px 15px;
   }
   
   .welcome {
@@ -178,7 +183,7 @@ nav {
   animation: fadeInSlide 0.5s ease-out;
 }
 
-/* Subtle glow effect */
+/* Subtle glow effect - Matching HeroDetail hover animations */
 .nav-link::before {
   content: '';
   position: absolute;

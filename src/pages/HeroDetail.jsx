@@ -13,7 +13,7 @@ import { getShields } from "../services/shields.js";
 import HolyPaladinImg from "../assets/HolyPaladin.png";
 import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
 import DragonKnightImg from "../assets/DragonKnight.png";
-import "./HeroDetail.css";
+import "../css/HeroDetail.css";
 
 function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);

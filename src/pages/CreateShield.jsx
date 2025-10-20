@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createShield } from "../services/shields.js";
+import "../css/CreateShield.css";
 
 function CreateShield() {
   let navigate = useNavigate();

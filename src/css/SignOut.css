@@ -1,0 +1,373 @@
+/* Dark Theme for SignOut Component */
+
+.signout-root {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  min-height: 100vh;
+  color: #e0e0e0;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signout-container {
+  background: rgba(30, 30, 60, 0.8);
+  border: 2px solid #4a4a7a;
+  border-radius: 15px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.signout-container h2 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(45deg, #ffd700, #ffed4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.signout-message {
+  color: #b8b8e0;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+/* Confirmation Section */
+.signout-confirmation {
+  background: rgba(40, 40, 80, 0.9);
+  border: 2px solid #6a5acd;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.signout-confirmation h3 {
+  color: #ffd700;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.signout-confirmation p {
+  color: #e0e0e0;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Action Buttons */
+.signout-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.confirm-signout-button {
+  background: linear-gradient(135deg, #f44336, #da190b);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.confirm-signout-button:hover {
+  background: linear-gradient(135deg, #da190b, #c62828);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+}
+
+.cancel-signout-button {
+  background: linear-gradient(135deg, #757575, #616161);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cancel-signout-button:hover {
+  background: linear-gradient(135deg, #616161, #424242);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(117, 117, 117, 0.4);
+}
+
+/* Alternative Actions */
+.alternative-actions {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #4a4a7a;
+}
+
+.alternative-actions h4 {
+  color: #b8b8e0;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.alternative-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.home-button,
+.profile-button {
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
+}
+
+.home-button:hover,
+.profile-button:hover {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+}
+
+/* Loading State */
+.signout-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 215, 0, 0.3);
+  border-top: 4px solid #ffd700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #ffd700;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Success State */
+.signout-success {
+  background: rgba(76, 175, 80, 0.2);
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  font-size: 3rem;
+  color: #4caf50;
+  margin-bottom: 15px;
+}
+
+.success-message {
+  color: #81c784;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.redirect-info {
+  color: #b8b8e0;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Error State */
+.signout-error {
+  background: rgba(244, 67, 54, 0.2);
+  border: 2px solid #f44336;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.error-icon {
+  font-size: 3rem;
+  color: #f44336;
+  margin-bottom: 15px;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.retry-button {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retry-button:hover {
+  background: linear-gradient(135deg, #f57c00, #ef6c00);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+/* User Info Display */
+.user-info {
+  background: rgba(40, 40, 80, 0.9);
+  border: 2px solid #4a4a7a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #6a5acd;
+  margin: 0 auto 15px auto;
+  display: block;
+  object-fit: cover;
+}
+
+.user-name {
+  color: #ffd700;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.user-email {
+  color: #b8b8e0;
+  font-size: 1rem;
+}
+
+.user-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #4a4a7a;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  color: #ffd700;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: block;
+}
+
+.stat-label {
+  color: #b8b8e0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signout-root {
+    padding: 15px;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+  
+  .signout-container {
+    padding: 30px 25px;
+    margin: 0 10px;
+  }
+  
+  .signout-container h2 {
+    font-size: 2rem;
+  }
+  
+  .signout-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .confirm-signout-button,
+  .cancel-signout-button {
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .alternative-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .home-button,
+  .profile-button {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .user-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signout-container {
+    padding: 25px 20px;
+  }
+  
+  .signout-container h2 {
+    font-size: 1.8rem;
+  }
+  
+  .signout-message {
+    font-size: 1rem;
+  }
+  
+  .confirm-signout-button,
+  .cancel-signout-button {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+  }
+}

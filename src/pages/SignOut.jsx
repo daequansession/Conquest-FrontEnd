@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signOut } from '../services/users.js'
+import "../css/SignOut.css";
 
 function SignOut({setUser}) {
   const navigate = useNavigate()

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getWeapons } from "../services/weapons.js";
+import "../css/Weapons.css";
 
 function weapons() {
   const [weapons, setWeapons] = useState([]);

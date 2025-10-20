@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getHeroes } from "../services/heroes";
+import "../css/Hero.css";
 
 function Hero() {
   const [hero, setHero] = useState([]);

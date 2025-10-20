@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createHero } from "../services/heroes.js";
+import "../css/CreateHero.css";
 
 function CreateHero() {
   let navigate = useNavigate();
