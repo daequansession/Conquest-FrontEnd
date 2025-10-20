@@ -29,7 +29,7 @@ function Home({ setUser }) {
       const userData = await signIn(form);
       setUser(userData);
 
-      navigate("/cats");
+      navigate("/heroes");
     } catch (error) {
       console.error(error);
       setForm((prevForm) => ({
@@ -64,19 +64,19 @@ function Home({ setUser }) {
         <form className="home-form" onSubmit={handleSubmit}>
           <h1>Login</h1>
           <input
-            type='text'
-            name='username'
+            type="text"
+            name="username"
             value={form.username}
-            placeholder='Enter Username'
+            placeholder="Enter Username"
             onChange={handleChange}
             required
             autoComplete="off"
           />
           <input
-            type='password'
-            name='password'
+            type="password"
+            name="password"
             value={form.password}
-            placeholder='Enter Password'
+            placeholder="Enter Password"
             onChange={handleChange}
             required
             autoComplete="off"

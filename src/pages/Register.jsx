@@ -30,7 +30,7 @@ function Register({ setUser }) {
       const userData = await signUp(form);
       setUser(userData);
 
-      navigate("/cats");
+      navigate("/heroes");
     } catch (error) {
       console.error(error);
       setForm((prevForm) => ({
@@ -66,19 +66,19 @@ function Register({ setUser }) {
         <form className="home-form" onSubmit={handleSubmit}>
           <h1>Register</h1>
           <input
-            type='text'
-            name='username'
+            type="text"
+            name="username"
             value={form.username}
-            placeholder='Enter Username'
+            placeholder="Enter Username"
             onChange={handleChange}
             required
             autoComplete="off"
           />
           <input
-            type='password'
-            name='password'
+            type="password"
+            name="password"
             value={form.password}
-            placeholder='Enter Password'
+            placeholder="Enter Password"
             onChange={handleChange}
             required
             autoComplete="off"
@@ -88,7 +88,7 @@ function Register({ setUser }) {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;

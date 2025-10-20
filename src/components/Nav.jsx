@@ -1,20 +1,19 @@
 import { NavLink } from "react-router-dom";
-import headerLogo from "../assets/header-logo.svg"
 
 function Nav({ user }) {
   const authenticatedOptions = (
     <>
-      <NavLink className="nav-link" to="/cats">
-        Cats
+      <NavLink className="nav-link" to="/heroes">
+        heroes
       </NavLink>
-      <NavLink className="nav-link" to="/toys">
-        Toys
+      <NavLink className="nav-link" to="/shields">
+        shields
       </NavLink>
-      <NavLink className="nav-link" to="/cats/add">
-        Add Cat
+      <NavLink className="nav-link" to="/heroes/add">
+        Add Hero
       </NavLink>
-      <NavLink className="nav-link" to="/toys/add">
-        Add Toy
+      <NavLink className="nav-link" to="/shields/add">
+        Add Shield
       </NavLink>
       <NavLink className="nav-link" to="/sign-out">
         Log Out
@@ -35,7 +34,6 @@ function Nav({ user }) {
 
   return (
     <nav>
-      <img src={headerLogo} alt="header cat" />
       {user && <div className="link welcome">Welcome, {user.username}</div>}
       <div className="nav-links">
         {user ? authenticatedOptions : unauthenticatedOptions}

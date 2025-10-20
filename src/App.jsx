@@ -1,18 +1,21 @@
-import { useState, useEffect } from 'react'
-import { verifyUser } from './services/users.js'
-import Nav from './components/Nav'
-import Home from './pages/Home'
-import Register from './pages/Register'
-import SignOut from './pages/SignOut.jsx'
-import Cats from './pages/Cats'
-import CatDetail from './pages/CatDetail'
-import CreateCat from './pages/CreateCat'
-import EditCat from './pages/EditCat'
-import Toys from './pages/Toys'
-import ToyDetail from './pages/ToyDetail'
-import CreateToy from './pages/CreateToy'
-import { Routes, Route } from 'react-router-dom'
-import './App.css'
+import { useState, useEffect } from "react";
+import { verifyUser } from "./services/users.js";
+import Nav from "./components/Nav";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import SignOut from "./pages/SignOut.jsx";
+import Hero from "./pages/Hero.jsx";
+import HeroDetail from "./pages/HeroDetail.jsx";
+import CreateHero from "./pages/CreateHero.jsx";
+import EditHero from "./pages/EditHero.jsx";
+import Shields from "./pages/shields.jsx";
+import ShieldDetail from "./pages/ShieldDetail";
+import CreateShield from "./pages/CreateShield";
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import Weapons from "./components/Weapon.jsx";
+import CreateWeapon from "./pages/CreateWeapon.jsx";
+import WeaponDetail from "./pages/WeaponDetail.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,16 +36,19 @@ function App() {
         <Route path="/" element={<Home setUser={setUser} />} />
         <Route path="/register" element={<Register setUser={setUser} />} />
         <Route path="/sign-out" element={<SignOut setUser={setUser} />} />
-        <Route path="/cats" element={<Cats />} />
-        <Route path="/cats/add" element={<CreateCat />} />
-        <Route path="/cats/:catId/edit" element={<EditCat />} />
-        <Route path="/cats/:catId" element={<CatDetail />} />
-        <Route path="/toys" element={<Toys />} />
-        <Route path="/toys/add" element={<CreateToy />} />
-        <Route path="/toys/:toyId" element={<ToyDetail />} />
+        <Route path="/heroes" element={<Hero />} />
+        <Route path="/heroes/add" element={<CreateHero />} />
+        <Route path="/heroes/:heroId/edit" element={<EditHero />} />
+        <Route path="/heroes/:heroId" element={<HeroDetail />} />
+        <Route path="/shields" element={<Shields />} />
+        <Route path="/shields/add" element={<CreateShield />} />
+        <Route path="/shields/:shieldId" element={<ShieldDetail />} />
+        <Route path="/weapons" element={<Weapons />} />
+        <Route path="/shields/add" element={<CreateWeapon />} />
+        <Route path="/shields/:shieldId" element={<WeaponDetail />} />
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
