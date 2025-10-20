@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
+import "./Nav.css";
 
 function Nav() {
   const { user } = useContext(UserContext);
@@ -9,9 +10,6 @@ function Nav() {
     <>
       <NavLink className="nav-link" to="/heroes">
         Heroes
-      </NavLink>
-      <NavLink className="nav-link" to="/shields/add">
-        Add Shield
       </NavLink>
       <NavLink className="nav-link" to="/sign-out">
         Log Out

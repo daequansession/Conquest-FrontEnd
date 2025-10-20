@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom'
-import { signOut } from '../services/users.js'
-import "../css/SignOut.css";
-import { useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "../services/users.js";
 import { UserContext } from "../context/UserContext.jsx";
+import "../css/SignOut.css";
 
 function SignOut() {
   const navigate = useNavigate();
@@ -17,7 +15,7 @@ function SignOut() {
       navigate("/");
     };
     signOutUser();
-  }, []);
+  }, [navigate, setUser]);
 
   return "";
 }

@@ -1,14 +1,14 @@
 import Nav from "./components/Nav/Nav.jsx";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
+import Home from "./pages/Home.jsx";
+import Register from "./pages/Register.jsx";
 import SignOut from "./pages/SignOut.jsx";
 import Hero from "./pages/Hero.jsx";
 import HeroDetail from "./pages/HeroDetail.jsx";
 import CreateHero from "./pages/CreateHero.jsx";
 import EditHero from "./pages/EditHero.jsx";
 import Shields from "./pages/Shields.jsx";
-import ShieldDetail from "./pages/ShieldDetail";
-import CreateShield from "./pages/CreateShield";
+import ShieldDetail from "./pages/ShieldDetail.jsx";
+import CreateShield from "./pages/CreateShield.jsx";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Weapons from "./pages/weapons.jsx";

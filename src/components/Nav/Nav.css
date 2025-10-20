@@ -6,14 +6,12 @@ nav {
   padding: 12px 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
-  position: sticky;
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: flex-end;
+  justify-content: right;
   align-items: center;
   min-height: 60px;
-  position: relative;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -41,6 +39,7 @@ nav {
   flex-wrap: nowrap;
   height: 100%;
 }
+
 
 /* Navigation Link Styling - Matching HeroDetail button style */
 .nav-link {
@@ -81,6 +80,7 @@ nav {
   border-color: #6a5acd;
   color: #fff;
   box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+  margin-left: auto;
 }
 
 .nav-link.active:hover {

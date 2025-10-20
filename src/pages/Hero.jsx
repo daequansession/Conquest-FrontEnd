@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getHeroes } from "../services/heroes";
 import "../css/Hero.css";
 
 function Hero() {
   const [hero, setHero] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHero = async () => {
@@ -21,6 +22,7 @@ function Hero() {
   return (
     <div className="hero-root">
       <h1>Hero List</h1>
+      <h2>Choose your hero wisely to conquer the realm!</h2>
       <div className="hero-container">
         {hero.length &&
           hero.map((hero) => (
@@ -33,7 +35,14 @@ function Hero() {
               <p>Speed: {hero.speed}</p>
             </div>
           ))}
-        <div></div>
+        <div>
+          <button 
+            className="create-hero-button" 
+            onClick={() => navigate("/heroes/add")}
+          >
+            Add Hero
+          </button>
+        </div>
       </div>
     </div>
   );
