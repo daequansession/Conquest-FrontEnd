@@ -30,10 +30,12 @@ function HeroDetail() {
 
   const handleDelete = async () => {
     await deleteHero(heroId);
+    await deleteHero(heroId);
     navigate("/heroes");
   };
 
   const handleAddShield = async (shieldId) => {
+    await addShieldToHero(heroId, shieldId);
     await addShieldToHero(heroId, shieldId);
     setToggle((prev) => !prev);
   };
