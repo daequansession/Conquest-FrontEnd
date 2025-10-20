@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
-  getCat,
-  deleteCat,
-  addToyForCat,
-  removeToyFromCat,
-} from "../services/cats.js";
-import { getCatFeedings, addCatFeeding } from "../services/feedings.js";
-import FeedingsTable from "../components/FeedingsTable.jsx";
-import catDetailAvatar from "../assets/cat-detail.png";
+  getHero,
+  deleteHero,
+  addShieldToHero,
+  removeShieldFromHero,
+} from "../services/heroes.js";
+// import FeedingsTable from "../components/FeedingsTable.jsx";
+// import catDetailAvatar from "../assets/cat-detail.png";
 
 function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);
-  // const [catFeedings, setCatFeedings] = useState([])
   const [toggle, setToggle] = useState(false);
 
   // const [feeding, setFeeding] = useState({
@@ -24,10 +22,10 @@ function HeroDetail() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCat = async () => {
-      const heroData = await getCat(heroId);
+    const fetchHero = async () => {
+      const heroData = await getHero(heroId);
       // const feedingsData = await getCatFeedings(catId)
-      setCatDetail(catData);
+      setHeroDetail(heroData);
       // setCatFeedings(feedingsData)
     };
 
@@ -35,12 +33,12 @@ function HeroDetail() {
   }, [heroId, toggle]);
 
   const handleDelete = async () => {
-    await deleteCat(heroId);
+    await deleteHero(heroId);
     navigate("/heroes");
   };
 
   const handleAddShield = async (shieldId) => {
-    await addToyForCat(heroId, shieldId);
+    await addShieldToHero(heroId, shieldId);
     setToggle((prev) => !prev);
   };
 
@@ -102,12 +100,12 @@ function HeroDetail() {
         <div className="feedings-container">
           <h2>Feedings</h2>
           <h3>Add a Feeding</h3>
-          {catDetail?.cat?.fed_for_today ? (
-            <p>{catDetail?.cat?.name} has been fed all their meals today! 🥰</p>
+          {heroDetail?.hero?.heroData_for_today ? (
+            <p>{catDetail?.hero?.name} ha</p>
           ) : (
             <p>Looks like {catDetail?.cat?.name} is still hungry 😔</p>
           )}
-          <form onSubmit={handleFeedingSubmit}>
+          {/* <form onSubmit={handleFeedingSubmit}>
             <div>
               <label htmlFor="feeding-date">Feeding Date: </label>
               <input
@@ -132,11 +130,11 @@ function HeroDetail() {
               </select>
             </div>
             <button type="submit">Add Feeding</button>
-          </form>
+          </form> */}
           <h3>Past Feedings</h3>
-          <FeedingsTable feedings={catFeedings} />
+          {/* <FeedingsTable feedings={catFeedings} /> */}
         </div>
-        <div className="cat-toys-container">
+        {/* <div className="cat-toys-container">
           <h2>Toys</h2>
           <h3>{catDetail?.cat?.name}'s Toys</h3>
           {catDetail &&
@@ -162,10 +160,10 @@ function HeroDetail() {
                 <button onClick={() => handleAddToy(toy.id)}>Give Toy</button>
               </div>
             ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );
 }
 
-export default CatDetail;
+export default HeroDetail;

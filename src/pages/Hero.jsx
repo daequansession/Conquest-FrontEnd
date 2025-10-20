@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getHero } from "../services/heroes";
+import { getHeroes } from "../services/heroes";
 
 function Hero() {
   const [hero, setHero] = useState([]);
 
   useEffect(() => {
     const fetchHero = async () => {
-      const heroData = await getHero();
+      const heroData = await getHeroes();
       setHero(heroData);
     };
 

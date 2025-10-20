@@ -52,8 +52,8 @@ function CreateHero() {
         />
         <input
           className="input-defense"
-          placeholder="defense"
-          name="Defense"
+          placeholder="Defense"
+          name="defense"
           value={hero.defense}
           onChange={handleChange}
           required

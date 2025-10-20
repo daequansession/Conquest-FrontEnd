@@ -8,7 +8,7 @@ import Hero from "./pages/Hero.jsx";
 import HeroDetail from "./pages/HeroDetail.jsx";
 import CreateHero from "./pages/CreateHero.jsx";
 import EditHero from "./pages/EditHero.jsx";
-import Shields from "./pages/shields.jsx";
+import Shields from "./pages/Shields.jsx";
 import ShieldDetail from "./pages/ShieldDetail";
 import CreateShield from "./pages/CreateShield";
 import { Routes, Route } from "react-router-dom";
