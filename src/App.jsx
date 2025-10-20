@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { verifyUser } from "./services/users.js";
-import Nav from "./components/Nav";
+import Nav from "./components/Nav/Nav.jsx";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import SignOut from "./pages/SignOut.jsx";
@@ -13,7 +13,7 @@ import ShieldDetail from "./pages/ShieldDetail";
 import CreateShield from "./pages/CreateShield";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Weapons from "./components/Weapon.jsx";
+import Weapons from "./pages/weapons.jsx";
 import CreateWeapon from "./pages/CreateWeapon.jsx";
 import WeaponDetail from "./pages/WeaponDetail.jsx";
 
@@ -44,8 +44,8 @@ function App() {
         <Route path="/shields/add" element={<CreateShield />} />
         <Route path="/shields/:shieldId" element={<ShieldDetail />} />
         <Route path="/weapons" element={<Weapons />} />
-        <Route path="/shields/add" element={<CreateWeapon />} />
-        <Route path="/shields/:shieldId" element={<WeaponDetail />} />
+        <Route path="/weapons/add" element={<CreateWeapon />} />
+        <Route path="/weapons/:weaponId" element={<WeaponDetail />} />
       </Routes>
     </>
   );
