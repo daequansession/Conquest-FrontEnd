@@ -47,7 +47,7 @@ export const deleteHero = async (id) => {
 
 export const addShieldToHero = async (heroId, shieldId) => {
   try {
-    const response = await api.post(`heroes/${heroId}/add_shield/${shieldId}/`);
+    const response = await api.post(`/heroes/${heroId}/add_shield/${shieldId}/`);
     return response.data;
   } catch (error) {
     throw error;
@@ -57,7 +57,7 @@ export const addShieldToHero = async (heroId, shieldId) => {
 export const removeShieldFromHero = async (heroId, shieldId) => {
   try {
     const response = await api.post(
-      `heroes/${heroId}/remove_shield/${shieldId}/`
+      `/heroes/${heroId}/remove_shield/${shieldId}/`
     );
     return response.data;
   } catch (error) {
@@ -67,7 +67,7 @@ export const removeShieldFromHero = async (heroId, shieldId) => {
 
 export const addWeaponToHero = async (heroId, weaponId) => {
   try {
-    const response = await api.post(`heroes/${heroId}/add_weapon/${weaponId}/`);
+    const response = await api.post(`/heroes/${heroId}/add_weapon/${weaponId}/`);
     return response.data;
   } catch (error) {
     throw error;
@@ -77,7 +77,7 @@ export const addWeaponToHero = async (heroId, weaponId) => {
 export const removeWeaponFromHero = async (heroId, weaponId) => {
   try {
     const response = await api.post(
-      `heroes/${heroId}/remove_weapon/${shieldId}/`
+      `/heroes/${heroId}/remove_weapon/${weaponId}/`
     );
     return response.data;
   } catch (error) {

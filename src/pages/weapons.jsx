@@ -18,7 +18,7 @@ function weapons() {
 
   return (
     <div className="weapons-root">
-      <h2>All Cat weapons</h2>
+      <h2>All weapons</h2>
       <div className="weapons-container">
         {weapons.length &&
           weapons.map((weapon) => (

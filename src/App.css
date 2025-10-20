@@ -75,30 +75,30 @@ nav > img {
   background: #e57373;
 }
 
-/* Cats */
-.cats-root > h1 {
+/* heros */
+.heros-root > h1 {
   text-align: center;
 }
 
-.cats-container {
+.heros-container {
   display: flex;
   justify-content: center;
   flex-flow: wrap;
 }
 
-.cat-card {
+.hero-card {
   width: 250px;
   border: 2px solid #2470f7;
   padding: 10px;
   margin: 10px;
 }
 
-.cat-card img {
+.hero-card img {
   width: 250px;
 }
 
-/* Cat Detail */
-.cat-detail-root {
+/* hero Detail */
+.hero-detail-root {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -106,37 +106,37 @@ nav > img {
   align-items: center;
 }
 
-.cat-detail-container {
+.hero-detail-container {
   height: 250px;
   display: flex;
 }
 
-.cat-detail-container img {
+.hero-detail-container img {
   width: 200px;
 }
 
-.cat-detail-container > div {
+.hero-detail-container > div {
   padding: 15px;
 }
 
-.cat-detail-edit {
+.hero-detail-edit {
   background-color: orange;
   margin: 5px;
 }
 
-.cat-detail-delete {
+.hero-detail-delete {
   background-color: red;
   margin: 5px;
 }
 
-.cat-detail-bottom-container {
+.hero-detail-bottom-container {
   width: 100%;
   margin-top: 20px;
   display: flex;
   justify-content: center;
 }
 
-.cat-detail-bottom-container > div {
+.hero-detail-bottom-container > div {
   width: 350px;
   margin: 10px;
 }
@@ -168,54 +168,54 @@ nav > img {
   margin-top: 5px;
 }
 
-.cat-toys-container {
+.hero-weapons-container {
   border: 2px solid #95c3ec;
   padding: 15px;
 }
 
-.cats-personal-toys {
+.heros-personal-weapons {
   display: flex;
   margin-top: 4px;
 }
 
-.cats-personal-toys > div {
+.heros-personal-weapons > div {
   height: 20px;
   width: 20px;
 }
 
-.cats-personal-toys > p {
+.heros-personal-weapons > p {
   margin: 0 0 0 10px;
 }
 
-.cats-personal-toys > button {
+.heros-personal-weapons > button {
   padding: 0;
   margin-left: 10px;
   background-color: #207868;
 }
 
-.cats-personal-owned-toys {
+.heros-personal-owned-weapons {
   display: flex;
   margin-top: 4px;
 }
 
-.cats-personal-owned-toys > div {
+.heros-personal-owned-weapons > div {
   height: 20px;
   width: 20px;
 }
 
-.cats-personal-owned-toys > p {
+.heros-personal-owned-weapons > p {
   margin: 0 0 0 10px;
 }
 
-.cats-personal-owned-toys > button {
+.heros-personal-owned-weapons > button {
   padding: 0;
   margin-left: 10px;
   background-color: red;
 }
 
-/* Create Cat */
-.create-cat-root,
-.edit-cat-root {
+/* Create hero */
+.create-hero-root,
+.edit-hero-root {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -223,13 +223,13 @@ nav > img {
   height: 80vh;
 }
 
-.create-cat-heading,
-.edit-cat-heading {
+.create-hero-heading,
+.edit-hero-heading {
   width: 15%;
 }
 
-.create-cat-heading h2,
-.edit-cat-heading h2 {
+.create-hero-heading h2,
+.edit-hero-heading h2 {
   text-align: center;
 }
 
@@ -260,7 +260,7 @@ select:focus {
   border-bottom-style: hidden;
 }
 
-.cat-form-age {
+.hero-form-age {
   display: flex;
   justify-content: space-between;
 }
@@ -295,18 +295,18 @@ textarea {
   background-color: #207868;
 }
 
-/* Toys */
-.toys-container {
+/* weaopns */
+.weaopns-container {
   display: flex;
   justify-content: center;
   flex-flow: wrap;
 }
 
-.toys-root h2 {
+.weaopns-root h2 {
   text-align: center;
 }
 
-.toy {
+.weaopn {
   width: 200px;
   height: 200px;
   margin: 10px;
@@ -316,15 +316,15 @@ textarea {
   padding: 10px;
 }
 
-.toy h3,
-.toy p {
+.weaopn h3,
+.weaopn p {
   margin: 0;
   text-align: right;
 }
 
-/* Toy Create */
-.create-toy-root,
-.edit-toy-root {
+/* weaopn Create */
+.create-weaopn-root,
+.edit-weaopn-root {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -332,27 +332,27 @@ textarea {
   height: 80vh;
 }
 
-.toy {
+.weaopn {
   color: white;
 }
 
-.create-toy-heading,
-.edit-toy-heading {
+.create-weaopn-heading,
+.edit-weaopn-heading {
   width: 15%;
 }
 
-.create-toy-heading h2,
-.edit-toy-heading h2 {
+.create-weaopn-heading h2,
+.edit-weaopn-heading h2 {
   text-align: center;
 }
 
-.create-toy-form > button,
-.edit-toy-form > button {
+.create-weaopn-form > button,
+.edit-weaopn-form > button {
   background-color: #207868;
 }
 
-.create-toy-form,
-.edit-toy-form {
+.create-weaopn-form,
+.edit-weaopn-form {
   display: flex;
   flex-direction: column;
   height: 400px;
@@ -360,8 +360,8 @@ textarea {
   justify-content: space-evenly;
 }
 
-.create-toy-form input,
-.edit-toy-form input {
+.create-weaopn-form input,
+.edit-weaopn-form input {
   font-size: 35px;
   font-family: Georgia, "Times New Roman", Times, serif;
   border-top-style: hidden;
@@ -370,18 +370,18 @@ textarea {
   border-bottom-style: hidden;
 }
 
-.input-toy-name {
+.input-weaopn-name {
   font-size: 48px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.input-toy-color {
+.input-weaopn-color {
   font-size: 28px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Toy Detail */
-.toy-root-container {
+/* weaopn Detail */
+.weaopn-root-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -389,17 +389,17 @@ textarea {
   height: 50vh;
 }
 
-.toy-detail-edit {
+.weaopn-detail-edit {
   background-color: orange;
   margin: 5px;
 }
 
-.toy-detail-delete {
+.weaopn-detail-delete {
   background-color: red;
   margin: 5px;
 }
 
-.toy-detail-root {
+.weaopn-detail-root {
   height: 90vh;
   display: flex;
   justify-content: center;

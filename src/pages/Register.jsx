@@ -61,9 +61,6 @@ function Register({ setUser }) {
   return (
     <div className="home-container">
       <div>
-        <img src={splash} alt="splash" />
-      </div>
-      <div>
         <form className="home-form" onSubmit={handleSubmit}>
           <h1>Register</h1>
           <input
