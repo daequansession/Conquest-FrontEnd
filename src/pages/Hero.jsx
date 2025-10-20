@@ -32,6 +32,7 @@ function Hero() {
               <p>Speed: {hero.speed}</p>
             </div>
           ))}
+        <div></div>
       </div>
     </div>
   );

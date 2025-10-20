@@ -1,20 +1,22 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { signOut } from '../services/users.js'
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "../services/users.js";
+import { UserContext } from "../context/UserContext.jsx";
 
-function SignOut({setUser}) {
-  const navigate = useNavigate()
+function SignOut() {
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     const signOutUser = async () => {
-      await signOut()
-      setUser(null)
-      navigate('/')
-    }
-    signOutUser()
-  }, [])
+      await signOut();
+      setUser(null);
+      navigate("/");
+    };
+    signOutUser();
+  }, []);
 
-  return ''
+  return "";
 }
 
-export default SignOut
+export default SignOut;
