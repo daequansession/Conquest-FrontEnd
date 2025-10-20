@@ -170,7 +170,7 @@ nav > img {
 
 .hero-weapons-container {
   border: 2px solid #95c3ec;
-  padding: 15px
+  padding: 15px;
 }
 
 .heros-personal-weapons {
@@ -214,7 +214,8 @@ nav > img {
 }
 
 /* Create hero */
-.create-hero-root, .edit-hero-root {
+.create-hero-root,
+.edit-hero-root {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -222,15 +223,18 @@ nav > img {
   height: 80vh;
 }
 
-.create-hero-heading, .edit-hero-heading {
+.create-hero-heading,
+.edit-hero-heading {
   width: 15%;
 }
 
-.create-hero-heading h2, .edit-hero-heading h2 {
+.create-hero-heading h2,
+.edit-hero-heading h2 {
   text-align: center;
 }
 
-.create-form, .edit-form {
+.create-form,
+.edit-form {
   display: flex;
   flex-direction: column;
   height: 400px;
@@ -238,16 +242,18 @@ nav > img {
   justify-content: space-evenly;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
 }
 
-.create-form input, 
-.create-form textarea, 
-.edit-form input, 
+.create-form input,
+.create-form textarea,
+.edit-form input,
 .edit-form textarea {
   font-size: 35px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   border-top-style: hidden;
   border-right-style: hidden;
   border-left-style: hidden;
@@ -270,7 +276,7 @@ textarea {
 
 .input-name {
   font-size: 48px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .input-age {
@@ -284,7 +290,8 @@ textarea {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.create-form > button, .edit-form > button {
+.create-form > button,
+.edit-form > button {
   background-color: #207868;
 }
 
@@ -292,7 +299,7 @@ textarea {
 .weaopns-container {
   display: flex;
   justify-content: center;
-  flex-flow: wrap
+  flex-flow: wrap;
 }
 
 .weaopns-root h2 {
@@ -309,13 +316,15 @@ textarea {
   padding: 10px;
 }
 
-.weaopn h3, .weaopn p {
+.weaopn h3,
+.weaopn p {
   margin: 0;
   text-align: right;
 }
 
 /* weaopn Create */
-.create-weaopn-root, .edit-weaopn-root {
+.create-weaopn-root,
+.edit-weaopn-root {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -327,19 +336,23 @@ textarea {
   color: white;
 }
 
-.create-weaopn-heading, .edit-weaopn-heading {
+.create-weaopn-heading,
+.edit-weaopn-heading {
   width: 15%;
 }
 
-.create-weaopn-heading h2, .edit-weaopn-heading h2 {
+.create-weaopn-heading h2,
+.edit-weaopn-heading h2 {
   text-align: center;
 }
 
-.create-weaopn-form > button, .edit-weaopn-form > button {
+.create-weaopn-form > button,
+.edit-weaopn-form > button {
   background-color: #207868;
 }
 
-.create-weaopn-form, .edit-weaopn-form {
+.create-weaopn-form,
+.edit-weaopn-form {
   display: flex;
   flex-direction: column;
   height: 400px;
@@ -347,10 +360,10 @@ textarea {
   justify-content: space-evenly;
 }
 
-.create-weaopn-form input, 
+.create-weaopn-form input,
 .edit-weaopn-form input {
   font-size: 35px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   border-top-style: hidden;
   border-right-style: hidden;
   border-left-style: hidden;
