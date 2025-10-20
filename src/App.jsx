@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { verifyUser } from "./services/users.js";
 import Nav from "./components/Nav/Nav.jsx";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
@@ -18,24 +16,15 @@ import CreateWeapon from "./pages/CreateWeapon.jsx";
 import WeaponDetail from "./pages/WeaponDetail.jsx";
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await verifyUser();
-      user ? setUser(user) : setUser(null);
-    };
-
-    fetchUser();
-  }, []);
-
   return (
     <>
-      <Nav user={user} />
+      <Nav />
       <Routes>
-        <Route path="/" element={<Home setUser={setUser} />} />
-        <Route path="/register" element={<Register setUser={setUser} />} />
-        <Route path="/sign-out" element={<SignOut setUser={setUser} />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />{" "}
+        {/* pass setUser via context*/}
+        <Route path="/sign-out" element={<SignOut />} />{" "}
+        {/* pass setUser via context*/}
         <Route path="/heroes" element={<Hero />} />
         <Route path="/heroes/add" element={<CreateHero />} />
         <Route path="/heroes/:heroId/edit" element={<EditHero />} />
