@@ -7,18 +7,38 @@ function CreateHero() {
 
   const [hero, setHero] = useState({
     name: "",
-    strength: 0,
-    defense: 0,
-    speed: 0,
+    strength: 3, // Default to Holy Paladin stats
+    defense: 5,
+    speed: 2,
+    character: "A", // Default to Holy Paladin
   });
+
+  // Define character choices with their stats
+  const characterChoices = [
+    { value: "A", label: "Holy Paladin", strength: 3, defense: 5, speed: 2 },
+    { value: "B", label: "Primal Barbarian", strength: 5, defense: 2, speed: 3 },
+    { value: "C", label: "Dragon Knight", strength: 4, defense: 3, speed: 3 },
+  ];
 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    setHero((prevHero) => ({
-      ...prevHero,
-      [name]: value,
-    }));
+    if (name === "character") {
+      // Find the selected character and set stats automatically
+      const selectedCharacter = characterChoices.find(char => char.value === value);
+      setHero((prevHero) => ({
+        ...prevHero,
+        [name]: value,
+        strength: selectedCharacter.strength,
+        defense: selectedCharacter.defense,
+        speed: selectedCharacter.speed,
+      }));
+    } else {
+      setHero((prevHero) => ({
+        ...prevHero,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -42,30 +62,30 @@ function CreateHero() {
           required
           autoFocus
         />
-        <input
-          className="input-strength"
-          placeholder="Strength"
-          name="strength"
-          value={hero.strength}
+        
+        {/* Add character selection dropdown */}
+        <select
+          className="input-character"
+          name="character"
+          value={hero.character}
           onChange={handleChange}
           required
-        />
-        <input
-          className="input-defense"
-          placeholder="defense"
-          name="Defense"
-          value={hero.defense}
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="input-speed"
-          placeholder="Speed"
-          name="speed"
-          value={hero.speed}
-          onChange={handleChange}
-          required
-        />
+        >
+          {characterChoices.map((choice) => (
+            <option key={choice.value} value={choice.value}>
+              {choice.label}
+            </option>
+          ))}
+        </select>
+
+        {/* Display selected character's stats */}
+        <div className="character-stats">
+          <h3>Character Stats:</h3>
+          <p>Strength: {hero.strength}</p>
+          <p>Defense: {hero.defense}</p>
+          <p>Speed: {hero.speed}</p>
+        </div>
+
         <button type="submit">Submit</button>
       </form>
     </div>

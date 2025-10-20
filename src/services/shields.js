@@ -2,7 +2,7 @@ import api from "./apiConfig.js";
 
 export const getShields = async () => {
   try {
-    const response = await api.get("/shield/");
+    const response = await api.get("/shields/");
     return response.data;
   } catch (error) {
     throw error;
@@ -11,25 +11,25 @@ export const getShields = async () => {
 
 export const getShield = async (id) => {
   try {
-    const response = await api.get(`/shield/${id}/`);
+    const response = await api.get(`/shields/${id}/`);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const createShield = async (toyData) => {
+export const createShield = async (weaponData) => {
   try {
-    const response = await api.post("/shield/", toyData);
+    const response = await api.post("/shields/", weaponData);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const updateShield = async (id, toyData) => {
+export const updateShield = async (id, weaponData) => {
   try {
-    const response = await api.put(`/shield/${id}/`, toyData);
+    const response = await api.put(`/shields/${id}/`, weaponData);
     return response.data;
   } catch (error) {
     throw error;
@@ -38,7 +38,7 @@ export const updateShield = async (id, toyData) => {
 
 export const deleteShield = async (id) => {
   try {
-    const response = await api.delete(`/shield/${id}/`);
+    const response = await api.delete(`/shields/${id}/`);
     return response.data;
   } catch (error) {
     throw error;

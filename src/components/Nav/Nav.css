@@ -1,0 +1,195 @@
+/* Dark Theme for Nav Component - Matching HeroDetail Style */
+
+nav {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  border-bottom: 3px solid #4a4a7a;
+  padding: 12px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 60px;
+  overflow: hidden;
+}
+
+/* Welcome Message */
+.welcome {
+  color: #ffd700;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(45deg, #ffd700, #ffed4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-right: 20px;
+}
+
+/* Navigation Links Container */
+.nav-links {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+
+/* Navigation Link Styling */
+.nav-link {
+  background: #708ad4;
+  color: #fff;
+  text-decoration: none;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 2px solid #8ba3e0;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Hover Effects */
+.nav-link:hover {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  border-color: #a3bae8;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+/* Active Link Styling */
+.nav-link.active {
+  background: #708ad4;
+  border-color: #a3bae8;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(112, 138, 212, 0.5);
+}
+
+.nav-link.active:hover {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  border-color: #b8cded;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+/* Special Styling for Log Out Link */
+.nav-link[href*="sign-out"] {
+  background: #c55409;
+  border-color: #d1221c;
+  color: white;
+}
+
+.nav-link[href*="sign-out"]:hover {
+  background: linear-gradient(135deg, #e90707, #790404);
+  border-color: #a3bae8;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+/* Special Styling for Add Links */
+.nav-link[href*="add"] {
+  background: #708ad4;
+  border-color: #8ba3e0;
+  color: white;
+}
+
+.nav-link[href*="add"]:hover {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  border-color: #a3bae8;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 20px;
+    min-height: auto;
+  }
+  
+  .welcome {
+    margin-right: 0;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .nav-links {
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .nav-link {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    padding: 10px 15px;
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 10px 15px;
+  }
+  
+  .welcome {
+    font-size: 1rem;
+  }
+}
+
+/* Animation for smooth entrance */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+nav {
+  animation: fadeInSlide 0.5s ease-out;
+}
+
+/* Subtle glow effect */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.nav-link:hover::before {
+  left: 100%;
+}

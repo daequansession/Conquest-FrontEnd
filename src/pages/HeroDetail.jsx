@@ -1,95 +1,169 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
-  getCat,
-  deleteCat,
-  addToyForCat,
-  removeToyFromCat,
-} from "../services/cats.js";
-import { getCatFeedings, addCatFeeding } from "../services/feedings.js";
-import FeedingsTable from "../components/FeedingsTable.jsx";
-import catDetailAvatar from "../assets/cat-detail.png";
+  getHero,
+  deleteHero,
+  addShieldToHero,
+  removeShieldFromHero,
+  addWeaponToHero,
+  removeWeaponFromHero,
+} from "../services/heroes.js";
+import { getWeapons } from "../services/weapons.js";
+import { getShields } from "../services/shields.js";
+import HolyPaladinImg from "../assets/HolyPaladin.png";
+import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
+import DragonKnightImg from "../assets/DragonKnight.png";
+import "./HeroDetail.css";
 
 function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);
-  // const [catFeedings, setCatFeedings] = useState([])
+  const [allWeapons, setAllWeapons] = useState([]);
+  const [allShields, setAllShields] = useState([]);
   const [toggle, setToggle] = useState(false);
-
-  // const [feeding, setFeeding] = useState({
-  //   date: "",
-  //   meal: "Breakfast"
-  // });
 
   let { heroId } = useParams();
   let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCat = async () => {
-      const heroData = await getCat(heroId);
-      // const feedingsData = await getCatFeedings(catId)
-      setCatDetail(catData);
-      // setCatFeedings(feedingsData)
+    const fetchHero = async () => {
+      try {
+        const heroData = await getHero(heroId);
+        setHeroDetail(heroData);
+      } catch (error) {
+        console.error("Error fetching hero:", error);
+
+        if (error.response?.status === 404) {
+          navigate("/heroes");
+        }
+      }
+    };
+
+    const fetchWeapons = async () => {
+      try {
+        const weaponsData = await getWeapons();
+        setAllWeapons(weaponsData);
+      } catch (error) {
+        console.error("Error fetching weapons:", error);
+      }
+    };
+
+    const fetchShields = async () => {
+      try {
+        const shieldsData = await getShields();
+        setAllShields(shieldsData);
+      } catch (error) {
+        console.error("Error fetching shields:", error);
+      }
     };
 
     fetchHero();
-  }, [heroId, toggle]);
+    fetchWeapons();
+    fetchShields();
+  }, [heroId, toggle, navigate]);
 
   const handleDelete = async () => {
-    await deleteCat(heroId);
-    navigate("/heroes");
+    try {
+      await deleteHero(heroId);
+      navigate("/heroes");
+    } catch (error) {
+      console.error("Error deleting hero:", error);
+    }
   };
 
   const handleAddShield = async (shieldId) => {
-    await addToyForCat(heroId, shieldId);
-    setToggle((prev) => !prev);
+    try {
+      await addShieldToHero(heroId, shieldId);
+      setToggle((prev) => !prev);
+    } catch (error) {
+      console.error("Error adding shield:", error);
+    }
   };
 
   const handleRemoveShield = async (shieldId) => {
-    await removeShieldFromHero(heroId, shieldId);
-    setToggle((prev) => !prev);
+    try {
+      await removeShieldFromHero(heroId, shieldId);
+      setToggle((prev) => !prev);
+    } catch (error) {
+      console.error("Error removing shield:", error);
+    }
   };
 
-  // const handleDateAndMealChange = (e) => {
-  //   const { name, value } = e.target
+  const handleAddWeapon = async (weaponId) => {
+    try {
+      await addWeaponToHero(heroId, weaponId);
+      setToggle((prev) => !prev);
+    } catch (error) {
+      console.error("Error adding weapon:", error);
+    }
+  };
 
-  //   setFeeding((prevFeeding) => ({
-  //     ...prevFeeding,
-  //     [name]: value
-  //   }))
-  // };
+  const handleRemoveWeapon = async (weaponId) => {
+    try {
+      await removeWeaponFromHero(heroId, weaponId);
+      setToggle((prev) => !prev);
+    } catch (error) {
+      console.error("Error removing weapon:", error);
+    }
+  };
 
-  // const handleFeedingSubmit = async (e) => {
-  //   e.preventDefault()
+  if (!heroDetail) {
+    return <div>Loading...</div>;
+  }
 
-  //   const mealMap = {
-  //     Breakfast: 'B',
-  //     Lunch: 'L',
-  //     Dinner: 'D'
-  //   };
+  // Handle both possible data structures: direct hero object or nested under 'hero' property
+  const hero = heroDetail.hero || heroDetail;
 
-  //   const { date, meal } = feeding
+  // Calculate available weapons by filtering out weapons already equipped to this hero
+  const equippedWeaponIds = hero.weapons
+    ? hero.weapons.map((weapon) => weapon.id)
+    : [];
+  const availableWeapons =
+    hero.weapons_not_associated ||
+    allWeapons.filter((weapon) => !equippedWeaponIds.includes(weapon.id));
 
-  //   const finalFeeding = {
-  //     date,
-  //     meal: mealMap[meal]
-  //   } // mealMap[meal] Converts "Breakfast" to "B" for django model
-
-  //   const createdFeeding = await addCatFeeding(catId, finalFeeding)
-
-  //   if (createdFeeding) {
-  //     setToggle(prev => !prev)
-  //   }
-  // }
+  // Calculate available shields by filtering out shields already equipped to this hero
+  const equippedShieldIds = hero.shields
+    ? hero.shields.map((shield) => shield.id)
+    : [];
+  const availableShields =
+    hero.shields_not_associated ||
+    allShields.filter((shield) => !equippedShieldIds.includes(shield.id));
 
   return (
     <div className="hero-detail-root">
       <div className="hero-detail-container">
-        <img src={heroDetailAvatar} alt="hero avatar" />
         <div>
-          <h2>{heroDetail?.hero?.name}</h2>
-          <p>{heroDetail?.hero?.character}</p>
-          <div>
-            <Link to={`/heroes/${heroDetail?.hero?.id}/edit`}>
+          <h2>{hero.name}</h2>
+          {hero.character === "A" ? (
+            <img src={HolyPaladinImg} alt="Holy Paladin" />
+          ) : hero.character === "B" ? (
+            <img src={PrimalBarbarianImg} alt="Primal Barbarian" />
+          ) : hero.character === "C" ? (
+            <img src={DragonKnightImg} alt="Dragon Knight" />
+          ) : (
+            <p>{hero.character}</p>
+          )}
+
+          <div className="hero-stats-section">
+            <h3>Hero Stats</h3>
+            <div className="hero-stats">
+              <div className="stat-item">
+                <span className="stat-label">Strength:</span>
+                <span className="stat-value">{hero.strength || "N/A"}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label">Defense:</span>
+                <span className="stat-value">{hero.defense || "N/A"}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label">Speed:</span>
+                <span className="stat-value">{hero.speed || "N/A"}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-action-buttons">
+            <Link to={`/heroes/${hero.id}/edit`}>
               <button className="hero-detail-edit">Edit</button>
             </Link>
             <button className="hero-detail-delete" onClick={handleDelete}>
@@ -98,74 +172,101 @@ function HeroDetail() {
           </div>
         </div>
       </div>
-      <div className="cat-detail-bottom-container">
-        <div className="feedings-container">
-          <h2>Feedings</h2>
-          <h3>Add a Feeding</h3>
-          {catDetail?.cat?.fed_for_today ? (
-            <p>{catDetail?.cat?.name} has been fed all their meals today! 🥰</p>
-          ) : (
-            <p>Looks like {catDetail?.cat?.name} is still hungry 😔</p>
-          )}
-          <form onSubmit={handleFeedingSubmit}>
-            <div>
-              <label htmlFor="feeding-date">Feeding Date: </label>
-              <input
-                type="date"
-                name="date"
-                id="feeding-date"
-                value={feeding.date}
-                onChange={handleDateAndMealChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="feeding-meal">Meal: </label>
-              <select
-                name="meal"
-                id="feeding-meal"
-                value={feeding.meal}
-                onChange={handleDateAndMealChange}
-              >
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-              </select>
-            </div>
-            <button type="submit">Add Feeding</button>
-          </form>
-          <h3>Past Feedings</h3>
-          <FeedingsTable feedings={catFeedings} />
-        </div>
-        <div className="cat-toys-container">
-          <h2>Toys</h2>
-          <h3>{catDetail?.cat?.name}'s Toys</h3>
-          {catDetail &&
-            catDetail.cat.toys.map((toy) => (
-              <div key={toy.id} className="cats-personal-owned-toys">
-                <div style={{ background: toy?.color }}></div>
+      <div className="hero-detail-bottom-container">
+        <div className="hero-owned-weapons-container">
+          <h2>{hero.name}'s Weapons</h2>
+          {hero.weapons && hero.weapons.length > 0 ? (
+            hero.weapons.map((weapon) => (
+              <div key={weapon.id} className="hero-personal-owned-weapons">
+                <div style={{ background: weapon?.color }}></div>
                 <p>
-                  A {toy.color} {toy.name}
+                  {weapon.name} - Strength:{" "}
+                  {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
+                  {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
+                  {weapon.Speed || weapon.speed || "N/A"}
                 </p>
-                <button onClick={() => handleRemoveToy(toy.id)}>
-                  Remove Toy
+                <button onClick={() => handleRemoveWeapon(weapon.id)}>
+                  Remove Weapon
                 </button>
               </div>
-            ))}
-          <h3>Available Toys</h3>
-          {catDetail &&
-            catDetail?.toys_not_associated.map((toy) => (
-              <div key={toy.id} className="cats-personal-toys">
-                <div style={{ background: toy?.color }}></div>
+            ))
+          ) : (
+            <p>No weapons equipped</p>
+          )}
+        </div>
+
+        <div className="hero-owned-shields-container">
+          <h2>{hero.name}'s Shields</h2>
+          {hero.shields && hero.shields.length > 0 ? (
+            hero.shields.map((shield) => (
+              <div key={shield.id} className="hero-personal-owned-shields">
+                <div style={{ background: shield?.color }}></div>
                 <p>
-                  A {toy.color} {toy.name}
+                  {shield.name} - Strength:{" "}
+                  {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
+                  {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
+                  {shield.Speed || shield.speed || "N/A"}
                 </p>
-                <button onClick={() => handleAddToy(toy.id)}>Give Toy</button>
+                <button onClick={() => handleRemoveShield(shield.id)}>
+                  Remove Shield
+                </button>
               </div>
-            ))}
+            ))
+          ) : (
+            <p>No shields equipped</p>
+          )}
+        </div>
+      </div>
+
+      <div className="hero-store-container">
+        <h2>Store</h2>
+
+        <div className="store-section">
+          <h3>Available Weapons</h3>
+          {availableWeapons && availableWeapons.length > 0 ? (
+            availableWeapons.map((weapon) => (
+              <div key={weapon.id} className="hero-available-weapons">
+                <div style={{ background: weapon?.color }}></div>
+                <p>
+                  {weapon.name} - Strength:{" "}
+                  {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
+                  {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
+                  {weapon.Speed || weapon.speed || "N/A"}
+                </p>
+                <button onClick={() => handleAddWeapon(weapon.id)}>
+                  Give Weapon
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>No available weapons</p>
+          )}
+        </div>
+
+        <div className="store-section">
+          <h3>Available Shields</h3>
+          {availableShields && availableShields.length > 0 ? (
+            availableShields.map((shield) => (
+              <div key={shield.id} className="hero-available-shields">
+                <div style={{ background: shield?.color }}></div>
+                <p>
+                  {shield.name} - Strength:{" "}
+                  {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
+                  {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
+                  {shield.Speed || shield.speed || "N/A"}
+                </p>
+                <button onClick={() => handleAddShield(shield.id)}>
+                  Give Shield
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>No available shields</p>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-export default CatDetail;
+export default HeroDetail;

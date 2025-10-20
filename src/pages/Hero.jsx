@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getHero } from "../services/heroes";
+import { getHeroes } from "../services/heroes";
 
 function Hero() {
   const [hero, setHero] = useState([]);
 
   useEffect(() => {
     const fetchHero = async () => {
-      const heroData = await getHero();
+      const heroData = await getHeroes();
       setHero(heroData);
     };
 
@@ -24,11 +24,12 @@ function Hero() {
         {hero.length &&
           hero.map((hero) => (
             <div key={hero.id} className="hero-card">
-              <Link to={`/heroes/${hero.id}`}></Link>
-              <h2>{hero.name}</h2>
-              <p>{hero.strength}</p>
-              <p>{hero.defense}</p>
-              <p>{hero.speed}</p>
+              <h2>
+                <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
+              </h2>
+              <p>Strength: {hero.strength}</p>
+              <p>Defense: {hero.defense}</p>
+              <p>Speed: {hero.speed}</p>
             </div>
           ))}
       </div>

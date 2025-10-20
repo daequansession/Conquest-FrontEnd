@@ -7,7 +7,9 @@ function CreateShield() {
 
   const [shield, setShield] = useState({
     name: "",
-    color: "",
+    strength: "",
+    defense: "",
+    speed: "",
   });
 
   const handleChange = (event) => {
@@ -41,10 +43,26 @@ function CreateShield() {
           autoFocus
         />
         <input
-          className="input-shield-color"
-          placeholder="Color"
-          name="color"
-          value={shield.color}
+          className="input-shield-strength"
+          placeholder="Strength"
+          name="strength"
+          value={shield.strength}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-shield-defense"
+          placeholder="Defense"
+          name="defense"
+          value={shield.defense}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-shield-speed"
+          placeholder="Speed"
+          name="speed"
+          value={shield.speed}
           onChange={handleChange}
           required
         />
