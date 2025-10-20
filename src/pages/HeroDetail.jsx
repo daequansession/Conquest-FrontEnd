@@ -37,7 +37,7 @@ function HeroDetail() {
     navigate("/heroes");
   };
 
-  const handleAddShield = async (shieldId) => {
+  const handleAddShieldToHero = async (shieldId) => {
     await addShieldToHero(heroId, shieldId);
     setToggle((prev) => !prev);
   };
