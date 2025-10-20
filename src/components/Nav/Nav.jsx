@@ -11,6 +11,21 @@ function Nav() {
       <NavLink className="nav-link" to="/heroes">
         Heroes
       </NavLink>
+      <NavLink className="nav-link" to="/heroes/add">
+        Add Hero
+      </NavLink>
+      <NavLink className="nav-link" to="/weapons">
+        Weapons
+      </NavLink>
+      <NavLink className="nav-link" to="/weapons/add">
+        Add Weapon
+      </NavLink>
+      <NavLink className="nav-link" to="/shields">
+        Shields
+      </NavLink>
+      <NavLink className="nav-link" to="/shields/add">
+        Add Shield
+      </NavLink>
       <NavLink className="nav-link" to="/sign-out">
         Log Out
       </NavLink>

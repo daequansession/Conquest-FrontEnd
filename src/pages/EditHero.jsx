@@ -85,31 +85,6 @@ function EditHero() {
           required
           autoFocus
         />
-        <input
-          className="input-strength"
-          placeholder="Strength"
-          name="strength"
-          value={hero.strength}
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="input-defense"
-          placeholder="Defense"
-          name="defense"
-          value={hero.defense}
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="input-speed"
-          placeholder="Speed"
-          name="speed"
-          value={hero.speed}
-          onChange={handleChange}
-          required
-        />
-
         <button type="submit">Submit</button>
       </form>
     </div>

@@ -13,7 +13,31 @@ import { getShields } from "../services/shields.js";
 import HolyPaladinImg from "../assets/HolyPaladin.png";
 import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
 import DragonKnightImg from "../assets/DragonKnight.png";
+// Weapon images
+import FirebornSpearImg from "../assets/FirebornSpear.png";
+import FrostbladeClaymoreImg from "../assets/FrostbladeClaymore.png";
+import NaturesChopperImg from "../assets/NaturesChopper.png";
+// Shield images
+import EarthguardTowerImg from "../assets/EathguardTower.png";
+import OceansDefenderImg from "../assets/OceansDefender.png";
+import SkywardKiteImg from "../assets/SkywardKite.png";
 import "../css/HeroDetail.css";
+
+// Weapon name to image mapping
+const weaponImages = {
+  "Fireborn Spear": FirebornSpearImg,
+  "Frostblade Claymore": FrostbladeClaymoreImg,
+  "Natures Chopper": NaturesChopperImg,
+  // Add more weapon name mappings as you create new weapons
+};
+
+// Shield name to image mapping
+const shieldImages = {
+  "Earthguard Tower": EarthguardTowerImg,
+  "Oceans Defender": OceansDefenderImg,
+  "Skyward Kite": SkywardKiteImg,
+  // Add more shield name mappings as you create new shields
+};
 
 function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);
@@ -181,7 +205,15 @@ function HeroDetail() {
           {hero.weapons && hero.weapons.length > 0 ? (
             hero.weapons.map((weapon) => (
               <div key={weapon.id} className="hero-personal-owned-weapons">
-                <div style={{ background: weapon?.color }}></div>
+                {weaponImages[weapon.name] ? (
+                  <img 
+                    src={weaponImages[weapon.name]} 
+                    alt={weapon.name} 
+                    className="weapon-icon" 
+                  />
+                ) : (
+                  <div style={{ background: weapon?.color }}></div>
+                )}
                 <p>
                   {weapon.name} - Strength:{" "}
                   {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
@@ -206,7 +238,15 @@ function HeroDetail() {
           {hero.shields && hero.shields.length > 0 ? (
             hero.shields.map((shield) => (
               <div key={shield.id} className="hero-personal-owned-shields">
-                <div style={{ background: shield?.color }}></div>
+                {shieldImages[shield.name] ? (
+                  <img 
+                    src={shieldImages[shield.name]} 
+                    alt={shield.name} 
+                    className="shield-icon" 
+                  />
+                ) : (
+                  <div style={{ background: shield?.color }}></div>
+                )}
                 <p>
                   {shield.name} - Strength:{" "}
                   {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
@@ -232,7 +272,15 @@ function HeroDetail() {
           {availableWeapons && availableWeapons.length > 0 ? (
             availableWeapons.map((weapon) => (
               <div key={weapon.id} className="hero-available-weapons">
-                <div style={{ background: weapon?.color }}></div>
+                {weaponImages[weapon.name] ? (
+                  <img 
+                    src={weaponImages[weapon.name]} 
+                    alt={weapon.name} 
+                    className="weapon-icon" 
+                  />
+                ) : (
+                  <div style={{ background: weapon?.color }}></div>
+                )}
                 <p>
                   {weapon.name} - Strength:{" "}
                   {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
@@ -254,7 +302,15 @@ function HeroDetail() {
           {availableShields && availableShields.length > 0 ? (
             availableShields.map((shield) => (
               <div key={shield.id} className="hero-available-shields">
-                <div style={{ background: shield?.color }}></div>
+                {shieldImages[shield.name] ? (
+                  <img 
+                    src={shieldImages[shield.name]} 
+                    alt={shield.name} 
+                    className="shield-icon" 
+                  />
+                ) : (
+                  <div style={{ background: shield?.color }}></div>
+                )}
                 <p>
                   {shield.name} - Strength:{" "}
                   {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
