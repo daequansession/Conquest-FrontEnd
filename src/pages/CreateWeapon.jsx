@@ -7,7 +7,9 @@ function CreateWeapon() {
 
   const [weapon, setWeapon] = useState({
     name: "",
-    color: "",
+    strength: "",
+    defense: "",
+    speed: "",
   });
 
   const handleChange = (event) => {
@@ -21,8 +23,15 @@ function CreateWeapon() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createWeapon(weapon);
-    navigate("/weapons");
+    try {
+      console.log("Sending weapon data:", weapon);
+      await createWeapon(weapon);
+      navigate("/weapons");
+    } catch (error) {
+      console.error("Error creating weapon:", error);
+      console.error("Error response data:", error.response?.data);
+      console.error("Error response status:", error.response?.status);
+    }
   };
 
   return (
@@ -41,13 +50,30 @@ function CreateWeapon() {
           autoFocus
         />
         <input
-          className="input-weapon-color"
-          placeholder="Color"
-          name="color"
-          value={weapon.color}
+          className="input-weapon-strength"
+          placeholder="Strength"
+          name="strength"
+          value={weapon.strength}
           onChange={handleChange}
           required
         />
+        <input
+          className="input-weapon-defense"
+          placeholder="Defense"
+          name="defense"
+          value={weapon.defense}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-weapon-speed"
+          placeholder="Speed"
+          name="speed"
+          value={weapon.speed}
+          onChange={handleChange}
+          required
+        />
+
         <button type="submit">Submit</button>
       </form>
     </div>

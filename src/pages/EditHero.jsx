@@ -11,17 +11,35 @@ function EditHero() {
     defense: 0,
     speed: 0,
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   let { heroId } = useParams();
 
   useEffect(() => {
     const fetchHero = async () => {
-      const heroData = await getHero(heroId);
-      setHero(heroData.hero);
+      try {
+        const heroData = await getHero(heroId);
+        console.log("Hero data received:", heroData);
+        
+        // Handle both possible data structures: direct hero object or nested under 'hero' property
+        const heroInfo = heroData.hero || heroData;
+        setHero(heroInfo);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching hero:", error);
+        setError("Failed to load hero data");
+        setLoading(false);
+        
+        // If hero not found, redirect back to heroes list
+        if (error.response?.status === 404) {
+          navigate("/heroes");
+        }
+      }
     };
 
     fetchHero();
-  }, [heroId]);
+  }, [heroId, navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -34,9 +52,22 @@ function EditHero() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await updateHero(heroId, hero);
-    navigate(`/heroes/${heroId}`);
+    try {
+      await updateHero(heroId, hero);
+      navigate(`/heroes/${heroId}`);
+    } catch (error) {
+      console.error("Error updating hero:", error);
+      setError("Failed to update hero");
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="edit-hero-root">
