@@ -3,9 +3,9 @@
 .hero-root {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
   min-height: 100vh;
-  color: #e0e0e0;
+  color: #f9f9f9;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hero-container {
@@ -24,7 +24,7 @@
 }
 
 .hero-header h1 {
-  color: #fff;
+  color: #c10909;
   font-size: 3rem;
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -281,35 +281,35 @@
   .hero-root {
     padding: 10px;
   }
-  
+
   .hero-container {
     padding: 20px;
     margin: 0 10px 20px 10px;
   }
-  
+
   .hero-header h1 {
     font-size: 2.5rem;
   }
-  
+
   .heroes-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .hero-filters {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .filter-group {
     min-width: auto;
   }
-  
+
   .hero-action-bar {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .create-hero-button {
     width: 100%;
     max-width: 300px;
@@ -320,20 +320,20 @@
   .hero-header h1 {
     font-size: 2rem;
   }
-  
+
   .hero-header p {
     font-size: 1rem;
   }
-  
+
   .hero-card-stats {
     flex-direction: column;
     gap: 5px;
   }
-  
+
   .hero-card-actions {
     flex-direction: column;
   }
-  
+
   .create-hero-button {
     padding: 12px 20px;
     font-size: 1.1rem;
