@@ -126,23 +126,68 @@ export const getEquipmentStatus = (hero) => {
 };
 
 /**
- * Determines combat effectiveness against another hero
+ * Determines combat effectiveness against another hero using rock-paper-scissors mechanics
+ * Strength > Speed > Defense > Strength
  * @param {Object} attacker - attacking hero's combat stats
  * @param {Object} defender - defending hero's combat stats
  * @returns {Object} - combat analysis
  */
 export const analyzeCombat = (attacker, defender) => {
-  const attackerPower = calculateCombatPower(attacker.totalStats);
-  const defenderPower = calculateCombatPower(defender.totalStats);
+  const attackerStats = attacker.totalStats;
+  const defenderStats = defender.totalStats;
   
-  const powerDifference = attackerPower - defenderPower;
-  const winChance = Math.max(0, Math.min(100, 50 + (powerDifference * 2)));
+  // Rock-paper-scissors bonuses (20% advantage when dominant stat is higher)
+  const strengthVsSpeed = attackerStats.strength > defenderStats.speed ? 1.2 : 1.0;
+  const speedVsDefense = attackerStats.speed > defenderStats.defense ? 1.2 : 1.0;
+  const defenseVsStrength = defenderStats.defense > attackerStats.strength ? 0.8 : 1.0;
+  
+  // Calculate effective combat power with matchups
+  const attackerEffective = (
+    attackerStats.strength * strengthVsSpeed +
+    attackerStats.speed * speedVsDefense +
+    attackerStats.defense
+  );
+  
+  const defenderEffective = (
+    defenderStats.strength * defenseVsStrength +
+    defenderStats.speed +
+    defenderStats.defense
+  );
+  
+  // Equal weight for all stats, but with strategic advantages
+  const powerDifference = attackerEffective - defenderEffective;
+  const winChance = Math.max(0, Math.min(100, 50 + (powerDifference * 1.5)));
+  
+  // Determine active matchups
+  const matchups = {
+    strengthAdvantage: attackerStats.strength > defenderStats.speed,
+    speedAdvantage: attackerStats.speed > defenderStats.defense,
+    defenseAdvantage: defenderStats.defense > attackerStats.strength,
+    attackerDominantStat: getDominantStat(attackerStats),
+    defenderDominantStat: getDominantStat(defenderStats)
+  };
   
   return {
-    attackerPower,
-    defenderPower,
-    powerDifference,
+    attackerPower: Math.round(attackerEffective),
+    defenderPower: Math.round(defenderEffective),
+    powerDifference: Math.round(powerDifference),
     winChance: Math.round(winChance),
-    advantage: powerDifference > 0 ? 'attacker' : powerDifference < 0 ? 'defender' : 'even'
+    advantage: powerDifference > 0 ? 'attacker' : powerDifference < 0 ? 'defender' : 'even',
+    matchups: matchups
   };
+};
+
+/**
+ * Determines the dominant stat for a hero
+ * @param {Object} stats - hero's total stats
+ * @returns {string} - dominant stat name
+ */
+const getDominantStat = (stats) => {
+  if (stats.strength >= stats.defense && stats.strength >= stats.speed) {
+    return 'strength';
+  } else if (stats.speed >= stats.strength && stats.speed >= stats.defense) {
+    return 'speed';
+  } else {
+    return 'defense';
+  }
 };
