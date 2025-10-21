@@ -14,6 +14,8 @@ import "./App.css";
 import Weapons from "./pages/weapons.jsx";
 import CreateWeapon from "./pages/CreateWeapon.jsx";
 import WeaponDetail from "./pages/WeaponDetail.jsx";
+import GoldDetail from "./pages/GoldDetails.jsx";
+import GoldList from "./pages/GoldList.jsx";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
         <Route path="/weapons" element={<Weapons />} />
         <Route path="/weapons/add" element={<CreateWeapon />} />
         <Route path="/weapons/:weaponId" element={<WeaponDetail />} />
+        <Route path="/gold" element={<GoldList />} />
+        <Route path="gold/:goldId" element={<GoldDetail />} />
       </Routes>
     </>
   );

@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext.jsx";
 import {
   getHero,
   deleteHero,
@@ -21,6 +22,7 @@ import NaturesChopperImg from "../assets/NaturesChopper.png";
 import EarthguardTowerImg from "../assets/EathguardTower.png";
 import OceansDefenderImg from "../assets/OceansDefender.png";
 import SkywardKiteImg from "../assets/SkywardKite.png";
+import { getGold } from "../services/gold.js";
 import "../css/HeroDetail.css";
 
 // Weapon name to image mapping
@@ -40,6 +42,8 @@ const shieldImages = {
 };
 
 function HeroDetail() {
+  const { user } = useContext(UserContext);
+  const [gold, setGold] = useState(null);
   const [heroDetail, setHeroDetail] = useState(null);
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
@@ -49,16 +53,19 @@ function HeroDetail() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchHero = async () => {
+    // console.log(user.id);
+    const fetchHeroAndGold = async () => {
       try {
         const heroData = await getHero(heroId);
         setHeroDetail(heroData);
-      } catch (error) {
-        console.error("Error fetching hero:", error);
 
-        if (error.response?.status === 404) {
-          navigate("/heroes");
-        }
+        // Fetch user's gold
+        const goldData = await getGold(); // no ID
+        // console.log("Gold data:", goldData);
+        setGold(goldData);
+      } catch (error) {
+        console.error("Error fetching hero or gold:", error);
+        if (error.response?.status === 404) navigate("/heroes");
       }
     };
 
@@ -80,7 +87,7 @@ function HeroDetail() {
       }
     };
 
-    fetchHero();
+    fetchHeroAndGold();
     fetchWeapons();
     fetchShields();
   }, [heroId, toggle, navigate]);
@@ -154,180 +161,188 @@ function HeroDetail() {
     allShields.filter((shield) => !equippedShieldIds.includes(shield.id));
 
   return (
-    <div className="hero-detail-root">
-      <div className="hero-detail-container">
-        <div>
-          <h2>{hero.name}</h2>
-          {hero.character === "A" ? (
-            <img src={HolyPaladinImg} alt="Holy Paladin" />
-          ) : hero.character === "B" ? (
-            <img src={PrimalBarbarianImg} alt="Primal Barbarian" />
-          ) : hero.character === "C" ? (
-            <img src={DragonKnightImg} alt="Dragon Knight" />
-          ) : (
-            <p>{hero.character}</p>
-          )}
+    <>
+      <div className="stat-item">
+        <span className="stat-label">Gold:</span>
+        <span className="stat-value">
+          {gold && gold.user === user.id ? gold.amount : "You Have No Gold"}
+        </span>
+      </div>
+      <div className="hero-detail-root">
+        <div className="hero-detail-container">
+          <div>
+            <h2>{hero.name}</h2>
+            {hero.character === "A" ? (
+              <img src={HolyPaladinImg} alt="Holy Paladin" />
+            ) : hero.character === "B" ? (
+              <img src={PrimalBarbarianImg} alt="Primal Barbarian" />
+            ) : hero.character === "C" ? (
+              <img src={DragonKnightImg} alt="Dragon Knight" />
+            ) : (
+              <p>{hero.character}</p>
+            )}
 
-          <div className="hero-stats-section">
-            <h3>Hero Stats</h3>
-            <div className="hero-stats">
-              <div className="stat-item">
-                <span className="stat-label">Strength:</span>
-                <span className="stat-value">{hero.strength || "N/A"}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">Defense:</span>
-                <span className="stat-value">{hero.defense || "N/A"}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">Speed:</span>
-                <span className="stat-value">{hero.speed || "N/A"}</span>
+            <div className="hero-stats-section">
+              <h3>Hero Stats</h3>
+              <div className="hero-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Strength:</span>
+                  <span className="stat-value">{hero.strength || "N/A"}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Defense:</span>
+                  <span className="stat-value">{hero.defense || "N/A"}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Speed:</span>
+                  <span className="stat-value">{hero.speed || "N/A"}</span>
+                </div>
               </div>
             </div>
+
+            <div className="hero-action-buttons">
+              <Link to={`/heroes/${hero.id}/edit`}>
+                <button className="hero-detail-edit">Edit</button>
+              </Link>
+              <button className="hero-detail-delete" onClick={handleDelete}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="hero-detail-bottom-container">
+          <div className="hero-owned-weapons-container">
+            <h2>
+              {hero.name}
+              {"'s"} Weapons
+            </h2>
+            {hero.weapons && hero.weapons.length > 0 ? (
+              hero.weapons.map((weapon) => (
+                <div key={weapon.id} className="hero-personal-owned-weapons">
+                  {weaponImages[weapon.name] ? (
+                    <img
+                      src={weaponImages[weapon.name]}
+                      alt={weapon.name}
+                      className="weapon-icon"
+                    />
+                  ) : (
+                    <div style={{ background: weapon?.color }}></div>
+                  )}
+                  <p>
+                    {weapon.name} - Strength:{" "}
+                    {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
+                    {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
+                    {weapon.Speed || weapon.speed || "N/A"}
+                  </p>
+                  <button onClick={() => handleRemoveWeapon(weapon.id)}>
+                    Remove Weapon
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No weapons equipped</p>
+            )}
           </div>
 
-          <div className="hero-action-buttons">
-            <Link to={`/heroes/${hero.id}/edit`}>
-              <button className="hero-detail-edit">Edit</button>
-            </Link>
-            <button className="hero-detail-delete" onClick={handleDelete}>
-              Delete
-            </button>
+          <div className="hero-owned-shields-container">
+            <h2>
+              {hero.name}
+              {"'s"} Shields
+            </h2>
+            {hero.shields && hero.shields.length > 0 ? (
+              hero.shields.map((shield) => (
+                <div key={shield.id} className="hero-personal-owned-shields">
+                  {shieldImages[shield.name] ? (
+                    <img
+                      src={shieldImages[shield.name]}
+                      alt={shield.name}
+                      className="shield-icon"
+                    />
+                  ) : (
+                    <div style={{ background: shield?.color }}></div>
+                  )}
+                  <p>
+                    {shield.name} - Strength:{" "}
+                    {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
+                    {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
+                    {shield.Speed || shield.speed || "N/A"}
+                  </p>
+                  <button onClick={() => handleRemoveShield(shield.id)}>
+                    Remove Shield
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No shields equipped</p>
+            )}
+          </div>
+        </div>
+
+        <div className="hero-store-container">
+          <h2>Store</h2>
+
+          <div className="store-section">
+            <h3>Available Weapons</h3>
+            {availableWeapons && availableWeapons.length > 0 ? (
+              availableWeapons.map((weapon) => (
+                <div key={weapon.id} className="hero-available-weapons">
+                  {weaponImages[weapon.name] ? (
+                    <img
+                      src={weaponImages[weapon.name]}
+                      alt={weapon.name}
+                      className="weapon-icon"
+                    />
+                  ) : (
+                    <div style={{ background: weapon?.color }}></div>
+                  )}
+                  <p>
+                    {weapon.name} - Strength:{" "}
+                    {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
+                    {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
+                    {weapon.Speed || weapon.speed || "N/A"}
+                  </p>
+                  <button onClick={() => handleAddWeapon(weapon.id)}>
+                    Give Weapon
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No available weapons</p>
+            )}
+          </div>
+
+          <div className="store-section">
+            <h3>Available Shields</h3>
+            {availableShields && availableShields.length > 0 ? (
+              availableShields.map((shield) => (
+                <div key={shield.id} className="hero-available-shields">
+                  {shieldImages[shield.name] ? (
+                    <img
+                      src={shieldImages[shield.name]}
+                      alt={shield.name}
+                      className="shield-icon"
+                    />
+                  ) : (
+                    <div style={{ background: shield?.color }}></div>
+                  )}
+                  <p>
+                    {shield.name} - Strength:{" "}
+                    {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
+                    {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
+                    {shield.Speed || shield.speed || "N/A"}
+                  </p>
+                  <button onClick={() => handleAddShield(shield.id)}>
+                    Give Shield
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No available shields</p>
+            )}
           </div>
         </div>
       </div>
-      <div className="hero-detail-bottom-container">
-        <div className="hero-owned-weapons-container">
-          <h2>
-            {hero.name}
-            {"'s"} Weapons
-          </h2>
-          {hero.weapons && hero.weapons.length > 0 ? (
-            hero.weapons.map((weapon) => (
-              <div key={weapon.id} className="hero-personal-owned-weapons">
-                {weaponImages[weapon.name] ? (
-                  <img 
-                    src={weaponImages[weapon.name]} 
-                    alt={weapon.name} 
-                    className="weapon-icon" 
-                  />
-                ) : (
-                  <div style={{ background: weapon?.color }}></div>
-                )}
-                <p>
-                  {weapon.name} - Strength:{" "}
-                  {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
-                  {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
-                  {weapon.Speed || weapon.speed || "N/A"}
-                </p>
-                <button onClick={() => handleRemoveWeapon(weapon.id)}>
-                  Remove Weapon
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No weapons equipped</p>
-          )}
-        </div>
-
-        <div className="hero-owned-shields-container">
-          <h2>
-            {hero.name}
-            {"'s"} Shields
-          </h2>
-          {hero.shields && hero.shields.length > 0 ? (
-            hero.shields.map((shield) => (
-              <div key={shield.id} className="hero-personal-owned-shields">
-                {shieldImages[shield.name] ? (
-                  <img 
-                    src={shieldImages[shield.name]} 
-                    alt={shield.name} 
-                    className="shield-icon" 
-                  />
-                ) : (
-                  <div style={{ background: shield?.color }}></div>
-                )}
-                <p>
-                  {shield.name} - Strength:{" "}
-                  {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
-                  {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
-                  {shield.Speed || shield.speed || "N/A"}
-                </p>
-                <button onClick={() => handleRemoveShield(shield.id)}>
-                  Remove Shield
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No shields equipped</p>
-          )}
-        </div>
-      </div>
-
-      <div className="hero-store-container">
-        <h2>Store</h2>
-
-        <div className="store-section">
-          <h3>Available Weapons</h3>
-          {availableWeapons && availableWeapons.length > 0 ? (
-            availableWeapons.map((weapon) => (
-              <div key={weapon.id} className="hero-available-weapons">
-                {weaponImages[weapon.name] ? (
-                  <img 
-                    src={weaponImages[weapon.name]} 
-                    alt={weapon.name} 
-                    className="weapon-icon" 
-                  />
-                ) : (
-                  <div style={{ background: weapon?.color }}></div>
-                )}
-                <p>
-                  {weapon.name} - Strength:{" "}
-                  {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
-                  {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
-                  {weapon.Speed || weapon.speed || "N/A"}
-                </p>
-                <button onClick={() => handleAddWeapon(weapon.id)}>
-                  Give Weapon
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No available weapons</p>
-          )}
-        </div>
-
-        <div className="store-section">
-          <h3>Available Shields</h3>
-          {availableShields && availableShields.length > 0 ? (
-            availableShields.map((shield) => (
-              <div key={shield.id} className="hero-available-shields">
-                {shieldImages[shield.name] ? (
-                  <img 
-                    src={shieldImages[shield.name]} 
-                    alt={shield.name} 
-                    className="shield-icon" 
-                  />
-                ) : (
-                  <div style={{ background: shield?.color }}></div>
-                )}
-                <p>
-                  {shield.name} - Strength:{" "}
-                  {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
-                  {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
-                  {shield.Speed || shield.speed || "N/A"}
-                </p>
-                <button onClick={() => handleAddShield(shield.id)}>
-                  Give Shield
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No available shields</p>
-          )}
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 
