@@ -1,0 +1,205 @@
+import { useState, useEffect, useContext } from 'react';
+import { getHeroes, getAllPublicHeroes } from '../services/heroes.js';
+import { getAllUsers } from '../services/users.js';
+import { simulateCombat } from '../services/combat.js';
+import { UserContext } from '../context/UserContext.jsx';
+import CombatStats from '../components/CombatStats.jsx';
+
+import HeroSelector from '../components/HeroSelector.jsx';
+
+import './CombatArena.css';
+
+function CombatArena() {
+  const { user } = useContext(UserContext);
+  
+  // State for heroes and users
+  const [allHeroes, setAllHeroes] = useState([]);
+  const [myHeroes, setMyHeroes] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  
+  // Combat state
+  const [selectedHero1, setSelectedHero1] = useState(null);
+  const [selectedHero2, setSelectedHero2] = useState(null);
+  const [combatResult, setCombatResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch all data needed for multi-user combat
+        const [allHeroesData, myHeroesData, usersData] = await Promise.all([
+          getAllPublicHeroes().catch(() => []), // Fallback to empty array if API not implemented
+          getHeroes(), // Current user's heroes
+          getAllUsers().catch(() => []) // All users for opponent selection
+        ]);
+        
+        setAllHeroes(allHeroesData);
+        setMyHeroes(myHeroesData);
+        setAllUsers(usersData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Fallback: just use current user's heroes
+        try {
+          const heroesData = await getHeroes();
+          setMyHeroes(heroesData);
+          setAllHeroes(heroesData);
+        } catch (fallbackError) {
+          console.error('Error fetching fallback heroes:', fallbackError);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
+  const handleCombat = () => {
+    if (selectedHero1 && selectedHero2 && selectedHero1.id !== selectedHero2.id) {
+      const result = simulateCombat(selectedHero1, selectedHero2);
+      setCombatResult(result);
+    }
+  };
+
+  const resetCombat = () => {
+    setCombatResult(null);
+    setSelectedHero1(null);
+    setSelectedHero2(null);
+  };
+
+  const canStartBattle = () => {
+    return selectedHero1 && selectedHero2 && selectedHero1.id !== selectedHero2.id;
+  };
+
+  if (isLoading) {
+    return <div className="loading">Loading Combat Arena...</div>;
+  }
+
+  return (
+    <div className="combat-arena">
+      <h1>Combat Arena</h1>
+      
+      {!combatResult ? (
+        <>
+          <div className="combat-setup">
+            <div className="my-vs-any-setup">
+              <div className="hero-selection-container">
+                <HeroSelector
+                  heroes={myHeroes}
+                  selectedHero={selectedHero1}
+                  onHeroSelect={setSelectedHero1}
+                  title="Select Your Hero"
+                  showOwner={false}
+                  currentUserId={user?.id}
+                  allUsers={allUsers}
+                />
+              </div>
+
+              {selectedHero1 && (
+                <div className="vs-section">
+                  <div className="vs-text">VS</div>
+                </div>
+              )}
+
+              {selectedHero1 && (
+                <div className="opponent-selection-container">
+                  <HeroSelector
+                    heroes={allHeroes}
+                    selectedHero={selectedHero2}
+                    onHeroSelect={setSelectedHero2}
+                    excludeUser={user}
+                    title="Select Opponent Hero"
+                    showOwner={true}
+                    currentUserId={user?.id}
+                    allUsers={allUsers}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Combat Preview */}
+            {canStartBattle() && (
+              <div className="combat-preview">
+                <h3>Battle Preview</h3>
+                <div className="preview-heroes">
+                  <div className="preview-hero">
+                    <h4>{selectedHero1.name}</h4>
+                    <CombatStats hero={selectedHero1} showBreakdown={false} />
+                  </div>
+                  <div className="preview-hero">
+                    <h4>{selectedHero2.name}</h4>
+                    <CombatStats hero={selectedHero2} showBreakdown={false} />
+                  </div>
+                </div>
+                <button className="battle-button" onClick={handleCombat}>
+                  ⚔️ BEGIN BATTLE! ⚔️
+                </button>
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        /* Battle Results */
+        <div className="combat-results">
+          <h2>⚔️ Battle Results ⚔️</h2>
+          
+          <div className="winner-announcement">
+            <h3>🏆 {combatResult.winner.name} is Victorious! 🏆</h3>
+            <div className="winner-details">
+              <p>Owner: {combatResult.winner.owner?.username || combatResult.winner.user?.username || 'Unknown'}</p>
+              <p>Victory Probability: {combatResult.finalWinChance}%</p>
+            </div>
+          </div>
+
+          <div className="battle-participants">
+            <div className="participant winner-participant">
+              <h4>🥇 {combatResult.winner.name} (Winner)</h4>
+              <p className="participant-owner">
+                Owner: {combatResult.winner.owner?.username || combatResult.winner.user?.username || 'Unknown'}
+              </p>
+              <div className="participant-stats">
+                <span>STR: {combatResult.winner.name === selectedHero1.name ? combatResult.hero1Stats.strength : combatResult.hero2Stats.strength}</span>
+                <span>DEF: {combatResult.winner.name === selectedHero1.name ? combatResult.hero1Stats.defense : combatResult.hero2Stats.defense}</span>
+                <span>SPD: {combatResult.winner.name === selectedHero1.name ? combatResult.hero1Stats.speed : combatResult.hero2Stats.speed}</span>
+              </div>
+            </div>
+            
+            <div className="participant loser-participant">
+              <h4>🥈 {combatResult.loser.name} (Defeated)</h4>
+              <p className="participant-owner">
+                Owner: {combatResult.loser.owner?.username || combatResult.loser.user?.username || 'Unknown'}
+              </p>
+              <div className="participant-stats">
+                <span>STR: {combatResult.loser.name === selectedHero1.name ? combatResult.hero1Stats.strength : combatResult.hero2Stats.strength}</span>
+                <span>DEF: {combatResult.loser.name === selectedHero1.name ? combatResult.hero1Stats.defense : combatResult.hero2Stats.defense}</span>
+                <span>SPD: {combatResult.loser.name === selectedHero1.name ? combatResult.hero1Stats.speed : combatResult.hero2Stats.speed}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="battle-log">
+            <h4>📜 Battle Chronicle</h4>
+            <div className="log-entries">
+              {combatResult.battleLog.map((event, index) => (
+                <p key={index} className="log-entry">
+                  <span className="log-number">{index + 1}.</span>
+                  {event}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          <div className="battle-actions">
+            <button className="reset-button" onClick={resetCombat}>
+              🔄 New Battle
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default CombatArena;
