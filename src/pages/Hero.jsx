@@ -17,7 +17,13 @@ function Hero() {
   }, []);
 
   if (!hero.length)
-    return <h1 style={{ textAlign: "center" }}>Make sure to add some hero!</h1>;
+    return (
+      <div className="hero-root">
+        <h1 className="hero-header" style={{ textAlign: "center" }}>
+          Make sure to add some hero!
+        </h1>
+      </div>
+    );
 
   return (
     <div className="hero-root">
@@ -36,8 +42,8 @@ function Hero() {
             </div>
           ))}
         <div>
-          <button 
-            className="create-hero-button" 
+          <button
+            className="create-hero-button"
             onClick={() => navigate("/heroes/add")}
           >
             Add Hero

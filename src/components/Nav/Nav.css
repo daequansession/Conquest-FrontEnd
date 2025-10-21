@@ -9,11 +9,12 @@ nav {
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: right;
+  justify-content: flex-end;
   align-items: center;
   min-height: 60px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
+  padding-left: 160px; /* Add left padding to make space for .welcome */
 }
 
 .welcome {

@@ -48,6 +48,8 @@ import NightfeatherBulwarkImg from "../assets/NightfeatherBulwark.png";
 import PlainsteelBucklerImg from "../assets/PlainsteelBuckler.png";
 import SerpentbloomAegisImg from "../assets/SerpentbloomAegis.png";
 import BloodbornEdgeguardImg from "../assets/BloodbornEdgeguard.png";
+import CombatStats from "../components/CombatStats.jsx";
+import { canEquipWeapon, canEquipShield, getEquipmentStatus } from "../utils/combatStats.js";
 import "../css/HeroDetail.css";
 
 // Weapon name to image mapping
@@ -201,6 +203,9 @@ function HeroDetail() {
     hero.shields_not_associated ||
     allShields.filter((shield) => !equippedShieldIds.includes(shield.id));
 
+  // Get equipment status for limits
+  const equipmentStatus = getEquipmentStatus(hero);
+
   return (
     <div className="hero-detail-root">
       <div className="hero-detail-container">
@@ -231,7 +236,7 @@ function HeroDetail() {
           )}
 
           <div className="hero-stats-section">
-            <h3>Hero Stats</h3>
+            <h3>Base Hero Stats</h3>
             <div className="hero-stats">
               <div className="stat-item">
                 <span className="stat-label">Strength:</span>
@@ -253,6 +258,9 @@ function HeroDetail() {
             </div>
           </div>
 
+          {/* Combat Stats Component */}
+          <CombatStats hero={hero} showBreakdown={true} />
+
           <div className="hero-action-buttons">
             <Link to={`/heroes/${hero.id}/edit`}>
               <button className="hero-detail-edit">Edit</button>
@@ -267,11 +275,11 @@ function HeroDetail() {
         <div className="hero-owned-weapons-container">
           <h2>
             {hero.name}
-            {"'s"} Weapons
+            {"'s"} Weapons ({equipmentStatus.weapons.current}/{equipmentStatus.weapons.max})
           </h2>
           {hero.weapons && hero.weapons.length > 0 ? (
-            hero.weapons.map((weapon) => (
-              <div key={weapon.id} className="hero-personal-owned-weapons">
+            hero.weapons.map((weapon, index) => (
+              <div key={weapon.id} className={`hero-personal-owned-weapons ${index === 0 ? 'primary-equipment' : 'secondary-equipment'}`}>
                 {weaponImages[weapon.name] ? (
                   <img
                     src={weaponImages[weapon.name]}
@@ -282,6 +290,7 @@ function HeroDetail() {
                   <div style={{ background: weapon?.color }}></div>
                 )}
                 <p>
+                  {index === 0 && <span className="primary-label">[PRIMARY] </span>}
                   {weapon.name} - Strength:{" "}
                   {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
                   {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
@@ -290,6 +299,11 @@ function HeroDetail() {
                 <button onClick={() => handleRemoveWeapon(weapon.id)}>
                   Remove Weapon
                 </button>
+                {index > 0 && (
+                  <p className="equipment-note">
+                    Note: Only primary weapon affects combat stats
+                  </p>
+                )}
               </div>
             ))
           ) : (
@@ -300,11 +314,11 @@ function HeroDetail() {
         <div className="hero-owned-shields-container">
           <h2>
             {hero.name}
-            {"'s"} Shields
+            {"'s"} Shields ({equipmentStatus.shields.current}/{equipmentStatus.shields.max})
           </h2>
           {hero.shields && hero.shields.length > 0 ? (
-            hero.shields.map((shield) => (
-              <div key={shield.id} className="hero-personal-owned-shields">
+            hero.shields.map((shield, index) => (
+              <div key={shield.id} className={`hero-personal-owned-shields ${index === 0 ? 'primary-equipment' : 'secondary-equipment'}`}>
                 {shieldImages[shield.name] ? (
                   <img
                     src={shieldImages[shield.name]}
@@ -315,6 +329,7 @@ function HeroDetail() {
                   <div style={{ background: shield?.color }}></div>
                 )}
                 <p>
+                  {index === 0 && <span className="primary-label">[PRIMARY] </span>}
                   {shield.name} - Strength:{" "}
                   {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
                   {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
@@ -323,6 +338,11 @@ function HeroDetail() {
                 <button onClick={() => handleRemoveShield(shield.id)}>
                   Remove Shield
                 </button>
+                {index > 0 && (
+                  <p className="equipment-note">
+                    Note: Only primary shield affects combat stats
+                  </p>
+                )}
               </div>
             ))
           ) : (
@@ -354,8 +374,12 @@ function HeroDetail() {
                   {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
                   {weapon.Speed || weapon.speed || "N/A"}
                 </p>
-                <button onClick={() => handleAddWeapon(weapon.id)}>
-                  Give Weapon
+                <button 
+                  onClick={() => handleAddWeapon(weapon.id)}
+                  disabled={!equipmentStatus.weapons.canEquip}
+                  title={!equipmentStatus.weapons.canEquip ? "Maximum weapons equipped" : ""}
+                >
+                  {equipmentStatus.weapons.canEquip ? "Give Weapon" : "Weapon Limit Reached"}
                 </button>
               </div>
             ))
@@ -384,8 +408,12 @@ function HeroDetail() {
                   {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
                   {shield.Speed || shield.speed || "N/A"}
                 </p>
-                <button onClick={() => handleAddShield(shield.id)}>
-                  Give Shield
+                <button 
+                  onClick={() => handleAddShield(shield.id)}
+                  disabled={!equipmentStatus.shields.canEquip}
+                  title={!equipmentStatus.shields.canEquip ? "Maximum shields equipped" : ""}
+                >
+                  {equipmentStatus.shields.canEquip ? "Give Shield" : "Shield Limit Reached"}
                 </button>
               </div>
             ))
