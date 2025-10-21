@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext.jsx";
 import {
   getHero,
   deleteHero,
@@ -37,6 +38,7 @@ import SolarisGlaiveImg from "../assets/SolarisGlaive.png";
 import EarthguardTowerImg from "../assets/EathguardTower.png";
 import OceansDefenderImg from "../assets/OceansDefender.png";
 import SkywardKiteImg from "../assets/SkywardKite.png";
+import { getGold } from "../services/gold.js";
 import AetherGuardShieldImg from "../assets/AetherguardShield.png";
 import CorrodedHeaterImg from "../assets/CorrededHeater.png";
 import IronboundWoodenShieldImg from "../assets/IronboundWoodshield.png";
@@ -60,7 +62,7 @@ const weaponImages = {
   "Nightslayers Scimitar": NightslayersScimitarImg,
   "Plaugeringers Scythe": PlaugeringersScytheImg,
   "Shadowborn Blade": ShadowbornBladeImg,
-  "Shadowfeather Dagger": ShadowfeatherDaggerImg, 
+  "Shadowfeather Dagger": ShadowfeatherDaggerImg,
   "Solaris Glaive": SolarisGlaiveImg,
 };
 
@@ -81,6 +83,8 @@ const shieldImages = {
 };
 
 function HeroDetail() {
+  const { user } = useContext(UserContext);
+  const [gold, setGold] = useState(null);
   const [heroDetail, setHeroDetail] = useState(null);
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
@@ -90,16 +94,19 @@ function HeroDetail() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchHero = async () => {
+    // console.log(user.id);
+    const fetchHeroAndGold = async () => {
       try {
         const heroData = await getHero(heroId);
         setHeroDetail(heroData);
-      } catch (error) {
-        console.error("Error fetching hero:", error);
 
-        if (error.response?.status === 404) {
-          navigate("/heroes");
-        }
+        // Fetch user's gold
+        const goldData = await getGold(); // no ID
+        // console.log("Gold data:", goldData);
+        setGold(goldData);
+      } catch (error) {
+        console.error("Error fetching hero or gold:", error);
+        if (error.response?.status === 404) navigate("/heroes");
       }
     };
 
@@ -121,7 +128,7 @@ function HeroDetail() {
       }
     };
 
-    fetchHero();
+    fetchHeroAndGold();
     fetchWeapons();
     fetchShields();
   }, [heroId, toggle, navigate]);
@@ -261,10 +268,10 @@ function HeroDetail() {
             hero.weapons.map((weapon) => (
               <div key={weapon.id} className="hero-personal-owned-weapons">
                 {weaponImages[weapon.name] ? (
-                  <img 
-                    src={weaponImages[weapon.name]} 
-                    alt={weapon.name} 
-                    className="weapon-icon" 
+                  <img
+                    src={weaponImages[weapon.name]}
+                    alt={weapon.name}
+                    className="weapon-icon"
                   />
                 ) : (
                   <div style={{ background: weapon?.color }}></div>
@@ -294,10 +301,10 @@ function HeroDetail() {
             hero.shields.map((shield) => (
               <div key={shield.id} className="hero-personal-owned-shields">
                 {shieldImages[shield.name] ? (
-                  <img 
-                    src={shieldImages[shield.name]} 
-                    alt={shield.name} 
-                    className="shield-icon" 
+                  <img
+                    src={shieldImages[shield.name]}
+                    alt={shield.name}
+                    className="shield-icon"
                   />
                 ) : (
                   <div style={{ background: shield?.color }}></div>
@@ -328,10 +335,10 @@ function HeroDetail() {
             availableWeapons.map((weapon) => (
               <div key={weapon.id} className="hero-available-weapons">
                 {weaponImages[weapon.name] ? (
-                  <img 
-                    src={weaponImages[weapon.name]} 
-                    alt={weapon.name} 
-                    className="weapon-icon" 
+                  <img
+                    src={weaponImages[weapon.name]}
+                    alt={weapon.name}
+                    className="weapon-icon"
                   />
                 ) : (
                   <div style={{ background: weapon?.color }}></div>
@@ -358,10 +365,10 @@ function HeroDetail() {
             availableShields.map((shield) => (
               <div key={shield.id} className="hero-available-shields">
                 {shieldImages[shield.name] ? (
-                  <img 
-                    src={shieldImages[shield.name]} 
-                    alt={shield.name} 
-                    className="shield-icon" 
+                  <img
+                    src={shieldImages[shield.name]}
+                    alt={shield.name}
+                    className="shield-icon"
                   />
                 ) : (
                   <div style={{ background: shield?.color }}></div>
