@@ -1,17 +1,22 @@
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "./Nav.css";
 
 function Nav() {
   const { user } = useContext(UserContext);
+  const [open, setOpen] = useState(false);
 
   const authenticatedOptions = (
     <>
-      <NavLink className="nav-link" to="/heroes">
+      <NavLink className="nav-link" to="/heroes" onClick={() => setOpen(false)}>
         Heroes
       </NavLink>
-      <NavLink className="nav-link" to="/sign-out">
+      <NavLink
+        className="nav-link"
+        to="/sign-out"
+        onClick={() => setOpen(false)}
+      >
         Log Out
       </NavLink>
     </>
@@ -19,10 +24,14 @@ function Nav() {
 
   const unauthenticatedOptions = (
     <>
-      <NavLink className="nav-link" to="/">
+      <NavLink className="nav-link" to="/" onClick={() => setOpen(false)}>
         Log-In
       </NavLink>
-      <NavLink className="nav-link" to="/register">
+      <NavLink
+        className="nav-link"
+        to="/register"
+        onClick={() => setOpen(false)}
+      >
         Register
       </NavLink>
     </>
@@ -31,7 +40,16 @@ function Nav() {
   return (
     <nav>
       {user && <div className="link welcome">Welcome, {user.username}</div>}
-      <div className="nav-links">
+      <button
+        className="nav-hamburger"
+        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={open}
+        aria-controls="nav-links"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+      <div id="nav-links" className={`nav-links${open ? " open" : " closed"}`}>
         {user ? authenticatedOptions : unauthenticatedOptions}
       </div>
     </nav>

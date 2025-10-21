@@ -12,10 +12,10 @@ nav {
   justify-content: right;
   align-items: center;
   min-height: 60px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
 }
 
-/* Welcome Message */
 .welcome {
   color: #ffd700;
   font-size: 1.2rem;
@@ -31,7 +31,6 @@ nav {
   transform: translateY(-50%);
 }
 
-/* Navigation Links Container */
 .nav-links {
   display: flex;
   gap: 15px;
@@ -40,8 +39,6 @@ nav {
   height: 100%;
 }
 
-
-/* Navigation Link Styling - Matching HeroDetail button style */
 .nav-link {
   background: linear-gradient(135deg, #4a4a7a, #2a2a5a);
   color: #fff;
@@ -65,7 +62,6 @@ nav {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover Effects - Matching HeroDetail style */
 .nav-link:hover {
   background: linear-gradient(135deg, #2196f3, #1976d2);
   border-color: #6a5acd;
@@ -74,7 +70,6 @@ nav {
   box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
 }
 
-/* Active Link Styling */
 .nav-link.active {
   background: linear-gradient(135deg, #2196f3, #1976d2);
   border-color: #6a5acd;
@@ -89,7 +84,6 @@ nav {
   box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
 }
 
-/* Special Styling for Log Out Link - Matching HeroDetail delete button */
 .nav-link[href*="sign-out"] {
   background: linear-gradient(135deg, #f44336, #da190b);
   border-color: #6a5acd;
@@ -102,8 +96,6 @@ nav {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
 }
-
-/* Special Styling for Add Links - Matching HeroDetail edit button */
 .nav-link[href*="add"] {
   background: linear-gradient(135deg, #4caf50, #45a049);
   border-color: #6a5acd;
@@ -117,15 +109,15 @@ nav {
   box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
     gap: 15px;
     padding: 15px 20px;
     min-height: auto;
+    flex-direction: row;
   }
-  
+
   .welcome {
     position: static;
     transform: none;
@@ -133,12 +125,12 @@ nav {
     text-align: center;
     font-size: 1.1rem;
   }
-  
+
   .nav-links {
     justify-content: center;
     gap: 10px;
   }
-  
+
   .nav-link {
     padding: 10px 16px;
     font-size: 0.8rem;
@@ -149,25 +141,24 @@ nav {
   nav {
     padding: 10px 15px;
   }
-  
+
   .nav-links {
     flex-direction: column;
     gap: 8px;
     width: 100%;
   }
-  
+
   .nav-link {
     width: 100%;
     text-align: center;
     padding: 12px 15px;
   }
-  
+
   .welcome {
     font-size: 1rem;
   }
 }
 
-/* Animation for smooth entrance */
 @keyframes fadeInSlide {
   from {
     opacity: 0;
@@ -183,18 +174,75 @@ nav {
   animation: fadeInSlide 0.5s ease-out;
 }
 
-/* Subtle glow effect - Matching HeroDetail hover animations */
 .nav-link::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 215, 0, 0.2),
+    transparent
+  );
   transition: left 0.5s;
 }
 
 .nav-link:hover::before {
   left: 100%;
+}
+
+/* --- Added hamburger styles copied from Navbar.css --- */
+/* Hamburger button - hidden on desktop */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1000;
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 50px;
+    right: -100%;
+    height: 100vh;
+    width: 70%;
+    max-width: 300px;
+    background: white;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+
+  .nav-links.open {
+    right: 0;
+    position: absolute;
+    top: 100%;
+  }
+
+  .nav-links.closed {
+    display: none;
+  }
+
+  .nav-link {
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+button > span {
+  color: white;
 }
