@@ -49,6 +49,13 @@ function Nav() {
       </NavLink>
       <NavLink
         className="nav-link"
+        to="/combat"
+        onClick={() => setOpen(false)}
+      >
+        Combat Arena
+      </NavLink>
+      <NavLink
+        className="nav-link"
         to="/sign-out"
         onClick={() => setOpen(false)}
       >

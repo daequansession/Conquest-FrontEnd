@@ -14,6 +14,7 @@ import "./App.css";
 import Weapons from "./pages/weapons.jsx";
 import CreateWeapon from "./pages/CreateWeapon.jsx";
 import WeaponDetail from "./pages/WeaponDetail.jsx";
+import CombatArena from "./pages/CombatArena.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/weapons" element={<Weapons />} />
         <Route path="/weapons/add" element={<CreateWeapon />} />
         <Route path="/weapons/:weaponId" element={<WeaponDetail />} />
+        <Route path="/combat" element={<CombatArena />} />
       </Routes>
     </>
   );
