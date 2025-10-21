@@ -1,30 +1,49 @@
+
+
 .combat-arena {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  width: 100vw;
   min-height: 100vh;
-  color: #fff;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
+
 
 .combat-arena h1 {
   text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 30px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  color: #ffd700;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  margin-top: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(45deg, #ffd700, #ffed4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+
 .loading {
-  text-align: center;
-  font-size: 1.5em;
-  color: #fff;
-  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  color: #ffd700;
+  font-size: 1.5rem;
 }
 
 /* Combat Setup Styles */
+
 .combat-setup {
+  background: rgba(30, 30, 60, 0.8);
+  border: 2px solid #4a4a7a;
+  border-radius: 15px;
+  padding: 30px;
   margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .my-vs-any-setup,
@@ -58,19 +77,22 @@
   gap: 15px;
 }
 
+
 .hero-card {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid transparent;
-  border-radius: 10px;
-  padding: 15px;
-  cursor: pointer;
+  background: rgba(40, 40, 80, 0.9);
+  border: 2px solid #4a4a7a;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
   transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .hero-card:hover {
-  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-5px);
+  border-color: #6a5acd;
+  box-shadow: 0 8px 24px rgba(106, 90, 205, 0.4);
 }
 
 .hero-card.selected {
@@ -84,9 +106,10 @@
 }
 
 .hero-card h3 {
-  margin: 0 0 10px 0;
   color: #ffd700;
-  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .mini-stats {
@@ -109,27 +132,32 @@
   justify-content: center;
 }
 
+
 .vs-text {
   font-size: 3em;
   font-weight: bold;
-  color: #e74c3c;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* Combat Preview */
+
 .combat-preview {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(40, 40, 80, 0.9);
   border-radius: 15px;
   padding: 25px;
-  margin-top: 30px;
-  border: 2px solid rgba(255, 215, 0, 0.3);
+  border: 2px solid #4a4a7a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
+
 
 .combat-preview h3 {
   text-align: center;
   color: #ffd700;
   margin-bottom: 20px;
   font-size: 1.4em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .preview-heroes {
@@ -151,16 +179,17 @@
   margin-bottom: 15px;
 }
 
+
 .battle-button {
   display: block;
   margin: 0 auto;
   padding: 15px 40px;
   font-size: 1.2em;
   font-weight: bold;
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -168,30 +197,35 @@
 }
 
 .battle-button:hover {
-  background: linear-gradient(135deg, #c0392b, #a93226);
+  background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 16px rgba(156, 39, 176, 0.4);
 }
 
 /* Combat Results */
+
 .combat-results {
   text-align: center;
+  color: #e0e0e0;
 }
 
+
 .winner-announcement {
-  background: linear-gradient(135deg, #f39c12, #e67e22);
+  background: linear-gradient(135deg, #4a4a7a, #2a2a5a);
   padding: 35px;
   border-radius: 20px;
   margin-bottom: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
+
 .winner-announcement h3 {
   font-size: 2.2em;
   margin: 0 0 15px 0;
-  color: #fff;
+  color: #ffd700;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
 }
+
 
 .winner-details {
   display: flex;
@@ -203,8 +237,8 @@
 .winner-details p {
   margin: 0;
   font-size: 1.1em;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.2);
+  color: #ffd700;
+  background: rgba(40, 40, 80, 0.7);
   padding: 8px 16px;
   border-radius: 20px;
 }
@@ -224,41 +258,48 @@
   border: 2px solid;
 }
 
+
 .winner-participant {
-  border-color: #f39c12;
-  background: rgba(243, 156, 18, 0.1);
+  border-color: #ffd700;
+  background: rgba(40, 40, 80, 0.7);
 }
 
 .loser-participant {
-  border-color: #7f8c8d;
-  background: rgba(127, 140, 141, 0.1);
+  border-color: #4a4a7a;
+  background: rgba(40, 40, 80, 0.4);
 }
+
 
 .participant h4 {
   margin: 0 0 10px 0;
   color: #ffd700;
   font-size: 1.2em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
+
 
 .participant-owner {
   margin: 0 0 15px 0;
-  color: #bbb;
+  color: #b8b8e0;
   font-style: italic;
 }
+
 
 .participant-stats {
   display: flex;
   justify-content: space-around;
   font-weight: bold;
-  color: #fff;
+  color: #ffd700;
 }
 
+
 .battle-log {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(40, 40, 80, 0.7);
   padding: 25px;
   border-radius: 10px;
   margin-bottom: 30px;
 }
+
 
 .battle-log h4 {
   margin: 0 0 20px 0;
@@ -267,6 +308,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .log-entries {
@@ -275,10 +317,11 @@
   text-align: left;
 }
 
+
 .log-entry {
   margin: 0 0 12px 0;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(40, 40, 80, 0.5);
   border-radius: 8px;
   border-left: 4px solid #ffd700;
   display: flex;
@@ -288,8 +331,9 @@
 }
 
 .log-entry:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(40, 40, 80, 0.7);
 }
+
 
 .log-number {
   color: #ffd700;
@@ -301,23 +345,24 @@
   margin-top: 30px;
 }
 
+
 .reset-button {
   padding: 15px 40px;
   font-size: 1.1em;
   font-weight: 600;
-  background: linear-gradient(135deg, #27ae60, #229954);
+  background: linear-gradient(135deg, #2196f3, #1976d2);
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
 }
 
 .reset-button:hover {
-  background: linear-gradient(135deg, #229954, #1e8449);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
 }
 
 /* Responsive Design */

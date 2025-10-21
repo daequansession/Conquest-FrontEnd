@@ -30,58 +30,77 @@ export const simulateCombat = (hero1, hero2) => {
     hero2Stats: hero2Combat.totalStats,
     analysis: analysis,
     finalWinChance: Math.round(adjustedWinChance),
-    battleLog: generateBattleLog(hero1, hero2, hero1Combat, hero2Combat, hero1Wins)
+    battleLog: generateBattleLog(hero1, hero2, hero1Combat, hero2Combat, hero1Wins, analysis)
   };
 };
 
 /**
- * Generates a narrative battle log
+ * Generates a narrative battle log with strategic matchup analysis
  * @param {Object} hero1 - First hero
  * @param {Object} hero2 - Second hero
  * @param {Object} hero1Combat - Hero1's combat stats
  * @param {Object} hero2Combat - Hero2's combat stats
  * @param {boolean} hero1Wins - Whether hero1 won
+ * @param {Object} analysis - Combat analysis with matchups
  * @returns {Array} - Array of battle events
  */
-const generateBattleLog = (hero1, hero2, hero1Combat, hero2Combat, hero1Wins) => {
+const generateBattleLog = (hero1, hero2, hero1Combat, hero2Combat, hero1Wins, analysis) => {
   const events = [];
   
   events.push(`${hero1.name} and ${hero2.name} enter the battlefield!`);
   
-  // Analyze equipment advantages
+  // Combat style analysis
+  const hero1Dominant = analysis.matchups.attackerDominantStat;
+  const hero2Dominant = analysis.matchups.defenderDominantStat;
+  
+  events.push(`${hero1.name} specializes in ${hero1Dominant.toUpperCase()}, while ${hero2.name} focuses on ${hero2Dominant.toUpperCase()}.`);
+  
+  // Strategic matchup commentary
+  if (analysis.matchups.strengthAdvantage) {
+    events.push(`${hero1.name}'s raw STRENGTH overwhelms ${hero2.name}'s speed-based tactics!`);
+  }
+  if (analysis.matchups.speedAdvantage) {
+    events.push(`${hero1.name}'s lightning SPEED finds gaps in ${hero2.name}'s defenses!`);
+  }
+  if (analysis.matchups.defenseAdvantage) {
+    events.push(`${hero2.name}'s sturdy DEFENSE deflects ${hero1.name}'s powerful strikes!`);
+  }
+  
+  // Equipment advantages
   if (hero1Combat.weaponStats.strength > hero2Combat.weaponStats.strength) {
-    events.push(`${hero1.name}'s weapons gleam with superior power!`);
+    events.push(`${hero1.name}'s superior weaponry provides a combat edge!`);
   } else if (hero2Combat.weaponStats.strength > hero1Combat.weaponStats.strength) {
-    events.push(`${hero2.name}'s weapons shine with deadly intent!`);
+    events.push(`${hero2.name}'s deadly weapons tip the scales!`);
   }
   
   if (hero1Combat.shieldStats.defense > hero2Combat.shieldStats.defense) {
-    events.push(`${hero1.name} raises their shields, providing excellent protection!`);
+    events.push(`${hero1.name}'s advanced shielding proves invaluable!`);
   } else if (hero2Combat.shieldStats.defense > hero1Combat.shieldStats.defense) {
-    events.push(`${hero2.name}'s shields form an impressive defensive barrier!`);
+    events.push(`${hero2.name}'s protective gear absorbs critical damage!`);
   }
   
   // Battle progression
-  events.push("The battle begins with fierce intensity!");
+  events.push("The tactical battle unfolds with strategic precision!");
   
+  // Speed comparison for initiative
   if (hero1Combat.totalStats.speed > hero2Combat.totalStats.speed) {
-    events.push(`${hero1.name} strikes first with lightning speed!`);
+    events.push(`${hero1.name} seizes the initiative with superior speed!`);
   } else if (hero2Combat.totalStats.speed > hero1Combat.totalStats.speed) {
-    events.push(`${hero2.name} dashes forward with incredible agility!`);
+    events.push(`${hero2.name} strikes first with blinding agility!`);
   } else {
-    events.push("Both heroes attack simultaneously!");
+    events.push("Both heroes move in perfect synchronization!");
   }
   
-  events.push("Steel clashes against steel in a spectacular display!");
-  events.push("The battle reaches its climax...");
+  events.push("Combat styles clash in an epic display of strategy and skill!");
+  events.push("The battle reaches its decisive moment...");
   
-  // Victory
+  // Victory with style reference
   if (hero1Wins) {
-    events.push(`${hero1.name} emerges victorious!`);
-    events.push(`${hero2.name} fights valiantly but is ultimately defeated.`);
+    events.push(`${hero1.name}'s ${hero1Dominant}-focused approach proves victorious!`);
+    events.push(`${hero2.name}'s ${hero2Dominant} specialization wasn't enough to secure victory.`);
   } else {
-    events.push(`${hero2.name} claims victory!`);
-    events.push(`${hero1.name} puts up an impressive fight but falls in the end.`);
+    events.push(`${hero2.name}'s ${hero2Dominant} mastery claims the day!`);
+    events.push(`${hero1.name}'s ${hero1Dominant} tactics fall short in the end.`);
   }
   
   return events;

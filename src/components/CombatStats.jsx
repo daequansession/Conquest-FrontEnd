@@ -1,7 +1,7 @@
 import { calculateCombatStats, calculateCombatPower, getEquipmentStatus } from '../utils/combatStats.js';
 import './CombatStats.css';
 
-function CombatStats({ hero, showBreakdown = false }) {
+function CombatStats({ hero, showBreakdown = false, showMatchupInfo = false }) {
   if (!hero) {
     return <div>Loading combat stats...</div>;
   }
@@ -9,6 +9,11 @@ function CombatStats({ hero, showBreakdown = false }) {
   const combatStats = calculateCombatStats(hero, hero.weapons || [], hero.shields || []);
   const combatPower = calculateCombatPower(combatStats.totalStats);
   const equipmentStatus = getEquipmentStatus(hero);
+  
+  // Determine dominant stat
+  const stats = combatStats.totalStats;
+  const dominantStat = stats.strength >= stats.defense && stats.strength >= stats.speed ? 'Strength' :
+                      stats.speed >= stats.strength && stats.speed >= stats.defense ? 'Speed' : 'Defense';
 
   return (
     <div className="combat-stats-container">
@@ -29,6 +34,10 @@ function CombatStats({ hero, showBreakdown = false }) {
       {/* Total Combat Stats - Always Shown */}
       <div className="total-stats">
         <h4>Total Combat Power: {combatPower}</h4>
+        <div className="dominant-stat">
+          <span className="stat-label">Combat Style:</span>
+          <span className={`stat-value dominant-${dominantStat.toLowerCase()}`}>{dominantStat} Focused</span>
+        </div>
         <div className="stat-row">
           <span className="stat-label">Total Strength:</span>
           <span className="stat-value">{combatStats.totalStats.strength}</span>
@@ -42,6 +51,27 @@ function CombatStats({ hero, showBreakdown = false }) {
           <span className="stat-value">{combatStats.totalStats.speed}</span>
         </div>
       </div>
+
+      {/* Combat Matchup Guide */}
+      {showMatchupInfo && (
+        <div className="matchup-guide">
+          <h5>⚔️ Combat Matchup System</h5>
+          <div className="matchup-info">
+            <div className="matchup-advantage strength-beats-speed">
+              <span className="advantage-text">💪 STRENGTH beats SPEED</span>
+              <span className="advantage-desc">Raw power overwhelms agility</span>
+            </div>
+            <div className="matchup-advantage speed-beats-defense">
+              <span className="advantage-text">⚡ SPEED beats DEFENSE</span>
+              <span className="advantage-desc">Agility bypasses heavy armor</span>
+            </div>
+            <div className="matchup-advantage defense-beats-strength">
+              <span className="advantage-text">🛡️ DEFENSE beats STRENGTH</span>
+              <span className="advantage-desc">Armor absorbs brute force</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Detailed Breakdown - Optional */}
       {showBreakdown && (

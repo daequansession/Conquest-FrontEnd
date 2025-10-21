@@ -23,6 +23,12 @@ function CombatArena() {
   const [combatResult, setCombatResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Helper function to get username from user ID
+  const getUsernameById = (userId) => {
+    const foundUser = allUsers.find(u => u.id === userId);
+    return foundUser?.username || 'Unknown';
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -126,13 +132,17 @@ function CombatArena() {
                 <div className="preview-heroes">
                   <div className="preview-hero">
                     <h4>{selectedHero1.name}</h4>
-                    <CombatStats hero={selectedHero1} showBreakdown={false} />
+                    <CombatStats hero={selectedHero1} showBreakdown={false} showMatchupInfo={false} />
                   </div>
                   <div className="preview-hero">
                     <h4>{selectedHero2.name}</h4>
-                    <CombatStats hero={selectedHero2} showBreakdown={false} />
+                    <CombatStats hero={selectedHero2} showBreakdown={false} showMatchupInfo={false} />
                   </div>
                 </div>
+                
+                {/* Show matchup guide */}
+                <CombatStats hero={selectedHero1} showBreakdown={false} showMatchupInfo={true} />
+                
                 <button className="battle-button" onClick={handleCombat}>
                   ⚔️ BEGIN BATTLE! ⚔️
                 </button>
@@ -148,8 +158,29 @@ function CombatArena() {
           <div className="winner-announcement">
             <h3>🏆 {combatResult.winner.name} is Victorious! 🏆</h3>
             <div className="winner-details">
-              <p>Owner: {combatResult.winner.owner?.username || combatResult.winner.user?.username || 'Unknown'}</p>
+              <p>Owner: {getUsernameById(combatResult.winner.user)}</p>
               <p>Victory Probability: {combatResult.finalWinChance}%</p>
+              
+              {/* Show active matchup advantages */}
+              {combatResult.analysis?.matchups && (
+                <div className="active-matchups">
+                  <p><strong>Strategic Advantages:</strong></p>
+                  {combatResult.analysis.matchups.strengthAdvantage && 
+                    <span className="advantage-badge">💪 Strength vs Speed</span>
+                  }
+                  {combatResult.analysis.matchups.speedAdvantage && 
+                    <span className="advantage-badge">⚡ Speed vs Defense</span>
+                  }
+                  {combatResult.analysis.matchups.defenseAdvantage && 
+                    <span className="advantage-badge">🛡️ Defense vs Strength</span>
+                  }
+                  {!combatResult.analysis.matchups.strengthAdvantage && 
+                   !combatResult.analysis.matchups.speedAdvantage && 
+                   !combatResult.analysis.matchups.defenseAdvantage && 
+                    <span className="advantage-badge">⚖️ Balanced Combat</span>
+                  }
+                </div>
+              )}
             </div>
           </div>
 
@@ -157,7 +188,7 @@ function CombatArena() {
             <div className="participant winner-participant">
               <h4>🥇 {combatResult.winner.name} (Winner)</h4>
               <p className="participant-owner">
-                Owner: {combatResult.winner.owner?.username || combatResult.winner.user?.username || 'Unknown'}
+                Owner: {getUsernameById(combatResult.winner.user)}
               </p>
               <div className="participant-stats">
                 <span>STR: {combatResult.winner.name === selectedHero1.name ? combatResult.hero1Stats.strength : combatResult.hero2Stats.strength}</span>
@@ -169,7 +200,7 @@ function CombatArena() {
             <div className="participant loser-participant">
               <h4>🥈 {combatResult.loser.name} (Defeated)</h4>
               <p className="participant-owner">
-                Owner: {combatResult.loser.owner?.username || combatResult.loser.user?.username || 'Unknown'}
+                Owner: {getUsernameById(combatResult.loser.user)}
               </p>
               <div className="participant-stats">
                 <span>STR: {combatResult.loser.name === selectedHero1.name ? combatResult.hero1Stats.strength : combatResult.hero2Stats.strength}</span>
