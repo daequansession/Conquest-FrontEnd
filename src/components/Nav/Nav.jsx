@@ -14,6 +14,41 @@ function Nav() {
       </NavLink>
       <NavLink
         className="nav-link"
+        to="/heroes/add"
+        onClick={() => setOpen(false)}
+      >
+        Add Hero
+      </NavLink>
+      <NavLink
+        className="nav-link"
+        to="/weapons"
+        onClick={() => setOpen(false)}
+      >
+        Weapons
+      </NavLink>
+      <NavLink
+        className="nav-link"
+        to="/weapons/add"
+        onClick={() => setOpen(false)}
+      >
+        Add Weapon
+      </NavLink>
+      <NavLink
+        className="nav-link"
+        to="/shields"
+        onClick={() => setOpen(false)}
+      >
+        Shields
+      </NavLink>
+      <NavLink
+        className="nav-link"
+        to="/shields/add"
+        onClick={() => setOpen(false)}
+      >
+        Add Shield
+      </NavLink>
+      <NavLink
+        className="nav-link"
         to="/sign-out"
         onClick={() => setOpen(false)}
       >
