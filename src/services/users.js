@@ -27,8 +27,26 @@ export const signOut = async () => {
     localStorage.removeItem("token");
     return true;
   } catch (error) {
-    console.error(error);
-    return error;
+    throw error;
+  }
+};
+
+// Multi-user functions
+export const getAllUsers = async () => {
+  try {
+    const response = await api.get("/users/");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserProfile = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}/profile/`);
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };
 

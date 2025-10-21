@@ -97,3 +97,22 @@ export const removeWeaponFromHero = async (heroId, weaponId) => {
     return error;
   }
 };
+
+// Multi-user combat functions
+export const getAllPublicHeroes = async () => {
+  try {
+    const response = await api.get("/heroes/public/");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getHeroesByUser = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}/heroes/`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
