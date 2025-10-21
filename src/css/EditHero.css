@@ -5,7 +5,7 @@
   min-height: 100vh;
   color: #e0e0e0;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .edit-hero-container {
@@ -268,30 +268,30 @@
   .edit-hero-root {
     padding: 10px;
   }
-  
+
   .edit-hero-container {
     padding: 20px;
     margin: 0 10px;
   }
-  
+
   .edit-hero-container h2 {
     font-size: 2rem;
   }
-  
+
   .form-row {
     flex-direction: column;
   }
-  
+
   .edit-hero-actions {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .edit-hero-actions button {
     width: 100%;
     max-width: 250px;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -301,18 +301,18 @@
   .edit-hero-container h2 {
     font-size: 1.8rem;
   }
-  
+
   .form-group input,
   .form-group select,
   .form-group textarea {
     padding: 10px 12px;
   }
-  
+
   .edit-hero-actions button {
     padding: 12px 20px;
     font-size: 1.1rem;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
