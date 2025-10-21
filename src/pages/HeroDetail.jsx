@@ -245,6 +245,11 @@ function HeroDetail() {
                 <span className="stat-label">Speed:</span>
                 <span className="stat-value">{hero.speed || "N/A"}</span>
               </div>
+              <div className="hero-details-gold-stat">
+                <span className="stat-gold">
+                  Gold: {gold ? gold.amount : "You have no Gold"}
+                </span>
+              </div>
             </div>
           </div>
 
