@@ -13,14 +13,39 @@ import { getShields } from "../services/shields.js";
 import HolyPaladinImg from "../assets/HolyPaladin.png";
 import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
 import DragonKnightImg from "../assets/DragonKnight.png";
+import ShadowAssassinImg from "../assets/ShadowAssassin.png";
+import DemonHunterImg from "../assets/DemonHunter.png";
+import ChackieJanImg from "../assets/ChackieJan.png";
+import HasidicWarriorImg from "../assets/HasidicWarrior.png";
+import MexicanVaqueroImg from "../assets/MexicanVaquero.png";
+import DeathKnightImg from "../assets/DeathKnight.png";
+import EveryItalianEverImg from "../assets/EveryItalianEver.png";
 // Weapon images
 import FirebornSpearImg from "../assets/FirebornSpear.png";
 import FrostbladeClaymoreImg from "../assets/FrostbladeClaymore.png";
 import NaturesChopperImg from "../assets/NaturesChopper.png";
+import BattlewornHatchetImg from "../assets/BattlewornHatchet.png";
+import CommonBroadswordImg from "../assets/CommonBroadsword.png";
+import ForgebreakPolearmImg from "../assets/ForgebreakPolearm.png";
+import IroncladShortbladeImg from "../assets/IroncladShortblade.png";
+import NightslayersScimitarImg from "../assets/NightslayersScimitar.png";
+import PlaugeringersScytheImg from "../assets/PlagueringersScythe.png";
+import ShadowbornBladeImg from "../assets/ShadowbornBlade.png";
+import ShadowfeatherDaggerImg from "../assets/ShadowfeatherDagger.png";
+import SolarisGlaiveImg from "../assets/SolarisGlaive.png";
 // Shield images
 import EarthguardTowerImg from "../assets/EathguardTower.png";
 import OceansDefenderImg from "../assets/OceansDefender.png";
 import SkywardKiteImg from "../assets/SkywardKite.png";
+import AetherGuardShieldImg from "../assets/AetherguardShield.png";
+import CorrodedHeaterImg from "../assets/CorrededHeater.png";
+import IronboundWoodenShieldImg from "../assets/IronboundWoodshield.png";
+import LeostrongBastionImg from "../assets/LeostrongBastion.png";
+import MechanumDefenderImg from "../assets/MechanunDefender.png";
+import NightfeatherBulwarkImg from "../assets/NightfeatherBulwark.png";
+import PlainsteelBucklerImg from "../assets/PlainsteelBuckler.png";
+import SerpentbloomAegisImg from "../assets/SerpentbloomAegis.png";
+import BloodbornEdgeguardImg from "../assets/BloodbornEdgeguard.png";
 import "../css/HeroDetail.css";
 
 // Weapon name to image mapping
@@ -28,7 +53,15 @@ const weaponImages = {
   "Fireborn Spear": FirebornSpearImg,
   "Frostblade Claymore": FrostbladeClaymoreImg,
   "Natures Chopper": NaturesChopperImg,
-  // Add more weapon name mappings as you create new weapons
+  "Battleworn Hatchet": BattlewornHatchetImg,
+  "Common Broadsword": CommonBroadswordImg,
+  "Forgebreak Polearm": ForgebreakPolearmImg,
+  "Ironclad Shortblade": IroncladShortbladeImg,
+  "Nightslayers Scimitar": NightslayersScimitarImg,
+  "Plaugeringers Scythe": PlaugeringersScytheImg,
+  "Shadowborn Blade": ShadowbornBladeImg,
+  "Shadowfeather Dagger": ShadowfeatherDaggerImg, 
+  "Solaris Glaive": SolarisGlaiveImg,
 };
 
 // Shield name to image mapping
@@ -36,7 +69,15 @@ const shieldImages = {
   "Earthguard Tower": EarthguardTowerImg,
   "Oceans Defender": OceansDefenderImg,
   "Skyward Kite": SkywardKiteImg,
-  // Add more shield name mappings as you create new shields
+  "Aether Guard Shield": AetherGuardShieldImg,
+  "Correded Heater": CorrodedHeaterImg,
+  "Ironbound Wooden Shield": IronboundWoodenShieldImg,
+  "Leostrong Bastion": LeostrongBastionImg,
+  "Mechanum Defender": MechanumDefenderImg,
+  "Nightfeather Bulwark": NightfeatherBulwarkImg,
+  "Plainsteel Buckler": PlainsteelBucklerImg,
+  "Serpentbloom Aegis": SerpentbloomAegisImg,
+  "Bloodborn Edgeguard": BloodbornEdgeguardImg,
 };
 
 function HeroDetail() {
@@ -164,6 +205,20 @@ function HeroDetail() {
             <img src={PrimalBarbarianImg} alt="Primal Barbarian" />
           ) : hero.character === "C" ? (
             <img src={DragonKnightImg} alt="Dragon Knight" />
+          ) : hero.character === "D" ? (
+            <img src={ShadowAssassinImg} alt="Shadow Assassin" />
+          ) : hero.character === "E" ? (
+            <img src={DemonHunterImg} alt="Demon Hunter" />
+          ) : hero.character === "F" ? (
+            <img src={ChackieJanImg} alt="Chackie Jan" />
+          ) : hero.character === "G" ? (
+            <img src={HasidicWarriorImg} alt="Hasidic Warrior" />
+          ) : hero.character === "H" ? (
+            <img src={MexicanVaqueroImg} alt="Mexican Vaquero" />
+          ) : hero.character === "I" ? (
+            <img src={DeathKnightImg} alt="Death Knight" />
+          ) : hero.character === "J" ? (
+            <img src={EveryItalianEverImg} alt="Every Italian Ever" />
           ) : (
             <p>{hero.character}</p>
           )}

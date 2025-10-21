@@ -19,6 +19,13 @@ function CreateHero() {
     { value: "A", label: "Holy Paladin", strength: 3, defense: 5, speed: 2 },
     { value: "B", label: "Primal Barbarian", strength: 5, defense: 2, speed: 3 },
     { value: "C", label: "Dragon Knight", strength: 4, defense: 3, speed: 3 },
+    { value: "D", label: "Shadow Assassin", strength: 4, defense: 2, speed: 4 },
+    { value: "E", label: "Demon Hunter", strength: 5, defense: 3, speed: 2 },
+    { value: "F", label: "Chackie Jan", strength: 3, defense: 4, speed: 3 },
+    { value: "G", label: "Hasidic Warrior", strength: 4, defense: 4, speed: 2 },
+    { value: "H", label: "Mexican Vaquero", strength: 3, defense: 3, speed: 4 },
+    { value: "I", label: "Death Knight", strength: 5, defense: 4, speed: 1 },
+    { value: "J", label: "Every Italian Ever", strength: 2, defense: 3, speed: 5 },
   ];
 
   const handleChange = (event) => {
