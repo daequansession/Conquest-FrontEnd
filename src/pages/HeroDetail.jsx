@@ -97,7 +97,13 @@ function HeroDetail() {
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
   const [toggle, setToggle] = useState(false);
-  const [searchStore, setSearchStore] = useState({ store: "" });
+  const [searchStore, setSearchStore] = useState({
+    store: "",
+    cost: "",
+    strength: "",
+    defense: "",
+    speed: "",
+  });
 
   let { heroId } = useParams();
   let navigate = useNavigate();
@@ -202,6 +208,48 @@ function HeroDetail() {
     } catch (error) {
       console.error("Error removing weapon:", error);
     }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("this is the search", searchStore.strength);
+    console.log("This is the shield", allShields);
+    console.log("This are the weapons", allWeapons);
+    const newShieldArray = [];
+    const newWeaponsArray = [];
+
+    for (let i = 0; i < allShields.length; i++) {
+      if (
+        allShields[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
+        allShields[i].cost >= parseInt(searchStore.cost) ||
+        allShields[i].strength >= parseInt(searchStore.strength) ||
+        allShields[i].speed >= parseInt(searchStore.speed) ||
+        allShields[i].defense >= parseInt(searchStore.defense)
+      ) {
+        newShieldArray.push(allShields[i]);
+      }
+    }
+    for (let i = 0; i < allWeapons.length; i++) {
+      if (
+        allWeapons[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
+        allWeapons[i].cost >= parseInt(searchStore.cost) ||
+        allWeapons[i].strength >= parseInt(searchStore.strength) ||
+        allWeapons[i].speed >= parseInt(searchStore.speed) ||
+        allWeapons[i].defense >= parseInt(searchStore.defense)
+      ) {
+        newWeaponsArray.push(allWeapons[i]);
+      }
+    }
+
+    setAllShields(newShieldArray);
+    setAllWeapons(newWeaponsArray);
+  };
+
+  const handleClearSearch = (e) => {
+    // e.preventDefault();
+    setAllShields(allShields);
+    setAllWeapons(allWeapons);
   };
 
   if (!heroDetail) {
@@ -397,15 +445,14 @@ function HeroDetail() {
 
       <div className="hero-store-container">
         <h2>Store</h2>
-
-        <label htmlFor="searchStore">
-          Search Store:
+        <form action="" onSubmit={handleSearchSubmit}>
+          <label htmlFor="store">Search Store by Name:</label>
           <input
             type="text"
             name="store"
-            id="searchStore"
+            id="store"
             value={searchStore.store}
-            placeholder="Search for weapons or shields"
+            placeholder="Weapons or shields"
             onChange={(e) =>
               setSearchStore({
                 ...searchStore,
@@ -413,7 +460,65 @@ function HeroDetail() {
               })
             }
           />
-        </label>
+          <label htmlFor="store">Price:</label>
+          <input
+            type="number"
+            name="cost"
+            id="cost"
+            value={searchStore.cost}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <label htmlFor="store">Strength:</label>
+          <input
+            type="number"
+            name="strength"
+            id="strength"
+            value={searchStore.strength}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <label htmlFor="store">Defense:</label>
+          <input
+            type="number"
+            name="defense"
+            id="defense"
+            value={searchStore.defense}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <label htmlFor="store">Speed:</label>
+          <input
+            type="number"
+            name="speed"
+            id="speed"
+            value={searchStore.speed}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <button>Submit</button>
+        </form>
+        <label htmlFor=""></label>
+
+        <form action="">
+          <button onClick={handleClearSearch}>Clear Search</button>
+        </form>
 
         <div className="store-section">
           <h3>Available Weapons</h3>
