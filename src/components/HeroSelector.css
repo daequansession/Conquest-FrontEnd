@@ -1,0 +1,174 @@
+.hero-selector {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.hero-selector h3 {
+  color: #ffd700;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+}
+
+.heroes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.hero-card-container {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hero-card-container.selected {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+}
+
+.hero-owner {
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+  padding: 8px 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 2px solid;
+}
+
+.hero-owner.my-hero {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  border-bottom-color: #1e8449;
+  color: #fff;
+}
+
+.hero-owner.other-hero {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  border-bottom-color: #a93226;
+  color: #fff;
+}
+
+.hero-selection-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+.hero-card-image {
+  display: block;
+  margin: 0 auto 8px auto;
+  border-radius: 50px;
+}
+}
+
+.hero-selection-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+.hero-card-container.selected .hero-selection-card {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.hero-selection-card h4 {
+  margin: 0 0 15px 0;
+  color: #fff;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.character-indicator {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.character-badge {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.hero-base-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.8em;
+  color: #bbb;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.1em;
+  color: #fff;
+  font-weight: bold;
+}
+
+.equipment-summary {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #ddd;
+  font-size: 0.9em;
+}
+
+.equipment-count {
+  background: rgba(52, 152, 219, 0.2);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(52, 152, 219, 0.4);
+}
+
+.combat-power {
+  text-align: center;
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 0.9em;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.no-heroes {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  padding: 40px 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .heroes-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-base-stats {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .stat {
+    flex: 1;
+    min-width: 60px;
+  }
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getWeapon, deleteWeapon } from "../services/weapons.js";
+import "../css/WeaponDetail.css";
 
 function WeaponDetail() {
   const [weaponDetail, setWeaponDetail] = useState({});

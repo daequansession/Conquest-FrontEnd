@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWeapon } from "../services/weapons.js";
+import "../css/CreateWeapon.css";
 
 function CreateWeapon() {
   let navigate = useNavigate();
@@ -10,6 +11,7 @@ function CreateWeapon() {
     strength: "",
     defense: "",
     speed: "",
+    cost: ""
   });
 
   const handleChange = (event) => {
@@ -70,6 +72,14 @@ function CreateWeapon() {
           placeholder="Speed"
           name="speed"
           value={weapon.speed}
+          onChange={handleChange}
+          required
+        />
+         <input
+          className="input-weapon-cost"
+          placeholder="Cost"
+          name="cost"
+          value={weapon.cost}
           onChange={handleChange}
           required
         />

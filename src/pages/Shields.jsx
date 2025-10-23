@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getShields } from "../services/shields.js";
+import "../css/Shields.css";
 
 function Shields() {
   const [shields, setShields] = useState([]);

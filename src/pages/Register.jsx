@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/users.js";
 import "../css/Register.css";
-// import splash from "../assets/splash.svg";
 
-function Register({ setUser }) {
+import { UserContext } from "../context/UserContext.jsx";
+
+function Register() {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const [form, setForm] = useState({
     username: "",
@@ -30,6 +32,10 @@ function Register({ setUser }) {
     try {
       const userData = await signUp(form);
       setUser(userData);
+
+      if (!userData.id) {
+        throw new Error("Invalid Credentials");
+      }
 
       navigate("/heroes");
     } catch (error) {

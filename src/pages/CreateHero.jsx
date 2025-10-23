@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createHero } from "../services/heroes.js";
+import "../css/CreateHero.css";
 
 function CreateHero() {
   let navigate = useNavigate();
@@ -16,8 +17,27 @@ function CreateHero() {
   // Define character choices with their stats
   const characterChoices = [
     { value: "A", label: "Holy Paladin", strength: 3, defense: 5, speed: 2 },
-    { value: "B", label: "Primal Barbarian", strength: 5, defense: 2, speed: 3 },
+    {
+      value: "B",
+      label: "Primal Barbarian",
+      strength: 5,
+      defense: 2,
+      speed: 3,
+    },
     { value: "C", label: "Dragon Knight", strength: 4, defense: 3, speed: 3 },
+    { value: "D", label: "Shadow Assassin", strength: 5, defense: 1, speed: 4 },
+    { value: "E", label: "Demon Hunter", strength: 3, defense: 2, speed: 5 },
+    { value: "F", label: "Chackie Jan", strength: 3, defense: 3, speed: 4 },
+    { value: "G", label: "Hasidic Warrior", strength: 2, defense: 4, speed: 4 },
+    { value: "H", label: "Mexican Vaquero", strength: 6, defense: 2, speed: 2 },
+    { value: "I", label: "Death Knight", strength: 5, defense: 4, speed: 1 },
+    {
+      value: "J",
+      label: "Every Italian Ever",
+      strength: 5,
+      defense: 4,
+      speed: 1,
+    },
   ];
 
   const handleChange = (event) => {
@@ -25,7 +45,9 @@ function CreateHero() {
 
     if (name === "character") {
       // Find the selected character and set stats automatically
-      const selectedCharacter = characterChoices.find(char => char.value === value);
+      const selectedCharacter = characterChoices.find(
+        (char) => char.value === value
+      );
       setHero((prevHero) => ({
         ...prevHero,
         [name]: value,
@@ -62,7 +84,7 @@ function CreateHero() {
           required
           autoFocus
         />
-        
+
         {/* Add character selection dropdown */}
         <select
           className="input-character"

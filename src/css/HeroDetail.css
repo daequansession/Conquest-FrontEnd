@@ -146,9 +146,45 @@
 }
 
 .hero-detail-delete:hover {
-  background: linear-gradient(135deg, #da190b, #c62828);
+  background: linear-gradient(135deg, #dc143c, #b22222);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.5);
+}
+
+/* Equipment Limit Styling */
+.primary-equipment {
+  border-left: 4px solid #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.secondary-equipment {
+  opacity: 0.7;
+  border-left: 4px solid #888;
+}
+
+.primary-label {
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.equipment-note {
+  color: #aaa;
+  font-style: italic;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+/* Disabled button styling */
+button:disabled {
+  background: #666 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}
+
+button:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* Bottom Container - Owned Items */
@@ -204,6 +240,17 @@
   height: 40px;
   border-radius: 50%;
   border: 2px solid #fff;
+  flex-shrink: 0;
+}
+
+/* Weapon and Shield Icon Styles */
+.weapon-icon,
+.shield-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
