@@ -24,33 +24,36 @@ function Hero() {
         </h1>
       </div>
     );
+  // if (hero.length === 0) return <img src={ConquestSK} alt="Conquest SK" />;
 
   return (
-    <div className="hero-root">
-      <h1>Hero List</h1>
-      <h2>Choose your hero wisely to conquer the realm!</h2>
-      <div className="hero-container">
-        {hero.length &&
-          hero.map((hero) => (
-            <div key={hero.id} className="hero-card">
-              <h2>
-                <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
-              </h2>
-              <p>Strength: {hero.strength}</p>
-              <p>Defense: {hero.defense}</p>
-              <p>Speed: {hero.speed}</p>
-            </div>
-          ))}
-        <div>
-          <button
-            className="create-hero-button"
-            onClick={() => navigate("/heroes/add")}
-          >
-            Add Hero
-          </button>
+    <main style={{ backgroundImage: `url(${ConquestSK})` }}>
+      <div className="hero-root">
+        <h1>Hero List</h1>
+        <h2>Choose your hero wisely to conquer the realm!</h2>
+        <div className="hero-container">
+          {hero.length &&
+            hero.map((hero) => (
+              <div key={hero.id} className="hero-card">
+                <h2>
+                  <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
+                </h2>
+                <p>Strength: {hero.strength}</p>
+                <p>Defense: {hero.defense}</p>
+                <p>Speed: {hero.speed}</p>
+              </div>
+            ))}
+          <div>
+            <button
+              className="create-hero-button"
+              onClick={() => navigate("/heroes/add")}
+            >
+              Add Hero
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
