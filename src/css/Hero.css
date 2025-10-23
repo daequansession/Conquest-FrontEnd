@@ -1,4 +1,9 @@
 /* Dark Theme for Hero Component */
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensures padding and borders are included in the element's total width and height */
+}
 
 .hero-root {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
@@ -9,6 +14,10 @@
 }
 
 .hero-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 25px;
   background: rgba(30, 30, 60, 0.8);
   border: 2px solid #4a4a7a;
   border-radius: 15px;
@@ -39,14 +48,6 @@
   font-size: 1.2rem;
   max-width: 600px;
   margin: 0 auto;
-}
-
-/* Heroes Grid */
-.heroes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-  margin-bottom: 30px;
 }
 
 .hero-card {
@@ -188,7 +189,9 @@
   background: linear-gradient(135deg, #9c27b0, #7b1fa2);
   color: white;
   border: none;
-  padding: 15px 30px;
+  margin-top: 10px;
+  margin-left: 8px;
+  padding: 170px 95px;
   border-radius: 8px;
   font-size: 1.2rem;
   font-weight: bold;
