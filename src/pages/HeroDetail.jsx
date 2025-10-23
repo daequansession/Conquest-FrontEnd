@@ -97,9 +97,13 @@ function HeroDetail() {
     if (!heroDetail || (!heroDetail.hero && !heroDetail.shields)) return;
     const hero = heroDetail.hero || heroDetail;
     const shields = hero.shields || [];
-    const shieldIndex = shields.findIndex(s => s.id === shieldId);
+    const shieldIndex = shields.findIndex((s) => s.id === shieldId);
     if (shieldIndex <= 0) return;
-    const newShields = [shields[shieldIndex], ...shields.slice(0, shieldIndex), ...shields.slice(shieldIndex + 1)];
+    const newShields = [
+      shields[shieldIndex],
+      ...shields.slice(0, shieldIndex),
+      ...shields.slice(shieldIndex + 1),
+    ];
     setHeroDetail({ ...heroDetail, hero: { ...hero, shields: newShields } });
   };
   const { user } = useContext(UserContext);
@@ -108,7 +112,13 @@ function HeroDetail() {
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
   const [toggle, setToggle] = useState(false);
-  const [searchStore, setSearchStore] = useState({ store: "" });
+  const [searchStore, setSearchStore] = useState({
+    store: "",
+    cost: "",
+    strength: "",
+    defense: "",
+    speed: "",
+  });
 
   let { heroId } = useParams();
   let navigate = useNavigate();
@@ -215,16 +225,61 @@ function HeroDetail() {
     }
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("this is the search", searchStore.strength);
+    console.log("This is the shield", allShields);
+    console.log("This are the weapons", allWeapons);
+    const newShieldArray = [];
+    const newWeaponsArray = [];
+
+    for (let i = 0; i < allShields.length; i++) {
+      if (
+        allShields[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
+        allShields[i].cost >= parseInt(searchStore.cost) ||
+        allShields[i].strength >= parseInt(searchStore.strength) ||
+        allShields[i].speed >= parseInt(searchStore.speed) ||
+        allShields[i].defense >= parseInt(searchStore.defense)
+      ) {
+        newShieldArray.push(allShields[i]);
+      }
+    }
+    for (let i = 0; i < allWeapons.length; i++) {
+      if (
+        allWeapons[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
+        allWeapons[i].cost >= parseInt(searchStore.cost) ||
+        allWeapons[i].strength >= parseInt(searchStore.strength) ||
+        allWeapons[i].speed >= parseInt(searchStore.speed) ||
+        allWeapons[i].defense >= parseInt(searchStore.defense)
+      ) {
+        newWeaponsArray.push(allWeapons[i]);
+      }
+    }
+
+    setAllShields(newShieldArray);
+    setAllWeapons(newWeaponsArray);
+  };
+
+  const handleClearSearch = (e) => {
+    // e.preventDefault();
+    setAllShields(allShields);
+    setAllWeapons(allWeapons);
+  };
   // Handler to make a weapon primary (move to index 0)
   const handleMakePrimaryWeapon = async (weaponId) => {
-    if (!heroDetail || !heroDetail.hero && !heroDetail.weapons) return;
+    if (!heroDetail || (!heroDetail.hero && !heroDetail.weapons)) return;
     // Get current weapons array
     const hero = heroDetail.hero || heroDetail;
     const weapons = hero.weapons || [];
-    const weaponIndex = weapons.findIndex(w => w.id === weaponId);
+    const weaponIndex = weapons.findIndex((w) => w.id === weaponId);
     if (weaponIndex <= 0) return; // Already primary or not found
     // Move selected weapon to front
-    const newWeapons = [weapons[weaponIndex], ...weapons.slice(0, weaponIndex), ...weapons.slice(weaponIndex + 1)];
+    const newWeapons = [
+      weapons[weaponIndex],
+      ...weapons.slice(0, weaponIndex),
+      ...weapons.slice(weaponIndex + 1),
+    ];
     // Optionally, update backend here if needed
     // For now, update local state
     setHeroDetail({ ...heroDetail, hero: { ...hero, weapons: newWeapons } });
@@ -346,12 +401,10 @@ function HeroDetail() {
                   <div style={{ background: weapon?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && (
-                    <span className="primary-label"> </span>
-                  )}
-                  {weapon.name} - Strength: {" "}
-                  {weapon.Strength || weapon.strength || "N/A"}, Defense: {" "}
-                  {weapon.Defense || weapon.defense || "N/A"}, Speed: {" "}
+                  {index === 0 && <span className="primary-label"> </span>}
+                  {weapon.name} - Strength:{" "}
+                  {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
+                  {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
                   {weapon.Speed || weapon.speed || "N/A"}
                 </p>
                 {index > 0 && (
@@ -410,12 +463,10 @@ function HeroDetail() {
                   <div style={{ background: shield?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && (
-                    <span className="primary-label"></span>
-                  )}
-                  {shield.name} - Strength: {" "}
-                  {shield.Strength || shield.strength || "N/A"}, Defense: {" "}
-                  {shield.Defense || shield.defense || "N/A"}, Speed: {" "}
+                  {index === 0 && <span className="primary-label"></span>}
+                  {shield.name} - Strength:{" "}
+                  {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
+                  {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
                   {shield.Speed || shield.speed || "N/A"}
                 </p>
                 {index > 0 && (
@@ -453,15 +504,14 @@ function HeroDetail() {
 
       <div className="hero-store-container">
         <h2>Store</h2>
-
-        <label htmlFor="searchStore">
-          Search Store:
+        <form action="" onSubmit={handleSearchSubmit}>
+          <label htmlFor="store">Search Store by Name:</label>
           <input
             type="text"
             name="store"
-            id="searchStore"
+            id="store"
             value={searchStore.store}
-            placeholder="Search for weapons or shields"
+            placeholder="Weapons or shields"
             onChange={(e) =>
               setSearchStore({
                 ...searchStore,
@@ -469,8 +519,65 @@ function HeroDetail() {
               })
             }
           />
-        </label>
-
+          <label htmlFor="store">Price:</label>
+          <input
+            type="number"
+            name="cost"
+            id="cost"
+            value={searchStore.cost}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <label htmlFor="store">Strength:</label>
+          <input
+            type="number"
+            name="strength"
+            id="strength"
+            value={searchStore.strength}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <label htmlFor="store">Defense:</label>
+          <input
+            type="number"
+            name="defense"
+            id="defense"
+            value={searchStore.defense}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <label htmlFor="store">Speed:</label>
+          <input
+            type="number"
+            name="speed"
+            id="speed"
+            value={searchStore.speed}
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+          <button>Submit</button>
+        </form>
+        <label htmlFor=""></label>
+        <form action="">
+          <button onClick={handleClearSearch}>Clear Search</button>
+        </form>
+        \\\
         <div className="store-section">
           <h3>Available Weapons</h3>
           {availableWeapons && availableWeapons.length > 0 ? (
@@ -515,7 +622,6 @@ function HeroDetail() {
             <p>No available weapons</p>
           )}
         </div>
-
         <div className="store-section">
           <h3>Available Shields</h3>
           {availableShields && availableShields.length > 0 ? (
