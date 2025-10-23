@@ -19,9 +19,19 @@ export const getGold = async () => {
   }
 };
 
-export const updateGold = async (id, heroData) => {
+export const getGoldByUserId = async (userId) => {
   try {
-    const response = await api.put(`/gold/${id}/`, heroData);
+    const response = await api.get(`/gold/users/${userId}/`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export const updateGold = async (id, gold) => {
+  try {
+    const response = await api.put(`/gold/${id}/`, gold);
     return response.data;
   } catch (error) {
     console.error(error);

@@ -49,8 +49,14 @@ import PlainsteelBucklerImg from "../assets/PlainsteelBuckler.png";
 import SerpentbloomAegisImg from "../assets/SerpentbloomAegis.png";
 import BloodbornEdgeguardImg from "../assets/BloodbornEdgeguard.png";
 import CombatStats from "../components/CombatStats.jsx";
-import { canEquipWeapon, canEquipShield, getEquipmentStatus } from "../utils/combatStats.js";
+import {
+  canEquipWeapon,
+  canEquipShield,
+  getEquipmentStatus,
+} from "../utils/combatStats.js";
 import "../css/HeroDetail.css";
+import GoldDetail from "./GoldDetails.jsx";
+import { updateGold } from "../services/gold.js";
 
 // Weapon name to image mapping
 const weaponImages = {
@@ -91,6 +97,7 @@ function HeroDetail() {
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
   const [toggle, setToggle] = useState(false);
+  const [searchStore, setSearchStore] = useState({ store: "" });
 
   let { heroId } = useParams();
   let navigate = useNavigate();
@@ -144,26 +151,41 @@ function HeroDetail() {
     }
   };
 
-  const handleAddShield = async (shieldId) => {
+  const handleAddShield = async (shieldId, shieldCost) => {
     try {
+      if (!gold || gold.amount < shieldCost) {
+        console.error("Not enough gold to add this weapon.");
+        return;
+      }
       await addShieldToHero(heroId, shieldId);
+      const newAmount = gold.amount - shieldCost;
+
+      await updateGold(gold.id, { ...gold, amount: newAmount });
       setToggle((prev) => !prev);
     } catch (error) {
       console.error("Error adding shield:", error);
     }
   };
 
-  const handleRemoveShield = async (shieldId) => {
+  const handleRemoveShield = async (shieldId, shieldCost) => {
     try {
       await removeShieldFromHero(heroId, shieldId);
+      const newAmount = gold.amount + shieldCost / 2;
+      await updateGold(gold.id, { ...gold, amount: newAmount });
       setToggle((prev) => !prev);
     } catch (error) {
       console.error("Error removing shield:", error);
     }
   };
 
-  const handleAddWeapon = async (weaponId) => {
+  const handleAddWeapon = async (weaponId, weaponCost) => {
     try {
+      await addWeaponToHero(heroId, weaponId);
+      const newAmount = gold.amount - weaponCost;
+
+      await updateGold(gold.id, { ...gold, amount: newAmount });
+      setToggle((prev) => !prev);
+      console.log("Adding weapon:", weaponCost);
       await addWeaponToHero(heroId, weaponId);
       setToggle((prev) => !prev);
     } catch (error) {
@@ -171,9 +193,11 @@ function HeroDetail() {
     }
   };
 
-  const handleRemoveWeapon = async (weaponId) => {
+  const handleRemoveWeapon = async (weaponId, weaponCost) => {
     try {
       await removeWeaponFromHero(heroId, weaponId);
+      const newAmount = gold.amount + weaponCost / 2;
+      await updateGold(gold.id, { ...gold, amount: newAmount });
       setToggle((prev) => !prev);
     } catch (error) {
       console.error("Error removing weapon:", error);
@@ -250,6 +274,11 @@ function HeroDetail() {
                 <span className="stat-label">Speed:</span>
                 <span className="stat-value">{hero.speed || "N/A"}</span>
               </div>
+              <div className="hero-details-gold-stat">
+                <span className="stat-gold">
+                  Gold: {gold ? gold.amount : "You have no Gold"}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -270,11 +299,17 @@ function HeroDetail() {
         <div className="hero-owned-weapons-container">
           <h2>
             {hero.name}
-            {"'s"} Weapons ({equipmentStatus.weapons.current}/{equipmentStatus.weapons.max})
+            {"'s"} Weapons ({equipmentStatus.weapons.current}/
+            {equipmentStatus.weapons.max})
           </h2>
           {hero.weapons && hero.weapons.length > 0 ? (
             hero.weapons.map((weapon, index) => (
-              <div key={weapon.id} className={`hero-personal-owned-weapons ${index === 0 ? 'primary-equipment' : 'secondary-equipment'}`}>
+              <div
+                key={weapon.id}
+                className={`hero-personal-owned-weapons ${
+                  index === 0 ? "primary-equipment" : "secondary-equipment"
+                }`}
+              >
                 {weaponImages[weapon.name] ? (
                   <img
                     src={weaponImages[weapon.name]}
@@ -285,13 +320,17 @@ function HeroDetail() {
                   <div style={{ background: weapon?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && <span className="primary-label">[PRIMARY] </span>}
+                  {index === 0 && (
+                    <span className="primary-label">[PRIMARY] </span>
+                  )}
                   {weapon.name} - Strength:{" "}
                   {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
                   {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
                   {weapon.Speed || weapon.speed || "N/A"}
                 </p>
-                <button onClick={() => handleRemoveWeapon(weapon.id)}>
+                <button
+                  onClick={() => handleRemoveWeapon(weapon.id, weapon.cost)}
+                >
                   Remove Weapon
                 </button>
                 {index > 0 && (
@@ -309,11 +348,17 @@ function HeroDetail() {
         <div className="hero-owned-shields-container">
           <h2>
             {hero.name}
-            {"'s"} Shields ({equipmentStatus.shields.current}/{equipmentStatus.shields.max})
+            {"'s"} Shields ({equipmentStatus.shields.current}/
+            {equipmentStatus.shields.max})
           </h2>
           {hero.shields && hero.shields.length > 0 ? (
             hero.shields.map((shield, index) => (
-              <div key={shield.id} className={`hero-personal-owned-shields ${index === 0 ? 'primary-equipment' : 'secondary-equipment'}`}>
+              <div
+                key={shield.id}
+                className={`hero-personal-owned-shields ${
+                  index === 0 ? "primary-equipment" : "secondary-equipment"
+                }`}
+              >
                 {shieldImages[shield.name] ? (
                   <img
                     src={shieldImages[shield.name]}
@@ -324,13 +369,17 @@ function HeroDetail() {
                   <div style={{ background: shield?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && <span className="primary-label">[PRIMARY] </span>}
+                  {index === 0 && (
+                    <span className="primary-label">[PRIMARY] </span>
+                  )}
                   {shield.name} - Strength:{" "}
                   {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
                   {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
                   {shield.Speed || shield.speed || "N/A"}
                 </p>
-                <button onClick={() => handleRemoveShield(shield.id)}>
+                <button
+                  onClick={() => handleRemoveShield(shield.id, shield.cost)}
+                >
                   Remove Shield
                 </button>
                 {index > 0 && (
@@ -348,6 +397,23 @@ function HeroDetail() {
 
       <div className="hero-store-container">
         <h2>Store</h2>
+
+        <label htmlFor="searchStore">
+          Search Store:
+          <input
+            type="text"
+            name="store"
+            id="searchStore"
+            value={searchStore.store}
+            placeholder="Search for weapons or shields"
+            onChange={(e) =>
+              setSearchStore({
+                ...searchStore,
+                [e.target.name]: e.target.value,
+              })
+            }
+          />
+        </label>
 
         <div className="store-section">
           <h3>Available Weapons</h3>
@@ -367,14 +433,25 @@ function HeroDetail() {
                   {weapon.name} - Strength:{" "}
                   {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
                   {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
-                  {weapon.Speed || weapon.speed || "N/A"}
+                  {weapon.Speed || weapon.speed || "N/A"}, Cost:{" "}
+                  {weapon.cost || weapon.cost || "N/A"}
                 </p>
-                <button 
-                  onClick={() => handleAddWeapon(weapon.id)}
-                  disabled={!equipmentStatus.weapons.canEquip}
-                  title={!equipmentStatus.weapons.canEquip ? "Maximum weapons equipped" : ""}
+                <button
+                  onClick={() => handleAddWeapon(weapon.id, weapon.cost)}
+                  disabled={
+                    !equipmentStatus.weapons.canEquip ||
+                    !gold ||
+                    gold.amount < weapon.cost
+                  }
+                  title={
+                    !equipmentStatus.weapons.canEquip
+                      ? "Maximum weapons equipped"
+                      : ""
+                  }
                 >
-                  {equipmentStatus.weapons.canEquip ? "Give Weapon" : "Weapon Limit Reached"}
+                  {equipmentStatus.weapons.canEquip
+                    ? "Give Weapon"
+                    : "Weapon Limit Reached"}
                 </button>
               </div>
             ))
@@ -401,14 +478,25 @@ function HeroDetail() {
                   {shield.name} - Strength:{" "}
                   {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
                   {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
-                  {shield.Speed || shield.speed || "N/A"}
+                  {shield.Speed || shield.speed || "N/A"}, Cost:{" "}
+                  {shield.cost || shield.cost || "N/A"}
                 </p>
-                <button 
-                  onClick={() => handleAddShield(shield.id)}
-                  disabled={!equipmentStatus.shields.canEquip}
-                  title={!equipmentStatus.shields.canEquip ? "Maximum shields equipped" : ""}
+                <button
+                  onClick={() => handleAddShield(shield.id, shield.cost)}
+                  disabled={
+                    !equipmentStatus.shields.canEquip ||
+                    !gold ||
+                    gold.amount < shield.cost
+                  }
+                  title={
+                    !equipmentStatus.shields.canEquip
+                      ? "Maximum shields equipped"
+                      : ""
+                  }
                 >
-                  {equipmentStatus.shields.canEquip ? "Give Shield" : "Shield Limit Reached"}
+                  {equipmentStatus.shields.canEquip
+                    ? "Give Shield"
+                    : "Shield Limit Reached"}
                 </button>
               </div>
             ))

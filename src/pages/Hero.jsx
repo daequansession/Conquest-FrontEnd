@@ -26,31 +26,73 @@ function Hero() {
     );
 
   return (
-    <div className="hero-root">
-      <h1>Hero List</h1>
-      <h2>Choose your hero wisely to conquer the realm!</h2>
-      <div className="hero-container">
-        {hero.length &&
-          hero.map((hero) => (
-            <div key={hero.id} className="hero-card">
-              <h2>
-                <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
-              </h2>
-              <p>Strength: {hero.strength}</p>
-              <p>Defense: {hero.defense}</p>
-              <p>Speed: {hero.speed}</p>
-            </div>
-          ))}
-        <div>
-          <button
-            className="create-hero-button"
-            onClick={() => navigate("/heroes/add")}
-          >
-            Add Hero
-          </button>
+    <>
+      <div className="hero-root">
+        <h1>Hero List</h1>
+        <h2>Choose your hero wisely to conquer the realm!</h2>
+        <div className="hero-container">
+          {hero.length &&
+            hero.map((hero) => (
+              <div key={hero.id} className="hero-card">
+                <h2>
+                  <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
+                </h2>
+                <p>Strength: {hero.strength}</p>
+                <p>Defense: {hero.defense}</p>
+                <p>Speed: {hero.speed}</p>
+              </div>
+            ))}
+          <div>
+            <button
+              className="create-hero-button"
+              onClick={() => navigate("/heroes/add")}
+            >
+              Add Hero
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort(
+            (a, b) => b.strength - a.strength
+          );
+          setHero(sortedHeroes);
+        }}
+      >
+        Sort by Strength
+      </button>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort((a, b) => b.defense - a.defense);
+          setHero(sortedHeroes);
+        }}
+      >
+        Sort by Defense
+      </button>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort((a, b) => b.speed - a.speed);
+          setHero(sortedHeroes);
+        }}
+      >
+        Sort by Speed
+      </button>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort(
+            (a, b) =>
+              b.speed +
+              b.defense +
+              b.strength -
+              (a.speed + a.defense + a.strength)
+          );
+          setHero(sortedHeroes);
+        }}
+      >
+        Strongest
+      </button>
+    </>
   );
 }
 
