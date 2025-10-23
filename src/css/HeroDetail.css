@@ -1,3 +1,59 @@
+/* Store Search Form Styling */
+.hero-store-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.hero-store-container label {
+  color: #ffd700;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.hero-store-container select,
+.hero-store-container input[type="number"],
+.hero-store-container input[type="text"] {
+  background: #222;
+  color: #ffd700;
+  border: 2px solid #4a4a7a;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  width: 220px;
+  box-sizing: border-box;
+}
+.hero-store-container select:focus,
+.hero-store-container input:focus {
+  outline: none;
+  border-color: #ffd700;
+}
+.hero-store-container button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+  color: white;
+  box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
+  margin-top: 0.5rem;
+}
+.hero-store-container button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(106, 90, 205, 0.4);
+}
+.hero-store-container button:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
 /* Dark Theme for HeroDetail Component */
 
 .hero-detail-root {
