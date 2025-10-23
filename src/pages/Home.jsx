@@ -63,7 +63,7 @@ function Home() {
       <div className="landing-main">
         <div className="greet-msg">
           <h1>Conquest</h1>
-          <p>
+          <p className="home-hero-section-p">
             <em>Conquest</em> Lorem, ipsum dolor sit amet consectetur
             adipisicing elit. Eius obcaecati enim vel corrupti veritatis natus,
             tempore fugit dolore aliquam illo praesentium libero debitis sed

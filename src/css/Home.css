@@ -1,3 +1,10 @@
+/* Custom paragraph for Home hero section */
+.home-hero-section-p {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  color: #e0e0e0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 /* Dark Theme for Home Component */
 
 .home-container,

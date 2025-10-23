@@ -139,10 +139,6 @@ function CombatArena() {
                     <CombatStats hero={selectedHero2} showBreakdown={false} showMatchupInfo={false} />
                   </div>
                 </div>
-                
-                {/* Show matchup guide */}
-                <CombatStats hero={selectedHero1} showBreakdown={false} showMatchupInfo={true} />
-                
                 <button className="battle-button" onClick={handleCombat}>
                   ⚔️ BEGIN BATTLE! ⚔️
                 </button>
