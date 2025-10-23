@@ -33,6 +33,10 @@ function Register() {
       const userData = await signUp(form);
       setUser(userData);
 
+      if (!userData.id) {
+        throw new Error("Invalid Credentials");
+      }
+
       navigate("/heroes");
     } catch (error) {
       console.error(error);

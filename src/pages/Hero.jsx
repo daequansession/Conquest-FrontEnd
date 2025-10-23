@@ -40,7 +40,13 @@ function Hero() {
   }, []);
 
   if (!hero.length)
-    return <h1 style={{ textAlign: "center" }}>Make sure to add some hero!</h1>;
+    return (
+      <div className="hero-root">
+        <h1 className="hero-header" style={{ textAlign: "center" }}>
+          Make sure to add some hero!
+        </h1>
+      </div>
+    );
 
   return (
     <div className="hero-root">
@@ -78,7 +84,47 @@ function Hero() {
           </button>
         </div>
       </div>
-    </div>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort(
+            (a, b) => b.strength - a.strength
+          );
+          setHero(sortedHeroes);
+        }}
+      >
+        Sort by Strength
+      </button>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort((a, b) => b.defense - a.defense);
+          setHero(sortedHeroes);
+        }}
+      >
+        Sort by Defense
+      </button>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort((a, b) => b.speed - a.speed);
+          setHero(sortedHeroes);
+        }}
+      >
+        Sort by Speed
+      </button>
+      <button
+        onClick={() => {
+          const sortedHeroes = [...hero].sort(
+            (a, b) =>
+              b.speed +
+              b.defense +
+              b.strength -
+              (a.speed + a.defense + a.strength)
+          );
+          setHero(sortedHeroes);
+        }}
+      >
+        Strongest
+      </button>
+    </>
   );
 }
 

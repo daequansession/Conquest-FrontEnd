@@ -45,12 +45,12 @@ function Nav() {
         to="/shields/add"
         onClick={() => setOpen(false)}
       >
-        Add Shield
-      </NavLink> */}
+        Add Shield *\{" "}
+      </NavLink>
       <NavLink
         className="nav-link"
         to="/combat"
-        onClick={() => setOpen(false)}
+        // onClick={() => setOpen(false)}
       >
         Combat Arena
       </NavLink>

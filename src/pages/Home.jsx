@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../services/users.js";
 import "../css/Home.css";
-// 
+//
 import { UserContext } from "../context/UserContext.jsx";
 
 function Home() {
@@ -30,8 +30,12 @@ function Home() {
 
     try {
       const userData = await signIn(form);
-      setUser(userData);
 
+      if (!userData.id) {
+        throw new Error("Invalid Credentials");
+      }
+
+      setUser(userData);
       navigate("/heroes");
     } catch (error) {
       console.error(error);
