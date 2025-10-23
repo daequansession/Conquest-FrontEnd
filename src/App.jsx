@@ -17,6 +17,7 @@ import WeaponDetail from "./pages/WeaponDetail.jsx";
 import CombatArena from "./pages/CombatArena.jsx";
 import GoldDetail from "./pages/GoldDetails.jsx";
 import GoldList from "./pages/GoldList.jsx";
+import Dungeon from "./pages/Dungeon.jsx";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/combat" element={<CombatArena />} />
         <Route path="/gold" element={<GoldList />} />
         <Route path="gold/:goldId" element={<GoldDetail />} />
+        <Route path="/dungeon" element={<Dungeon />} />
       </Routes>
     </>
   );

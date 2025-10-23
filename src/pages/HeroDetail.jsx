@@ -236,7 +236,7 @@ function HeroDetail() {
 
     for (let i = 0; i < allShields.length; i++) {
       if (
-        allShields[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
+        (searchStore.store && allShields[i].name.toLowerCase().includes(searchStore.store.toLowerCase())) ||
         allShields[i].cost >= parseInt(searchStore.cost) ||
         allShields[i].strength >= parseInt(searchStore.strength) ||
         allShields[i].speed >= parseInt(searchStore.speed) ||
@@ -247,7 +247,7 @@ function HeroDetail() {
     }
     for (let i = 0; i < allWeapons.length; i++) {
       if (
-        allWeapons[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
+        (searchStore.store && allWeapons[i].name.toLowerCase().includes(searchStore.store.toLowerCase())) ||
         allWeapons[i].cost >= parseInt(searchStore.cost) ||
         allWeapons[i].strength >= parseInt(searchStore.strength) ||
         allWeapons[i].speed >= parseInt(searchStore.speed) ||
@@ -505,79 +505,87 @@ function HeroDetail() {
       <div className="hero-store-container">
         <h2>Store</h2>
         <form action="" onSubmit={handleSearchSubmit}>
-          <label htmlFor="store">Search Store by Name:</label>
-          <input
-            type="text"
-            name="store"
-            id="store"
-            value={searchStore.store}
-            placeholder="Weapons or shields"
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Price:</label>
-          <input
-            type="number"
-            name="cost"
-            id="cost"
-            value={searchStore.cost}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Strength:</label>
-          <input
-            type="number"
-            name="strength"
-            id="strength"
-            value={searchStore.strength}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Defense:</label>
-          <input
-            type="number"
-            name="defense"
-            id="defense"
-            value={searchStore.defense}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Speed:</label>
-          <input
-            type="number"
-            name="speed"
-            id="speed"
-            value={searchStore.speed}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
+          <label htmlFor="searchType">Search By:</label>
+          <select
+            id="searchType"
+            value={searchStore.searchType || "cost"}
+            onChange={e => {
+              setSearchStore({ ...searchStore, searchType: e.target.value });
+            }}
+          >
+            <option value="cost">Price</option>
+            <option value="store">Name</option>
+            <option value="strength">Strength</option>
+            <option value="defense">Defense</option>
+            <option value="speed">Speed</option>
+          </select>
+          {(!searchStore.searchType || searchStore.searchType === "cost") && (
+            <>
+              <label htmlFor="cost">Price:</label>
+              <input
+                type="number"
+                name="cost"
+                id="cost"
+                value={searchStore.cost}
+                onChange={e => setSearchStore({ ...searchStore, cost: e.target.value })}
+              />
+            </>
+          )}
+          {searchStore.searchType === "store" && (
+            <>
+              <label htmlFor="store">Name:</label>
+              <input
+                type="text"
+                name="store"
+                id="store"
+                value={searchStore.store}
+                placeholder="Weapons or shields"
+                onChange={e => setSearchStore({ ...searchStore, store: e.target.value })}
+              />
+            </>
+          )}
+          {searchStore.searchType === "strength" && (
+            <>
+              <label htmlFor="strength">Strength:</label>
+              <input
+                type="number"
+                name="strength"
+                id="strength"
+                value={searchStore.strength}
+                onChange={e => setSearchStore({ ...searchStore, strength: e.target.value })}
+              />
+            </>
+          )}
+          {searchStore.searchType === "defense" && (
+            <>
+              <label htmlFor="defense">Defense:</label>
+              <input
+                type="number"
+                name="defense"
+                id="defense"
+                value={searchStore.defense}
+                onChange={e => setSearchStore({ ...searchStore, defense: e.target.value })}
+              />
+            </>
+          )}
+          {searchStore.searchType === "speed" && (
+            <>
+              <label htmlFor="speed">Speed:</label>
+              <input
+                type="number"
+                name="speed"
+                id="speed"
+                value={searchStore.speed}
+                onChange={e => setSearchStore({ ...searchStore, speed: e.target.value })}
+              />
+            </>
+          )}
           <button>Submit</button>
         </form>
         <label htmlFor=""></label>
         <form action="">
           <button onClick={handleClearSearch}>Clear Search</button>
         </form>
-        \\\
         <div className="store-section">
           <h3>Available Weapons</h3>
           {availableWeapons && availableWeapons.length > 0 ? (
