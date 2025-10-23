@@ -17,7 +17,7 @@ function Nav() {
         to="/heroes/add"
         onClick={() => setOpen(false)}
       >
-        {/* Add Hero
+        Add Hero
       </NavLink>
       <NavLink
         className="nav-link"
@@ -45,13 +45,13 @@ function Nav() {
         to="/shields/add"
         onClick={() => setOpen(false)}
       >
-        Add Shield
+        Add Shield *\{" "}
       </NavLink>
       <NavLink
         className="nav-link"
         to="/combat"
-        onClick={() => setOpen(false)}
-      > */}
+        // onClick={() => setOpen(false)}
+      >
         Combat Arena
       </NavLink>
       <NavLink

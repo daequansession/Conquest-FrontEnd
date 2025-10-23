@@ -8,6 +8,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const user = await verifyUser();
+      localStorage.setItem("user", JSON.stringify(user));
       user ? setUser(user) : setUser(null);
     };
 

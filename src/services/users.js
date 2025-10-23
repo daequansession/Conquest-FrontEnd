@@ -27,7 +27,7 @@ export const signOut = async () => {
     localStorage.removeItem("token");
     return true;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -37,16 +37,25 @@ export const getAllUsers = async () => {
     const response = await api.get("/users/");
     return response.data;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
+
+export const getUserById = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}/`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}
 
 export const getUserProfile = async (userId) => {
   try {
     const response = await api.get(`/users/${userId}/profile/`);
     return response.data;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
