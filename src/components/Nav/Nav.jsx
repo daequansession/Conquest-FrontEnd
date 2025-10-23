@@ -12,7 +12,7 @@ function Nav() {
       <NavLink className="nav-link" to="/heroes" onClick={() => setOpen(false)}>
         Heroes
       </NavLink>
-      {/* <NavLink
+       <NavLink
         className="nav-link"
         to="/heroes/add"
         onClick={() => setOpen(false)}
@@ -45,7 +45,7 @@ function Nav() {
         to="/shields/add"
         onClick={() => setOpen(false)}
       >
-        Add Shield *\{" "}
+        Add Shield
       </NavLink>
       <NavLink
         className="nav-link"

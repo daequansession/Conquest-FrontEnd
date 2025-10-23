@@ -11,6 +11,7 @@ function CreateWeapon() {
     strength: "",
     defense: "",
     speed: "",
+    cost: ""
   });
 
   const handleChange = (event) => {
@@ -71,6 +72,14 @@ function CreateWeapon() {
           placeholder="Speed"
           name="speed"
           value={weapon.speed}
+          onChange={handleChange}
+          required
+        />
+         <input
+          className="input-weapon-cost"
+          placeholder="Cost"
+          name="cost"
+          value={weapon.cost}
           onChange={handleChange}
           required
         />

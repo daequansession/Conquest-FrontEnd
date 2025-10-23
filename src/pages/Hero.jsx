@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { calculateCombatStats } from "../utils/combatStats";
 import HolyPaladinImg from "../assets/HolyPaladin.png";
 import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
 import DragonKnightImg from "../assets/DragonKnight.png";
@@ -55,26 +56,32 @@ function Hero() {
       <div className="hero-container">
 
         {hero.length &&
-          hero.map((hero) => (
-            <div key={hero.id} className="hero-card">
-              {heroImages[hero.character] ? (
-                <img
-                  src={heroImages[hero.character]}
-                  alt={hero.name}
-                  className="hero-card-image"
-                  style={{ width: "120px", height: "120px", objectFit: "contain", marginBottom: "8px" }}
-                />
-              ) : (
-                <div style={{ width: "120px", height: "120px", background: "#222", marginBottom: "8px" }}></div>
-              )}
-              <h2>
-                <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
-              </h2>
-              <p>Strength: {hero.strength}</p>
-              <p>Defense: {hero.defense}</p>
-              <p>Speed: {hero.speed}</p>
-            </div>
-          ))}
+          hero.map((heroObj) => {
+            // Use equipped weapons/shields if present, else empty arrays
+            const weapons = heroObj.weapons || [];
+            const shields = heroObj.shields || [];
+            const stats = calculateCombatStats(heroObj, weapons, shields).totalStats;
+            return (
+              <div key={heroObj.id} className="hero-card">
+                {heroImages[heroObj.character] ? (
+                  <img
+                    src={heroImages[heroObj.character]}
+                    alt={heroObj.name}
+                    className="hero-card-image"
+                    style={{ width: "120px", height: "120px", objectFit: "contain", marginBottom: "8px" }}
+                  />
+                ) : (
+                  <div style={{ width: "120px", height: "120px", background: "#222", marginBottom: "8px" }}></div>
+                )}
+                <h2>
+                  <Link to={`/heroes/${heroObj.id}`}>{heroObj.name}</Link>
+                </h2>
+                <p>Strength: {stats.strength}</p>
+                <p>Defense: {stats.defense}</p>
+                <p>Speed: {stats.speed}</p>
+              </div>
+            );
+          })}
         <div>
           <button 
             className="create-hero-button" 
@@ -124,7 +131,7 @@ function Hero() {
       >
         Strongest
       </button>
-    </>
+    </div>
   );
 }
 
