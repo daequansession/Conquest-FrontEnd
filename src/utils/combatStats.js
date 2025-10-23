@@ -76,8 +76,8 @@ export const calculateCombatPower = (totalStats) => {
  * Equipment limit constants
  */
 export const EQUIPMENT_LIMITS = {
-  MAX_WEAPONS: 1,
-  MAX_SHIELDS: 1
+  MAX_WEAPONS: 2,
+  MAX_SHIELDS: 2
 };
 
 /**
@@ -156,7 +156,7 @@ export const analyzeCombat = (attacker, defender) => {
   
   // Equal weight for all stats, but with strategic advantages
   const powerDifference = attackerEffective - defenderEffective;
-  const winChance = Math.max(0, Math.min(100, 50 + (powerDifference * 1.5)));
+  const winChance = Math.max(0, Math.min(100, 50 + (powerDifference * 2.2)));
   
   // Determine active matchups
   const matchups = {

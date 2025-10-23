@@ -1,4 +1,28 @@
 import { useState, useEffect } from "react";
+import { calculateCombatStats } from "../utils/combatStats";
+import HolyPaladinImg from "../assets/HolyPaladin.png";
+import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
+import DragonKnightImg from "../assets/DragonKnight.png";
+import ShadowAssassinImg from "../assets/ShadowAssassin.png";
+import DemonHunterImg from "../assets/DemonHunter.png";
+import ChackieJanImg from "../assets/ChackieJan.png";
+import HasidicWarriorImg from "../assets/HasidicWarrior.png";
+import MexicanVaqueroImg from "../assets/MexicanVaquero.png";
+import DeathKnightImg from "../assets/DeathKnight.png";
+import EveryItalianEverImg from "../assets/EveryItalianEver.png";
+// Hero character to image mapping
+const heroImages = {
+  "A": HolyPaladinImg,
+  "B": PrimalBarbarianImg,
+  "C": DragonKnightImg,
+  "D": ShadowAssassinImg,
+  "E": DemonHunterImg,
+  "F": ChackieJanImg,
+  "G": HasidicWarriorImg,
+  "H": MexicanVaqueroImg,
+  "I": DeathKnightImg,
+  "J": EveryItalianEverImg,
+};
 import { Link, useNavigate } from "react-router-dom";
 import { getHeroes } from "../services/heroes";
 import "../css/Hero.css";
@@ -26,30 +50,45 @@ function Hero() {
     );
 
   return (
-    <>
-      <div className="hero-root">
-        <h1>Hero List</h1>
-        <h2>Choose your hero wisely to conquer the realm!</h2>
-        <div className="hero-container">
-          {hero.length &&
-            hero.map((hero) => (
-              <div key={hero.id} className="hero-card">
+    <div className="hero-root">
+      <h1>Hero List</h1>
+      <h2>Choose your hero wisely to conquer the realm!</h2>
+      <div className="hero-container">
+
+        {hero.length &&
+          hero.map((heroObj) => {
+            // Use equipped weapons/shields if present, else empty arrays
+            const weapons = heroObj.weapons || [];
+            const shields = heroObj.shields || [];
+            const stats = calculateCombatStats(heroObj, weapons, shields).totalStats;
+            return (
+              <div key={heroObj.id} className="hero-card">
+                {heroImages[heroObj.character] ? (
+                  <img
+                    src={heroImages[heroObj.character]}
+                    alt={heroObj.name}
+                    className="hero-card-image"
+                    style={{ width: "120px", height: "120px", objectFit: "contain", marginBottom: "8px" }}
+                  />
+                ) : (
+                  <div style={{ width: "120px", height: "120px", background: "#222", marginBottom: "8px" }}></div>
+                )}
                 <h2>
-                  <Link to={`/heroes/${hero.id}`}>{hero.name}</Link>
+                  <Link to={`/heroes/${heroObj.id}`}>{heroObj.name}</Link>
                 </h2>
-                <p>Strength: {hero.strength}</p>
-                <p>Defense: {hero.defense}</p>
-                <p>Speed: {hero.speed}</p>
+                <p>Strength: {stats.strength}</p>
+                <p>Defense: {stats.defense}</p>
+                <p>Speed: {stats.speed}</p>
               </div>
-            ))}
-          <div>
-            <button
-              className="create-hero-button"
-              onClick={() => navigate("/heroes/add")}
-            >
-              Add Hero
-            </button>
-          </div>
+            );
+          })}
+        <div>
+          <button 
+            className="create-hero-button" 
+            onClick={() => navigate("/heroes/add")}
+          >
+            Add Hero
+          </button>
         </div>
       </div>
       <button
@@ -92,7 +131,7 @@ function Hero() {
       >
         Strongest
       </button>
-    </>
+    </div>
   );
 }
 

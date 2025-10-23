@@ -18,7 +18,7 @@ export const simulateCombat = (hero1, hero2) => {
   const analysis = analyzeCombat(hero1Combat, hero2Combat);
   
   // Simulate the actual combat with some randomness
-  const randomFactor = Math.random() * 20 - 10; // -10 to +10 random modifier
+  const randomFactor = Math.random() * 10 - 5; // 
   const adjustedWinChance = Math.max(5, Math.min(95, analysis.winChance + randomFactor));
   
   const hero1Wins = Math.random() * 100 < adjustedWinChance;

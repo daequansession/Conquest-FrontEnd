@@ -1,3 +1,4 @@
+// ...existing code...
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext.jsx";
@@ -91,6 +92,20 @@ const shieldImages = {
 };
 
 function HeroDetail() {
+  // Handler to make a shield primary (move to index 0)
+  const handleMakePrimaryShield = async (shieldId) => {
+    if (!heroDetail || (!heroDetail.hero && !heroDetail.shields)) return;
+    const hero = heroDetail.hero || heroDetail;
+    const shields = hero.shields || [];
+    const shieldIndex = shields.findIndex((s) => s.id === shieldId);
+    if (shieldIndex <= 0) return;
+    const newShields = [
+      shields[shieldIndex],
+      ...shields.slice(0, shieldIndex),
+      ...shields.slice(shieldIndex + 1),
+    ];
+    setHeroDetail({ ...heroDetail, hero: { ...hero, shields: newShields } });
+  };
   const { user } = useContext(UserContext);
   const [gold, setGold] = useState(null);
   const [heroDetail, setHeroDetail] = useState(null);
@@ -251,6 +266,24 @@ function HeroDetail() {
     setAllShields(allShields);
     setAllWeapons(allWeapons);
   };
+  // Handler to make a weapon primary (move to index 0)
+  const handleMakePrimaryWeapon = async (weaponId) => {
+    if (!heroDetail || (!heroDetail.hero && !heroDetail.weapons)) return;
+    // Get current weapons array
+    const hero = heroDetail.hero || heroDetail;
+    const weapons = hero.weapons || [];
+    const weaponIndex = weapons.findIndex((w) => w.id === weaponId);
+    if (weaponIndex <= 0) return; // Already primary or not found
+    // Move selected weapon to front
+    const newWeapons = [
+      weapons[weaponIndex],
+      ...weapons.slice(0, weaponIndex),
+      ...weapons.slice(weaponIndex + 1),
+    ];
+    // Optionally, update backend here if needed
+    // For now, update local state
+    setHeroDetail({ ...heroDetail, hero: { ...hero, weapons: newWeapons } });
+  };
 
   if (!heroDetail) {
     return <div>Loading...</div>;
@@ -368,23 +401,36 @@ function HeroDetail() {
                   <div style={{ background: weapon?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && (
-                    <span className="primary-label">[PRIMARY] </span>
-                  )}
+                  {index === 0 && <span className="primary-label"> </span>}
                   {weapon.name} - Strength:{" "}
                   {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
                   {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
                   {weapon.Speed || weapon.speed || "N/A"}
                 </p>
-                <button
-                  onClick={() => handleRemoveWeapon(weapon.id, weapon.cost)}
-                >
-                  Remove Weapon
-                </button>
                 {index > 0 && (
-                  <p className="equipment-note">
-                    Note: Only primary weapon affects combat stats
-                  </p>
+                  <>
+                    <button
+                      onClick={() => handleMakePrimaryWeapon(weapon.id)}
+                      className="make-primary-weapon"
+                    >
+                      Make Primary
+                    </button>
+                    <button
+                      onClick={() => handleRemoveWeapon(weapon.id, weapon.cost)}
+                    >
+                      Remove Weapon
+                    </button>
+                    <p className="equipment-note">
+                      Note: Only primary weapon affects combat stats
+                    </p>
+                  </>
+                )}
+                {index === 0 && (
+                  <button
+                    onClick={() => handleRemoveWeapon(weapon.id, weapon.cost)}
+                  >
+                    Remove Weapon
+                  </button>
                 )}
               </div>
             ))
@@ -417,23 +463,36 @@ function HeroDetail() {
                   <div style={{ background: shield?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && (
-                    <span className="primary-label">[PRIMARY] </span>
-                  )}
+                  {index === 0 && <span className="primary-label"></span>}
                   {shield.name} - Strength:{" "}
                   {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
                   {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
                   {shield.Speed || shield.speed || "N/A"}
                 </p>
-                <button
-                  onClick={() => handleRemoveShield(shield.id, shield.cost)}
-                >
-                  Remove Shield
-                </button>
                 {index > 0 && (
-                  <p className="equipment-note">
-                    Note: Only primary shield affects combat stats
-                  </p>
+                  <>
+                    <button
+                      onClick={() => handleMakePrimaryShield(shield.id)}
+                      className="make-primary-shield"
+                    >
+                      Make Primary
+                    </button>
+                    <button
+                      onClick={() => handleRemoveShield(shield.id, shield.cost)}
+                    >
+                      Remove Shield
+                    </button>
+                    <p className="equipment-note">
+                      Note: Only primary shield affects combat stats
+                    </p>
+                  </>
+                )}
+                {index === 0 && (
+                  <button
+                    onClick={() => handleRemoveShield(shield.id, shield.cost)}
+                  >
+                    Remove Shield
+                  </button>
                 )}
               </div>
             ))
@@ -515,11 +574,10 @@ function HeroDetail() {
           <button>Submit</button>
         </form>
         <label htmlFor=""></label>
-
         <form action="">
           <button onClick={handleClearSearch}>Clear Search</button>
         </form>
-
+        \\\
         <div className="store-section">
           <h3>Available Weapons</h3>
           {availableWeapons && availableWeapons.length > 0 ? (
@@ -564,7 +622,6 @@ function HeroDetail() {
             <p>No available weapons</p>
           )}
         </div>
-
         <div className="store-section">
           <h3>Available Shields</h3>
           {availableShields && availableShields.length > 0 ? (
