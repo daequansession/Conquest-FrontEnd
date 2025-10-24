@@ -74,6 +74,15 @@ function CombatArena() {
     fetchData();
   }, []);
 
+  const refreshGold = async () => {
+    try {
+      const updatedGold = await getGold();
+      setGold(updatedGold);
+    } catch (error) {
+      console.error("Failed to refresh gold:", error);
+    }
+  };
+
   const handleCombat = async () => {
     if (
       selectedHero1 &&
@@ -107,6 +116,7 @@ function CombatArena() {
           amount: rivalGold.amount - 3,
         });
       }
+      await refreshGold();
     }
   };
 

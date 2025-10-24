@@ -123,6 +123,24 @@ function HeroDetail() {
   let { heroId } = useParams();
   let navigate = useNavigate();
 
+  const fetchWeapons = async () => {
+    try {
+      const weaponsData = await getWeapons();
+      setAllWeapons(weaponsData);
+    } catch (error) {
+      console.error("Error fetching weapons:", error);
+    }
+  };
+
+  const fetchShields = async () => {
+    try {
+      const shieldsData = await getShields();
+      setAllShields(shieldsData);
+    } catch (error) {
+      console.error("Error fetching shields:", error);
+    }
+  };
+
   useEffect(() => {
     // console.log(user.id);
     const fetchHeroAndGold = async () => {
@@ -137,24 +155,6 @@ function HeroDetail() {
       } catch (error) {
         console.error("Error fetching hero or gold:", error);
         if (error.response?.status === 404) navigate("/heroes");
-      }
-    };
-
-    const fetchWeapons = async () => {
-      try {
-        const weaponsData = await getWeapons();
-        setAllWeapons(weaponsData);
-      } catch (error) {
-        console.error("Error fetching weapons:", error);
-      }
-    };
-
-    const fetchShields = async () => {
-      try {
-        const shieldsData = await getShields();
-        setAllShields(shieldsData);
-      } catch (error) {
-        console.error("Error fetching shields:", error);
       }
     };
 
@@ -227,44 +227,56 @@ function HeroDetail() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    const { name, value } = e.target;
 
-    console.log("this is the search", searchStore.strength);
-    console.log("This is the shield", allShields);
-    console.log("This are the weapons", allWeapons);
-    const newShieldArray = [];
-    const newWeaponsArray = [];
+    // update state normally
+    setSearchStore((prev) => ({ ...prev, [name]: value }));
 
-    for (let i = 0; i < allShields.length; i++) {
-      if (
-        allShields[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
-        allShields[i].cost >= parseInt(searchStore.cost) ||
-        allShields[i].strength >= parseInt(searchStore.strength) ||
-        allShields[i].speed >= parseInt(searchStore.speed) ||
-        allShields[i].defense >= parseInt(searchStore.defense)
-      ) {
-        newShieldArray.push(allShields[i]);
-      }
+    // use the current typed value directly (not the outdated state)
+    const currentSearch =
+      name === "store" ? value.toLowerCase() : searchStore.store.toLowerCase();
+
+    const newShieldArray = allShields.filter(
+      (s) =>
+        s.name.toLowerCase().includes(currentSearch) ||
+        (searchStore.cost && s.cost <= parseInt(searchStore.cost)) ||
+        (searchStore.strength &&
+          s.strength >= parseInt(searchStore.strength)) ||
+        (searchStore.speed && s.speed >= parseInt(searchStore.speed)) ||
+        (searchStore.defense && s.defense >= parseInt(searchStore.defense))
+    );
+
+    const newWeaponsArray = allWeapons.filter(
+      (w) =>
+        w.name.toLowerCase().includes(currentSearch) ||
+        (searchStore.cost && w.cost <= parseInt(searchStore.cost)) ||
+        (searchStore.strength &&
+          w.strength >= parseInt(searchStore.strength)) ||
+        (searchStore.speed && w.speed >= parseInt(searchStore.speed)) ||
+        (searchStore.defense && w.defense >= parseInt(searchStore.defense))
+    );
+
+    if (value === "" || value.length === 1) {
+      fetchShields();
+      fetchWeapons();
+    } else {
+      setAllShields(newShieldArray);
+      setAllWeapons(newWeaponsArray);
     }
-    for (let i = 0; i < allWeapons.length; i++) {
-      if (
-        allWeapons[i].name.toLowerCase() === searchStore.store.toLowerCase() ||
-        allWeapons[i].cost >= parseInt(searchStore.cost) ||
-        allWeapons[i].strength >= parseInt(searchStore.strength) ||
-        allWeapons[i].speed >= parseInt(searchStore.speed) ||
-        allWeapons[i].defense >= parseInt(searchStore.defense)
-      ) {
-        newWeaponsArray.push(allWeapons[i]);
-      }
-    }
-
-    setAllShields(newShieldArray);
-    setAllWeapons(newWeaponsArray);
   };
 
   const handleClearSearch = (e) => {
-    // e.preventDefault();
-    setAllShields(allShields);
-    setAllWeapons(allWeapons);
+    e.preventDefault();
+    setSearchStore({
+      store: "",
+      cost: "",
+      strength: "",
+      defense: "",
+      speed: "",
+    });
+    // TODO clear the input field ie <input field>.value = ""
+    fetchShields();
+    fetchWeapons();
   };
   // Handler to make a weapon primary (move to index 0)
   const handleMakePrimaryWeapon = async (weaponId) => {
@@ -504,7 +516,7 @@ function HeroDetail() {
 
       <div className="hero-store-container">
         <h2>Store</h2>
-        <form action="" onSubmit={handleSearchSubmit}>
+        <form action="">
           <label htmlFor="store">Search Store by Name:</label>
           <input
             type="text"
@@ -512,12 +524,7 @@ function HeroDetail() {
             id="store"
             value={searchStore.store}
             placeholder="Weapons or shields"
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
+            onChange={(e) => handleSearchSubmit(e)}
           />
           <label htmlFor="store">Price:</label>
           <input
@@ -577,7 +584,6 @@ function HeroDetail() {
         <form action="">
           <button onClick={handleClearSearch}>Clear Search</button>
         </form>
-        \\\
         <div className="store-section">
           <h3>Available Weapons</h3>
           {availableWeapons && availableWeapons.length > 0 ? (
