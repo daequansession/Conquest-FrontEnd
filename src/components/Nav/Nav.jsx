@@ -56,6 +56,13 @@ function Nav() {
       </NavLink>
       <NavLink
         className="nav-link"
+        to="/dungeon"
+        onClick={() => setOpen(false)}
+      >
+        Dungeon
+      </NavLink>
+      <NavLink
+        className="nav-link"
         to="/sign-out"
         onClick={() => setOpen(false)}
       >
