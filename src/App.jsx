@@ -18,6 +18,8 @@ import CombatArena from "./pages/CombatArena.jsx";
 import GoldDetail from "./pages/GoldDetails.jsx";
 import GoldList from "./pages/GoldList.jsx";
 import Dungeon from "./pages/Dungeon.jsx";
+import UserDetails from "./pages/UserDetails.jsx";
+import EditUser from "./pages/UserEdit.jsx";
 
 function App() {
   return (
@@ -29,9 +31,11 @@ function App() {
         {/* pass setUser via context*/}
         <Route path="/sign-out" element={<SignOut />} />{" "}
         {/* pass setUser via context*/}
+        <Route path="/users/:userId" element={<UserDetails />}></Route>
         <Route path="/heroes" element={<Hero />} />
         <Route path="/heroes/add" element={<CreateHero />} />
         <Route path="/heroes/:heroId/edit" element={<EditHero />} />
+        <Route path="/users/:userId/edit" element={<EditUser />} />
         <Route path="/heroes/:heroId" element={<HeroDetail />} />
         <Route path="/shields" element={<Shields />} />
         <Route path="/shields/add" element={<CreateShield />} />

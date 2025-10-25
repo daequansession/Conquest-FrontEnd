@@ -1,57 +1,39 @@
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { getGold } from "../../services/gold";
 import "./Nav.css";
 
 function Nav() {
   const { user } = useContext(UserContext);
   const [open, setOpen] = useState(false);
+  const [gold, setGold] = useState();
+
+  useEffect(() => {
+    if (!user || !user.id) {
+      setGold(0);
+      return;
+    }
+    const fetchGold = async () => {
+      if (user) {
+        try {
+          const goldData = await getGold();
+          console.log("This is the gold", goldData.amount);
+          setGold(goldData);
+        } catch (error) {
+          console.error("Error fetching gold:", error);
+        }
+      }
+    };
+    fetchGold();
+  }, [user]);
 
   const authenticatedOptions = (
     <>
       <NavLink className="nav-link" to="/heroes" onClick={() => setOpen(false)}>
         Heroes
       </NavLink>
-       <NavLink
-        className="nav-link"
-        to="/heroes/add"
-        onClick={() => setOpen(false)}
-      >
-        Add Hero
-      </NavLink>
-      <NavLink
-        className="nav-link"
-        to="/weapons"
-        onClick={() => setOpen(false)}
-      >
-        Weapons
-      </NavLink>
-      <NavLink
-        className="nav-link"
-        to="/weapons/add"
-        onClick={() => setOpen(false)}
-      >
-        Add Weapon
-      </NavLink>
-      <NavLink
-        className="nav-link"
-        to="/shields"
-        onClick={() => setOpen(false)}
-      >
-        Shields
-      </NavLink>
-      <NavLink
-        className="nav-link"
-        to="/shields/add"
-        onClick={() => setOpen(false)}
-      >
-        Add Shield
-      </NavLink>
-      <NavLink
-        className="nav-link"
-        to="/combat"
-        // onClick={() => setOpen(false)}
-      >
+      <NavLink className="nav-link" to="/combat" onClick={() => setOpen(false)}>
         Combat Arena
       </NavLink>
       <NavLink
@@ -61,13 +43,25 @@ function Nav() {
       >
         Dungeon
       </NavLink>
+
       <NavLink
-        className="nav-link"
-        to="/sign-out"
+        className="nav-profile-link"
+        to={user ? `/users/${user.id}` : "/register"}
         onClick={() => setOpen(false)}
       >
-        Log Out
+        {user?.profile_picture ? (
+          <img
+            src={`http://localhost:8000${user.profile_picture}`}
+            alt="Profile"
+            className="nav-profile-img"
+          />
+        ) : (
+          <div className="nav-profile-placeholder">
+            {user?.username?.[0]?.toUpperCase() || "?"}
+          </div>
+        )}
       </NavLink>
+      <div className="gold">Gold:{gold?.amount ?? 0}</div>
     </>
   );
 
@@ -76,19 +70,16 @@ function Nav() {
       <NavLink className="nav-link" to="/" onClick={() => setOpen(false)}>
         Log-In
       </NavLink>
-      <NavLink
-        className="nav-link"
-        to="/register"
-        onClick={() => setOpen(false)}
-      >
-        Register
-      </NavLink>
     </>
   );
 
   return (
-    <nav>
-      {user && <div className="link welcome">Welcome, {user.username}</div>}
+    <nav className="nav-container">
+      {user && (
+        <div className="link welcome">
+          <strong>{user.username}</strong>
+        </div>
+      )}
       <button
         className="nav-hamburger"
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
@@ -98,6 +89,7 @@ function Nav() {
       >
         <span aria-hidden="true">☰</span>
       </button>
+
       <div id="nav-links" className={`nav-links${open ? " open" : " closed"}`}>
         {user ? authenticatedOptions : unauthenticatedOptions}
       </div>

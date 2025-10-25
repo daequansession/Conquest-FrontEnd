@@ -247,3 +247,63 @@ nav {
 button > span {
   color: white;
 }
+
+.nav-profile-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+.nav-profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  transition: transform 0.2s ease;
+}
+
+.nav-profile-img:hover {
+  transform: scale(1.1);
+}
+
+.nav-profile-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #666;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 2px solid #ccc;
+}
+
+.gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 4px 10px;
+  border-radius: 20px;
+
+  background: linear-gradient(145deg, #3e2c00, #1a1100);
+  border: 1px solid #ffcc00;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+
+  color: #ffe57f;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-shadow: 0 0 3px #000, 0 0 6px #ffcc00;
+
+  letter-spacing: 0.5px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gold:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(255, 220, 50, 0.9);
+}
