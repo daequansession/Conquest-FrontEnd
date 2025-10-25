@@ -48,13 +48,32 @@ export const getUserById = async (userId) => {
   } catch (error) {
     return error;
   }
-}
+};
+
+export const deleteUser = async (userId) => {
+  try {
+    const response = await api.delete(`/users/${userId}/`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const getUserProfile = async (userId) => {
   try {
     const response = await api.get(`/users/${userId}/profile/`);
     return response.data;
   } catch (error) {
+    return error;
+  }
+};
+
+export const updateUser = async (id, userData) => {
+  try {
+    const response = await api.patch(`/users/${id}/`, userData);
+    return response.data;
+  } catch (error) {
+    console.error(error);
     return error;
   }
 };

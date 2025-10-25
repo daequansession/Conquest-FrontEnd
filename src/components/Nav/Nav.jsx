@@ -12,7 +12,7 @@ function Nav() {
       <NavLink className="nav-link" to="/heroes" onClick={() => setOpen(false)}>
         Heroes
       </NavLink>
-       <NavLink
+      <NavLink
         className="nav-link"
         to="/heroes/add"
         onClick={() => setOpen(false)}
@@ -61,12 +61,19 @@ function Nav() {
       >
         Dungeon
       </NavLink>
-      <NavLink
+      {/* <NavLink
         className="nav-link"
         to="/sign-out"
         onClick={() => setOpen(false)}
       >
         Log Out
+      </NavLink> */}
+      <NavLink
+        className="nav-link"
+        to={user ? `/users/${user.id}` : "/register"}
+        onClick={() => setOpen(false)}
+      >
+        Profile
       </NavLink>
     </>
   );
