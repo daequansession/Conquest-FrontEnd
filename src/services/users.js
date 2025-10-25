@@ -68,9 +68,18 @@ export const getUserProfile = async (userId) => {
   }
 };
 
-export const updateUser = async (id, userData) => {
+export const updateUser = async (userId, userData) => {
   try {
-    const response = await api.patch(`/users/${id}/`, userData);
+    const formData = new FormData();
+    for (const key in userData) {
+      formData.append(key, userData[key]);
+    }
+
+    const response = await api.patch(`/users/${userId}/`, userData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(error);

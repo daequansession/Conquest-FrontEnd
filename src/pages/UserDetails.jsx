@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import "../css/userDetails.css";
 
 // import { signOut } from "../services/users";
 
@@ -24,20 +25,46 @@ function UserDetails() {
     navigate("/sign-out");
   };
 
-  //   const handleUpdate = () => {};
-
   return (
-    <>
-      <div>{user.username} Profile </div>
-      <div className="hero-action-buttons">
+    <div
+      className="user-details"
+      style={{ textAlign: "center", marginTop: "2rem" }}
+    >
+      <h2>{user.username}’s Profile</h2>
+
+      {user.profile_picture ? (
+        <img
+          src={`http://localhost:8000${user.profile_picture}`}
+          alt="Profile"
+          width="150"
+          height="150"
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "2px solid #ccc",
+            marginTop: "10px",
+          }}
+        />
+      ) : (
+        <p>No profile picture uploaded</p>
+      )}
+
+      {/* ✅ Display user info */}
+      {user.email && <p>Email: {user.email}</p>}
+
+      <div className="hero-action-buttons" style={{ marginTop: "1rem" }}>
         <Link to={`/users/${user.id}/edit`}>
           <button className="hero-detail-edit">Edit</button>
         </Link>
       </div>
 
-      <button onClick={handleDelete}>Delete Account</button>
-      <button onClick={handleLogOut}>Log Out</button>
-    </>
+      <button onClick={handleDelete} style={{ margin: "10px" }}>
+        Delete Account
+      </button>
+      <button onClick={handleLogOut} style={{ margin: "10px" }}>
+        Log Out
+      </button>
+    </div>
   );
 }
 
