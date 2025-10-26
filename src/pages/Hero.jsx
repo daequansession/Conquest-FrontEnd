@@ -159,46 +159,50 @@ function Hero() {
           </button>
         </div>
       </div>
-      <button
-        onClick={() => {
-          const sortedHeroes = [...hero].sort(
-            (a, b) => b.strength - a.strength
-          );
-          setHero(sortedHeroes);
-        }}
-      >
-        Sort by Strength
-      </button>
-      <button
-        onClick={() => {
-          const sortedHeroes = [...hero].sort((a, b) => b.defense - a.defense);
-          setHero(sortedHeroes);
-        }}
-      >
-        Sort by Defense
-      </button>
-      <button
-        onClick={() => {
-          const sortedHeroes = [...hero].sort((a, b) => b.speed - a.speed);
-          setHero(sortedHeroes);
-        }}
-      >
-        Sort by Speed
-      </button>
-      <button
-        onClick={() => {
-          const sortedHeroes = [...hero].sort(
-            (a, b) =>
-              b.speed +
-              b.defense +
-              b.strength -
-              (a.speed + a.defense + a.strength)
-          );
-          setHero(sortedHeroes);
-        }}
-      >
-        Strongest
-      </button>
+      <div className="sort-buttons">
+        <button
+          onClick={() => {
+            const sortedHeroes = [...hero].sort(
+              (a, b) => b.strength - a.strength
+            );
+            setHero(sortedHeroes);
+          }}
+        >
+          Sort by Strength
+        </button>
+        <button
+          onClick={() => {
+            const sortedHeroes = [...hero].sort(
+              (a, b) => b.defense - a.defense
+            );
+            setHero(sortedHeroes);
+          }}
+        >
+          Sort by Defense
+        </button>
+        <button
+          onClick={() => {
+            const sortedHeroes = [...hero].sort((a, b) => b.speed - a.speed);
+            setHero(sortedHeroes);
+          }}
+        >
+          Sort by Speed
+        </button>
+        <button
+          onClick={() => {
+            const sortedHeroes = [...hero].sort(
+              (a, b) =>
+                b.speed +
+                b.defense +
+                b.strength -
+                (a.speed + a.defense + a.strength)
+            );
+            setHero(sortedHeroes);
+          }}
+        >
+          Strongest
+        </button>
+      </div>
     </div>
   );
 }

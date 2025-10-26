@@ -64,17 +64,13 @@ function Home() {
 
   return (
     <>
-      <div className="landing-main">
-        <div className="greet-msg">
-          <h1>Conquest</h1>
-          <p className="home-hero-section-p">
-            <em>Conquest</em> Lorem, ipsum dolor sit amet consectetur
-            adipisicing elit. Eius obcaecati enim vel corrupti veritatis natus,
-            tempore fugit dolore aliquam illo praesentium libero debitis sed
-            rem, aspernatur facere eum quos mollitia?
-          </p>
-        </div>
-      </div>
+      <h1 id="title">Conquest</h1>
+      <p className="home-hero-section-p" id="p">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius obcaecati
+        enim vel corrupti veritatis natus, tempore fugit dolore aliquam illo
+        praesentium libero debitis sed rem, aspernatur facere eum quos mollitia?
+      </p>
+
       <div className="home-container">
         <div>
           <form className="home-form" onSubmit={handleSubmit}>

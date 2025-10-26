@@ -28,7 +28,7 @@ function UserDetails() {
   return (
     <div
       className="user-details"
-      style={{ textAlign: "center", marginTop: "2rem" }}
+      style={{ textAlign: "center", marginTop: "0rem" }}
     >
       <h2>{user.username}’s Profile</h2>
 

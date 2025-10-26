@@ -88,6 +88,8 @@ function Nav() {
       >
         Dungeon
       </NavLink>
+
+      <div className="gold">Gold: {gold?.amount ?? 0}</div>
       {/* 🔔 Notifications Dropdown */}
       <div className="nav-notifications" ref={dropdownRef}>
         <button className="bell-btn" onClick={toggleDropdown}>
@@ -141,7 +143,6 @@ function Nav() {
           </div>
         )}
       </NavLink>
-      <div className="gold">Gold: {gold?.amount ?? 0}</div>
     </>
   );
 
@@ -155,24 +156,93 @@ function Nav() {
 
   return (
     <nav className="nav-container">
-      {user && (
-        <div className="link welcome">
-          <strong>{user.username}</strong>
-        </div>
-      )}
-      <button
-        className="nav-hamburger"
-        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-        aria-expanded={open}
-        aria-controls="nav-links"
-        onClick={() => setOpen((o) => !o)}
-      >
-        <span aria-hidden="true">☰</span>
-      </button>
+      {user ? (
+        <>
+          <div className="nav-left">
+            <div className="nav-username">
+              <strong>{user.username}</strong>
+            </div>
 
-      <div id="nav-links" className={`nav-links${open ? " open" : " closed"}`}>
-        {user ? authenticatedOptions : unauthenticatedOptions}
-      </div>
+            <NavLink className="nav-link" to="/heroes">
+              Heroes
+            </NavLink>
+            <NavLink className="nav-link" to="/combat">
+              Combat Arena
+            </NavLink>
+            <NavLink className="nav-link" to="/dungeon">
+              Dungeon
+            </NavLink>
+          </div>
+
+          <div className="nav-right">
+            <div className="gold">💰 {gold?.amount ?? 0}</div>
+
+            {/* Notifications */}
+            <div className="nav-notifications" ref={dropdownRef}>
+              <button className="bell-btn" onClick={toggleDropdown}>
+                <Bell className="bell-icon" />
+                {unreadCount > 0 && (
+                  <span className="notif-count">{unreadCount}</span>
+                )}
+              </button>
+
+              {showDropdown && (
+                <div className="notif-dropdown">
+                  {notifications.length === 0 ? (
+                    <p className="notif-empty">No recent battles</p>
+                  ) : (
+                    notifications.map((log) => (
+                      <div key={log.id} className="notif-item">
+                        <p>
+                          <strong>{log.hero_attacker}</strong> (
+                          {log.attacker_name}){" "}
+                          {log.winner === log.attacker
+                            ? "defeated"
+                            : "was defeated by"}{" "}
+                          <strong>
+                            {log.hero_winner === log.hero_attacker
+                              ? log.hero_loser
+                              : log.hero_winner}
+                          </strong>
+                        </p>
+                        <span className="notif-time">
+                          {new Date(log.created_at).toLocaleString()}
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Profile */}
+            <NavLink className="nav-profile-link" to={`/users/${user.id}`}>
+              {user?.profile_picture ? (
+                <img
+                  src={`http://localhost:8000${user.profile_picture}`}
+                  alt="Profile"
+                  className="nav-profile-img"
+                />
+              ) : (
+                <div className="nav-profile-placeholder">
+                  {user?.username?.[0]?.toUpperCase() || "?"}
+                </div>
+              )}
+            </NavLink>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="nav-left">
+            <NavLink className="nav-link" to="/">
+              Login
+            </NavLink>
+            <NavLink className="nav-link" to="/register">
+              Register
+            </NavLink>
+          </div>
+        </>
+      )}
     </nav>
   );
 }
