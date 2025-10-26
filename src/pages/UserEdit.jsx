@@ -80,6 +80,7 @@ function EditUser() {
             required
             autoFocus
           />
+          <label>Change Profile Pic</label>
           <input
             type="file"
             name="profile_picture"
