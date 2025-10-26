@@ -11,9 +11,10 @@ import HeroSelector from "../components/HeroSelector.jsx";
 import "./CombatArena.css";
 import { getGold } from "../services/gold.js";
 import { getGoldByUserId } from "../services/gold.js";
+import { createBattleLog } from "../services/battles";
 
 function CombatArena() {
-  const { user } = useContext(UserContext);
+  const { user, fetchGold } = useContext(UserContext);
 
   // State for heroes and users
   const [allHeroes, setAllHeroes] = useState([]);
@@ -117,6 +118,18 @@ function CombatArena() {
         });
       }
       await refreshGold();
+      await fetchGold();
+
+      await createBattleLog({
+        winner: result.winner.user,
+        loser: result.loser.user,
+        attacker: user.id,
+        hero_winner: result.winner.name,
+        hero_loser: result.loser.name,
+        hero_attacker: selectedHero1.name,
+        gold_change_winner: result.winner.user === user.id ? +10 : +5,
+        gold_change_loser: result.loser.user === user.id ? -5 : -3,
+      });
     }
   };
 
