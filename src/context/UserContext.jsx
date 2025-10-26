@@ -9,16 +9,23 @@ const UserProvider = ({ children }) => {
   const [gold, setGold] = useState({ amount: 0 });
   const [dungeonProgress, setDungeonProgress] = useState([]);
 
+  const fetchGold = async () => {
+    try {
+      const goldData = await getGold();
+      setGold(goldData);
+    } catch (error) {
+      console.error("Error fetching gold:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await verifyUser();
-      localStorage.setItem("user", JSON.stringify(user));
-      if (user) {
-        setUser(user);
-        console.log(gold);
-        setDungeonProgress(user.dungeonProgress || []);
-        const goldData = await getGold();
-        setGold(goldData);
+      const verifiedUser = await verifyUser();
+      localStorage.setItem("user", JSON.stringify(verifiedUser));
+      if (verifiedUser) {
+        setUser(verifiedUser);
+        setDungeonProgress(verifiedUser.dungeonProgress || []);
+        await fetchGold();
       } else {
         setUser(null);
         setDungeonProgress([]);
@@ -31,7 +38,15 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, dungeonProgress, setDungeonProgress }}
+      value={{
+        user,
+        setUser,
+        gold,
+        setGold,
+        fetchGold, // <-- expose refresh function
+        dungeonProgress,
+        setDungeonProgress,
+      }}
     >
       {children}
     </UserContext.Provider>
