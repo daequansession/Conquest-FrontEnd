@@ -175,7 +175,7 @@ function HeroDetail() {
   const handleAddShield = async (shieldId, shieldCost) => {
     try {
       if (!gold || gold.amount < shieldCost) {
-        console.error("Not enough gold to add this weapon.");
+        console.error("Not enough gold to add this shield.");
         return;
       }
       await addShieldToHero(heroId, shieldId);
@@ -188,10 +188,31 @@ function HeroDetail() {
     }
   };
 
+  const handleAddWeapon = async (weaponId, weaponCost) => {
+    try {
+      if (!gold || gold.amount < weaponCost) {
+        console.error("Not enough gold to add this weapon.");
+        return;
+      }
+
+      await addWeaponToHero(heroId, weaponId);
+      const newAmount = gold.amount - weaponCost;
+
+      await updateGold(gold.id, { ...gold, amount: newAmount });
+      setToggle((prev) => !prev);
+    } catch (error) {
+      console.error(
+        "Error removing weapon:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   const handleRemoveShield = async (shieldId, shieldCost) => {
     try {
       await removeShieldFromHero(heroId, shieldId);
-      const newAmount = gold.amount + shieldCost / 2;
+      const newAmount = Math.floor(gold.amount + shieldCost / 2);
+      console.log("Gold before update shield:", gold);
       await updateGold(gold.id, { ...gold, amount: newAmount });
       setToggle((prev) => !prev);
     } catch (error) {
@@ -199,25 +220,11 @@ function HeroDetail() {
     }
   };
 
-  const handleAddWeapon = async (weaponId, weaponCost) => {
-    try {
-      await addWeaponToHero(heroId, weaponId);
-      const newAmount = gold.amount - weaponCost;
-
-      await updateGold(gold.id, { ...gold, amount: newAmount });
-      setToggle((prev) => !prev);
-      console.log("Adding weapon:", weaponCost);
-      await addWeaponToHero(heroId, weaponId);
-      setToggle((prev) => !prev);
-    } catch (error) {
-      console.error("Error adding weapon:", error);
-    }
-  };
-
   const handleRemoveWeapon = async (weaponId, weaponCost) => {
     try {
       await removeWeaponFromHero(heroId, weaponId);
-      const newAmount = gold.amount + weaponCost / 2;
+      const newAmount = Math.floor(gold.amount + weaponCost / 2);
+      console.log("Gold before update weapon:", gold);
       await updateGold(gold.id, { ...gold, amount: newAmount });
       setToggle((prev) => !prev);
     } catch (error) {

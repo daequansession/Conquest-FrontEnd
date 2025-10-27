@@ -28,6 +28,7 @@ import { getHeroes } from "../services/heroes";
 import "../css/Hero.css";
 
 function Hero() {
+  // console.log(heroObj);
   const [hero, setHero] = useState([]);
   const navigate = useNavigate();
 
