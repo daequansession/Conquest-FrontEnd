@@ -47,7 +47,7 @@ function Hero() {
           Make sure to add some hero!
         </h1>
         <div className="hero-container">
-          {hero.length &&
+          {hero.length > 0 &&
             hero.map((heroObj) => {
               // Use equipped weapons/shields if present, else empty arrays
               const weapons = heroObj.weapons || [];
@@ -107,7 +107,7 @@ function Hero() {
       <h1>Hero List</h1>
       <h2>Choose your hero wisely to conquer the realm!</h2>
       <div className="hero-container">
-        {hero.length &&
+        {hero.length > 0 &&
           hero.map((heroObj) => {
             // Use equipped weapons/shields if present, else empty arrays
             const weapons = heroObj.weapons || [];

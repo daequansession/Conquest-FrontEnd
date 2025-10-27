@@ -43,7 +43,7 @@ function Register() {
       }
 
       // Registration successful, redirect to sign-in page
-      navigate("/signin");
+      navigate("/");
     } catch (error) {
       console.error("Registration error:", error);
       setForm((prevForm) => ({
