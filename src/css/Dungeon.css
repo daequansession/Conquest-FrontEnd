@@ -1,0 +1,194 @@
+.dungeon-monsters-center button {
+  display: block;
+  margin: 0 auto;
+  padding: 15px 40px;
+  font-size: 1.2em;
+  font-weight: bold;
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 16px rgba(156, 39, 176, 0.4);
+}
+.dungeon-monsters-center button:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
+.dungeon-monsters-center button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(106, 90, 205, 0.4);
+}
+
+.dungeon-monsters-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem auto;
+  width: 100%;
+}
+.dungeon-monsters-list {
+  background: rgba(40, 40, 80, 0.9);
+  border-radius: 15px;
+  padding: 25px;
+  border: 2px solid #4a4a7a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+  text-align: center;
+  min-width: 320px;
+  max-width: 400px;
+}
+.dungeon-monsters-list h3 {
+  color: #ffd700;
+  font-size: 1.4em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
+}
+.dungeon-monsters-list ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+.dungeon-monsters-list li {
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  background: rgba(40, 40, 80, 0.5);
+  border-radius: 8px;
+  border-left: 4px solid #ffd700;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  transition: background 0.2s ease;
+  justify-content: center;
+}
+.dungeon-monsters-list li:hover {
+  background: rgba(40, 40, 80, 0.7);
+}
+
+.dungeon-container {
+  width: 98.9vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+.dungeon-container h2 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  margin-top: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(45deg, #ffd700, #ffed4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dungeon-level-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.dungeon-level-select label {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.dungeon-level-select select {
+  background: #222;
+  color: #ffd700;
+  border: 2px solid #4a4a7a;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+.dungeon-level-select option:disabled {
+  color: #888;
+}
+
+.dungeon-combat-results {
+  background: rgba(40, 40, 80, 0.9);
+  border-radius: 15px;
+  padding: 25px;
+  border: 2px solid #4a4a7a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  margin-top: 2rem;
+  text-align: center;
+}
+.dungeon-combat-results h3 {
+  color: #ffd700;
+  font-size: 1.4em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
+}
+.dungeon-combat-results ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+.dungeon-combat-results li {
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  background: rgba(40, 40, 80, 0.5);
+  border-radius: 8px;
+  border-left: 4px solid #ffd700;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  transition: background 0.2s ease;
+}
+.dungeon-combat-results li:hover {
+  background: rgba(40, 40, 80, 0.7);
+}
+.dungeon-combat-results button {
+  padding: 15px 40px;
+  font-size: 1.1em;
+  font-weight: 600;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+  margin-top: 1rem;
+}
+.dungeon-combat-results button:hover {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dungeon-combat-results {
+    padding: 20px;
+  }
+}
+@media (max-width: 768px) {
+  .dungeon-container {
+    padding: 15px;
+  }
+  .dungeon-container h2 {
+    font-size: 2em;
+  }
+  .dungeon-combat-results {
+    padding: 15px;
+  }
+  .dungeon-combat-results h3 {
+    font-size: 1.1em;
+  }
+}

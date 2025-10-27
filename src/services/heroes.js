@@ -104,7 +104,7 @@ export const getAllPublicHeroes = async () => {
     const response = await api.get("/heroes/public/");
     return response.data;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -113,6 +113,6 @@ export const getHeroesByUser = async (userId) => {
     const response = await api.get(`/users/${userId}/heroes/`);
     return response.data;
   } catch (error) {
-    throw error;
+    return error;
   }
 };

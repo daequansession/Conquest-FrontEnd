@@ -27,7 +27,7 @@ export const signOut = async () => {
     localStorage.removeItem("token");
     return true;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -37,7 +37,25 @@ export const getAllUsers = async () => {
     const response = await api.get("/users/");
     return response.data;
   } catch (error) {
-    throw error;
+    return error;
+  }
+};
+
+export const getUserById = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}/`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteUser = async (userId) => {
+  try {
+    const response = await api.delete(`/users/${userId}/`);
+    return response.data;
+  } catch (error) {
+    return error;
   }
 };
 
@@ -46,7 +64,26 @@ export const getUserProfile = async (userId) => {
     const response = await api.get(`/users/${userId}/profile/`);
     return response.data;
   } catch (error) {
-    throw error;
+    return error;
+  }
+};
+
+export const updateUser = async (userId, userData) => {
+  try {
+    const formData = new FormData();
+    for (const key in userData) {
+      formData.append(key, userData[key]);
+    }
+
+    const response = await api.patch(`/users/${userId}/`, userData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error;
   }
 };
 

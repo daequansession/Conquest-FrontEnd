@@ -99,7 +99,6 @@ nav > img {
 
 /* hero Detail */
 .hero-detail-root {
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;

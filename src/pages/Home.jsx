@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../services/users.js";
 import "../css/Home.css";
-// 
+//
 import { UserContext } from "../context/UserContext.jsx";
 
 function Home() {
@@ -30,8 +30,12 @@ function Home() {
 
     try {
       const userData = await signIn(form);
-      setUser(userData);
 
+      if (!userData.id) {
+        throw new Error("Invalid Credentials");
+      }
+
+      setUser(userData);
       navigate("/heroes");
     } catch (error) {
       console.error(error);
@@ -60,17 +64,13 @@ function Home() {
 
   return (
     <>
-      <div className="landing-main">
-        <div className="greet-msg">
-          <h1>Conquest</h1>
-          <p>
-            <em>Conquest</em> Lorem, ipsum dolor sit amet consectetur
-            adipisicing elit. Eius obcaecati enim vel corrupti veritatis natus,
-            tempore fugit dolore aliquam illo praesentium libero debitis sed
-            rem, aspernatur facere eum quos mollitia?
-          </p>
-        </div>
-      </div>
+      <h1 id="title">Conquest</h1>
+      <p className="home-hero-section-p" id="p">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius obcaecati
+        enim vel corrupti veritatis natus, tempore fugit dolore aliquam illo
+        praesentium libero debitis sed rem, aspernatur facere eum quos mollitia?
+      </p>
+
       <div className="home-container">
         <div>
           <form className="home-form" onSubmit={handleSubmit}>

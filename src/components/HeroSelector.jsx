@@ -1,4 +1,27 @@
 import './HeroSelector.css';
+import HolyPaladinImg from "../assets/HolyPaladin.png";
+import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
+import DragonKnightImg from "../assets/DragonKnight.png";
+import ShadowAssassinImg from "../assets/ShadowAssassin.png";
+import DemonHunterImg from "../assets/DemonHunter.png";
+import ChackieJanImg from "../assets/ChackieJan.png";
+import HasidicWarriorImg from "../assets/HasidicWarrior.png";
+import MexicanVaqueroImg from "../assets/MexicanVaquero.png";
+import DeathKnightImg from "../assets/DeathKnight.png";
+import EveryItalianEverImg from "../assets/EveryItalianEver.png";
+// Hero character to image mapping
+const heroImages = {
+  "A": HolyPaladinImg,
+  "B": PrimalBarbarianImg,
+  "C": DragonKnightImg,
+  "D": ShadowAssassinImg,
+  "E": DemonHunterImg,
+  "F": ChackieJanImg,
+  "G": HasidicWarriorImg,
+  "H": MexicanVaqueroImg,
+  "I": DeathKnightImg,
+  "J": EveryItalianEverImg,
+};
 
 function HeroSelector({ 
   heroes, 
@@ -61,20 +84,27 @@ function HeroSelector({
                   {isMyHero ? '👑 Your Hero' : `⚔️ ${getUsernameById(hero.user)}'s Hero`}
                 </div>
               )}
-              
               <div 
                 className="hero-selection-card"
                 onClick={() => onHeroSelect(hero)}
               >
+                {heroImages[hero.character] ? (
+                  <img
+                    src={heroImages[hero.character]}
+                    alt={getCharacterName(hero.character)}
+                    className="hero-card-image"
+                    style={{ width: "100px", height: "100px", objectFit: "contain", marginBottom: "8px" }}
+                  />
+                ) : (
+                  <div style={{ width: "100px", height: "100px", background: "#222", marginBottom: "8px" }}></div>
+                )}
                 <h4>{hero.name}</h4>
-                
                 {/* Character indicator */}
                 <div className="character-indicator">
                   <span className="character-badge">
                     {getCharacterName(hero.character)}
                   </span>
                 </div>
-
                 {/* Base stats */}
                 <div className="hero-base-stats">
                   <div className="stat">
@@ -90,14 +120,12 @@ function HeroSelector({
                     <span className="stat-value">{hero.speed || 0}</span>
                   </div>
                 </div>
-
                 {/* Equipment count */}
                 <div className="equipment-summary">
                   <span className="equipment-count">
                     ⚔️ {hero.weapons?.length || 0} | 🛡️ {hero.shields?.length || 0}
                   </span>
                 </div>
-
                 {/* Combat power indicator */}
                 <div className="combat-power">
                   <span>Combat Power: {calculateQuickCombatPower(hero)}</span>

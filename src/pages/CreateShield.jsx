@@ -11,6 +11,7 @@ function CreateShield() {
     strength: "",
     defense: "",
     speed: "",
+    cost: "",
   });
 
   const handleChange = (event) => {
@@ -64,6 +65,14 @@ function CreateShield() {
           placeholder="Speed"
           name="speed"
           value={shield.speed}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-shield-cost"
+          placeholder="Cost"
+          name="cost"
+          value={shield.cost}
           onChange={handleChange}
           required
         />
