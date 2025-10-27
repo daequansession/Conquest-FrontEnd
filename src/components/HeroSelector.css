@@ -13,9 +13,10 @@
 }
 
 .heroes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-direction: row;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .hero-card-container {

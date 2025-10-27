@@ -58,6 +58,7 @@ import {
 import "../css/HeroDetail.css";
 import GoldDetail from "./GoldDetails.jsx";
 import { updateGold } from "../services/gold.js";
+import { normalizeStats } from "../utils/combatStats.js";
 
 // Weapon name to image mapping
 const weaponImages = {
@@ -111,13 +112,12 @@ function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
+  const [originalWeapons, setOriginalWeapons] = useState([]);
+  const [originalShields, setOriginalShields] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [searchStore, setSearchStore] = useState({
-    store: "",
-    cost: "",
-    strength: "",
-    defense: "",
-    speed: "",
+    type: "name", // dropdown selection
+    value: "",
   });
 
   let { heroId } = useParams();
@@ -127,6 +127,7 @@ function HeroDetail() {
     try {
       const weaponsData = await getWeapons();
       setAllWeapons(weaponsData);
+      setOriginalWeapons(weaponsData);
     } catch (error) {
       console.error("Error fetching weapons:", error);
     }
@@ -136,6 +137,7 @@ function HeroDetail() {
     try {
       const shieldsData = await getShields();
       setAllShields(shieldsData);
+      setOriginalShields(shieldsData);
     } catch (error) {
       console.error("Error fetching shields:", error);
     }
@@ -225,56 +227,81 @@ function HeroDetail() {
     }
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-
-    // update state normally
-    setSearchStore((prev) => ({ ...prev, [name]: value }));
-
-    // use the current typed value directly (not the outdated state)
-    const currentSearch =
-      name === "store" ? value.toLowerCase() : searchStore.store.toLowerCase();
-
-    const newShieldArray = allShields.filter(
-      (s) =>
-        s.name.toLowerCase().includes(currentSearch) ||
-        (searchStore.cost && s.cost <= parseInt(searchStore.cost)) ||
-        (searchStore.strength &&
-          s.strength >= parseInt(searchStore.strength)) ||
-        (searchStore.speed && s.speed >= parseInt(searchStore.speed)) ||
-        (searchStore.defense && s.defense >= parseInt(searchStore.defense))
-    );
-
-    const newWeaponsArray = allWeapons.filter(
-      (w) =>
-        w.name.toLowerCase().includes(currentSearch) ||
-        (searchStore.cost && w.cost <= parseInt(searchStore.cost)) ||
-        (searchStore.strength &&
-          w.strength >= parseInt(searchStore.strength)) ||
-        (searchStore.speed && w.speed >= parseInt(searchStore.speed)) ||
-        (searchStore.defense && w.defense >= parseInt(searchStore.defense))
-    );
-
-    if (value === "" || value.length === 1) {
-      fetchShields();
-      fetchWeapons();
-    } else {
-      setAllShields(newShieldArray);
-      setAllWeapons(newWeaponsArray);
+  // Live update store search results
+  const liveUpdateStore = (type, value) => {
+    let newShieldArray = originalShields;
+    let newWeaponsArray = originalWeapons;
+    if (!value || value.length < 1) {
+      setAllShields(originalShields);
+      setAllWeapons(originalWeapons);
+      return;
     }
+    switch (type) {
+      case "name":
+        newShieldArray = originalShields.filter((s) =>
+          s.name.toLowerCase().includes(value.toLowerCase())
+        );
+        newWeaponsArray = originalWeapons.filter((w) =>
+          w.name.toLowerCase().includes(value.toLowerCase())
+        );
+        break;
+      case "cost":
+        newShieldArray = originalShields.filter((s) =>
+          (s.cost !== undefined ? parseInt(s.cost) : 0) <= parseInt(value)
+        );
+        newWeaponsArray = originalWeapons.filter((w) =>
+          (w.cost !== undefined ? parseInt(w.cost) : 0) <= parseInt(value)
+        );
+        break;
+      case "strength":
+        newShieldArray = allShields.filter((s) =>
+          normalizeStats(s).strength >= parseInt(value)
+        );
+        newWeaponsArray = allWeapons.filter((w) =>
+          normalizeStats(w).strength >= parseInt(value)
+        );
+        break;
+      case "defense":
+        newShieldArray = allShields.filter((s) =>
+          normalizeStats(s).defense >= parseInt(value)
+        );
+        newWeaponsArray = allWeapons.filter((w) =>
+          normalizeStats(w).defense >= parseInt(value)
+        );
+        break;
+      case "speed":
+        newShieldArray = allShields.filter((s) =>
+          normalizeStats(s).speed >= parseInt(value)
+        );
+        newWeaponsArray = allWeapons.filter((w) =>
+          normalizeStats(w).speed >= parseInt(value)
+        );
+        break;
+      default:
+        break;
+    }
+    setAllShields(newShieldArray);
+    setAllWeapons(newWeaponsArray);
+  };
+
+  const handleSearchTypeChange = (e) => {
+    const newType = e.target.value;
+    setSearchStore({ type: newType, value: "" });
+    liveUpdateStore(newType, "");
+  };
+
+  const handleSearchValueChange = (e) => {
+    const newValue = e.target.value;
+    setSearchStore((prev) => {
+      const updated = { ...prev, value: newValue };
+      liveUpdateStore(updated.type, newValue);
+      return updated;
+    });
   };
 
   const handleClearSearch = (e) => {
     e.preventDefault();
-    setSearchStore({
-      store: "",
-      cost: "",
-      strength: "",
-      defense: "",
-      speed: "",
-    });
-    // TODO clear the input field ie <input field>.value = ""
+    setSearchStore({ type: "name", value: "" });
     fetchShields();
     fetchWeapons();
   };
@@ -516,72 +543,77 @@ function HeroDetail() {
 
       <div className="hero-store-container">
         <h2>Store</h2>
-        <form action="">
-          <label htmlFor="store">Search Store by Name:</label>
-          <input
-            type="text"
-            name="store"
-            id="store"
-            value={searchStore.store}
-            placeholder="Weapons or shields"
-            onChange={(e) => handleSearchSubmit(e)}
-          />
-          <label htmlFor="store">Price:</label>
-          <input
-            type="number"
-            name="cost"
-            id="cost"
-            value={searchStore.cost}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Strength:</label>
-          <input
-            type="number"
-            name="strength"
-            id="strength"
-            value={searchStore.strength}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Defense:</label>
-          <input
-            type="number"
-            name="defense"
-            id="defense"
-            value={searchStore.defense}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <label htmlFor="store">Speed:</label>
-          <input
-            type="number"
-            name="speed"
-            id="speed"
-            value={searchStore.speed}
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-          <button>Submit</button>
+        <form>
+          <label htmlFor="search-type">Search By:</label>
+          <select
+            id="search-type"
+            value={searchStore.type}
+            onChange={handleSearchTypeChange}
+          >
+            <option value="name">Name</option>
+            <option value="cost">Price</option>
+            <option value="strength">Strength</option>
+            <option value="defense">Defense</option>
+            <option value="speed">Speed</option>
+          </select>
+          {searchStore.type === "name" && (
+            <>
+              <label htmlFor="search-value">Name:</label>
+              <input
+                type="text"
+                id="search-value"
+                value={searchStore.value}
+                placeholder="Weapons or shields"
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "cost" && (
+            <>
+              <label htmlFor="search-value">Price:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "strength" && (
+            <>
+              <label htmlFor="search-value">Strength:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "defense" && (
+            <>
+              <label htmlFor="search-value">Defense:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "speed" && (
+            <>
+              <label htmlFor="search-value">Speed:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
         </form>
-        <label htmlFor=""></label>
-        <form action="">
+        <form>
           <button onClick={handleClearSearch}>Clear Search</button>
         </form>
         <div className="store-section">
