@@ -93,7 +93,7 @@ function CombatArena() {
       i++;
       if (i >= battleScript.length) {
         clearInterval(interval);
-        setIsBattlePlaying(true);
+        setIsBattlePlaying(false);
         return;
       }
       setCurrentLine(battleScript[i]);
@@ -376,12 +376,12 @@ function CombatArena() {
                   : action === "block"
                   ? // ? { rotate: [0, -10, 0] }
                     // : action === "fall"
-                    { y: [0, 0], opacity: [1, 0.3] }
+                    { y: [0, 0], opacity: [1, 1] }
                   : action === "enter"
                   ? { x: [-150, 0] }
                   : { x: 0, y: 0, opacity: 1, scale: [1, 1.2, 1] }
               }
-              transition={{ duration: 7.8 }}
+              transition={{ duration: 6.8 }}
             />
 
             <motion.img
@@ -393,7 +393,10 @@ function CombatArena() {
                   : action === "block"
                   ? { rotate: [0, 2000, 0] }
                   : action === "fall"
-                  ? { y: [0, 10000], opacity: [1, 0.3] }
+                  ? {
+                      y: [0, 200, 400, 800], // move further down
+                      opacity: [0.01, 0, 0, 0], // fade completely
+                    }
                   : action === "enter"
                 // ? { x: [150, 0] }
                 // : { x: 0, y: 0, opacity: 1 }

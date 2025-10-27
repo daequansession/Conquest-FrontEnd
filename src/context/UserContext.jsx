@@ -5,7 +5,7 @@ import { getGold } from "../services/gold";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [gold, setGold] = useState({ amount: 0 });
   const [dungeonProgress, setDungeonProgress] = useState([]);
 
@@ -21,8 +21,8 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const verifiedUser = await verifyUser();
-      localStorage.setItem("user", JSON.stringify(verifiedUser));
       if (verifiedUser) {
+        localStorage.setItem("user", JSON.stringify(verifiedUser));
         setUser(verifiedUser);
         setDungeonProgress(verifiedUser.dungeonProgress || []);
         await fetchGold();
@@ -43,7 +43,7 @@ const UserProvider = ({ children }) => {
         setUser,
         gold,
         setGold,
-        fetchGold, // <-- expose refresh function
+        fetchGold,
         dungeonProgress,
         setDungeonProgress,
       }}
