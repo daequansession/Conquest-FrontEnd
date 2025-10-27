@@ -7,7 +7,9 @@ import {
   markBattlesAsRead,
 } from "../../services/battles";
 import { Bell } from "lucide-react";
-
+// import { Squash as Hamburger } from "hamburger-react";
+import { Bars3Icon as Hamburger } from "@heroicons/react/24/outline";
+import { XMarkIcon as XMark } from "@heroicons/react/24/solid";
 import "./Nav.css";
 
 function Nav() {
@@ -158,18 +160,38 @@ function Nav() {
     <nav className="nav-container">
       {user ? (
         <>
-          <div className="nav-left">
+          <div className="nav-hamburger" onClick={() => setOpen(!open)}>
+            {open ? (
+              <XMark className="hamburger" />
+            ) : (
+              <Hamburger className="hamburger" />
+            )}
+          </div>
+
+          <div className={`nav-left ${open ? "open" : ""}`}>
             <div className="nav-username">
               <strong>{user.username}</strong>
             </div>
 
-            <NavLink className="nav-link" to="/heroes">
+            <NavLink
+              className="nav-link"
+              to="/heroes"
+              onClick={() => setOpen(false)}
+            >
               Heroes
             </NavLink>
-            <NavLink className="nav-link" to="/combat">
+            <NavLink
+              className="nav-link"
+              to="/combat"
+              onClick={() => setOpen(false)}
+            >
               Combat Arena
             </NavLink>
-            <NavLink className="nav-link" to="/dungeon">
+            <NavLink
+              className="nav-link"
+              to="/dungeon"
+              onClick={() => setOpen(false)}
+            >
               Dungeon
             </NavLink>
           </div>
