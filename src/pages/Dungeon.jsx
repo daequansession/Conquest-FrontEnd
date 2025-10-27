@@ -9,13 +9,15 @@ import { calculateCombatStats, analyzeCombat } from "../utils/combatStats";
 import "../css/Dungeon.css";
 
 const Dungeon = () => {
-  const { user, dungeonProgress, setDungeonProgress } = useContext(UserContext);
+  const { user, dungeonProgress, setDungeonProgress, fetchGold } = useContext(UserContext);
+  const [userGold, setUserGold] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [monsters, setMonsters] = useState([]);
   const [message, setMessage] = useState("");
   const [myHeroes, setMyHeroes] = useState([]);
   const [selectedHero, setSelectedHero] = useState(null);
   const [combatResult, setCombatResult] = useState(null);
+  const [showStats, setShowStats] = useState(false);
   useEffect(() => {
     const fetchHeroes = async () => {
       if (user && user.id) {
@@ -74,13 +76,16 @@ const Dungeon = () => {
       `Combat analysis: Win chance ${Math.round(adjustedWinChance)}%.`,
       heroWins ? `${selectedHero.name} defeats the monsters!` : `${selectedHero.name} is defeated by the monsters!`
     ];
+    // Calculate gold earned for this level
+    const goldEarned = heroWins ? dungeonLevels.find(l => l.level === selectedLevel).maxPower : 0;
     setCombatResult({
       hero: selectedHero,
       monsterStats,
       analysis,
       adjustedWinChance: Math.round(adjustedWinChance),
       heroWins,
-      battleLog
+      battleLog,
+      goldEarned
     });
     // Award gold and update progress only if hero wins
     if (heroWins) {
@@ -93,11 +98,12 @@ const Dungeon = () => {
         goldEntry = await getGoldByUserId(user.id);
         if (goldEntry && goldEntry.id) {
           await updateGold(goldEntry.id, { amount: goldEntry.amount + goldEarned });
+          // Fetch updated gold and update state
+          const updatedGoldEntry = await getGoldByUserId(user.id);
+          setUserGold(updatedGoldEntry?.amount ?? 0);
+          await fetchGold(); // <-- update global context for nav bar
         }
       }
-      setMessage(`Victory! You earned ${goldEarned} gold.`);
-    } else {
-      setMessage(`Defeat! Try again or select a different hero.`);
     }
   };
 
@@ -125,30 +131,41 @@ const Dungeon = () => {
       </div>
       {selectedLevel && (
         <div className="dungeon-monsters-center">
-          <div className="dungeon-monsters-list">
-            <h3>Level {selectedLevel} Monsters</h3>
-            <ul>
-              {monsters.map((m, idx) => (
-                <li key={idx}>{m.name} (Power: {m.power})</li>
-              ))}
-            </ul>
-          </div>
-          <div style={{ margin: "1rem 0" }}>
-            <HeroSelector
-              heroes={myHeroes}
-              selectedHero={selectedHero}
-              onHeroSelect={setSelectedHero}
-              title="Select Your Hero to Fight"
-              showOwner={false}
-              currentUserId={user?.id}
-              allUsers={[user]}
-            />
-            {selectedHero && (
-              <CombatStats hero={selectedHero} showBreakdown={true} />
-            )}
-          </div>
           {!combatResult ? (
-            <button onClick={handleCompleteLevel} disabled={!selectedHero}>Fight Monsters</button>
+            <>
+              <div className="dungeon-monsters-list">
+                <h3>Level {selectedLevel} Monsters</h3>
+                <ul>
+                  {monsters.map((m, idx) => (
+                    <li key={idx}>{m.name} (Power: {m.power})</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flip-card-container">
+                <div className={`flip-card${showStats ? ' flipped' : ''}`} onClick={() => setShowStats(s => !s)}>
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                      <HeroSelector
+                        heroes={myHeroes}
+                        selectedHero={selectedHero}
+                        onHeroSelect={setSelectedHero}
+                        title="Select Your Hero to Fight"
+                        showOwner={false}
+                        currentUserId={user?.id}
+                        allUsers={[user]}
+                      />
+                      {/* Show Combat Stats button removed; flip is triggered by card click */}
+                    </div>
+                    <div className="flip-card-back">
+                      {selectedHero && <CombatStats hero={selectedHero} showBreakdown={true} />}
+                      {showStats && selectedHero && (
+                        <button onClick={e => { e.stopPropagation(); handleCompleteLevel(); }} disabled={!selectedHero} style={{ marginTop: "2rem" }}>Fight Monsters</button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
           ) : (
             <div className="dungeon-combat-results">
               <h3>Battle Results</h3>
@@ -158,8 +175,12 @@ const Dungeon = () => {
                 ))}
               </ul>
               <div style={{ marginTop: "1rem" }}>
-                <strong>Win Chance:</strong> {combatResult.adjustedWinChance}%<br />
-                <strong>Outcome:</strong> {combatResult.heroWins ? "Victory!" : "Defeat"}
+                <div style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                  Win Chance: {combatResult.adjustedWinChance}%
+                </div>
+                <div style={{ fontSize: "2rem", fontWeight: "bold" }}>
+                  Outcome: {combatResult.heroWins ? `Victory! You earned ${combatResult.goldEarned} gold.` : "Defeat! Try again or select a different hero."}
+                </div>
               </div>
               <button onClick={() => setCombatResult(null)} style={{ marginTop: "1rem" }}>Try Again</button>
             </div>
