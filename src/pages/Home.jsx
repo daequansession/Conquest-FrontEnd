@@ -2,8 +2,17 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../services/users.js";
 import "../css/Home.css";
-//
 import { UserContext } from "../context/UserContext.jsx";
+
+import HolyPaladinImg from '../assets/HolyPaladin.png';
+import DeathKnightImg from '../assets/DeathKnight.png';
+import ChackieJanImg from '../assets/ChackieJan.png';
+import DemonHunterImg from '../assets/DemonHunter.png';
+import DragonKnightImg from '../assets/DragonKnight.png';
+import EveryItalianEverImg from '../assets/EveryItalianEver.png';
+import MexicanVaqueroImg from '../assets/MexicanVaquero.png';
+import PrimalBarbarianImg from '../assets/PrimalBarbarian.png';
+import ShadowAssassinImg from '../assets/ShadowAssassin.png';
 
 function Home() {
   const navigate = useNavigate();
@@ -63,12 +72,23 @@ function Home() {
   };
 
   return (
-    <>
-      <h1 id="title">Conquest</h1>
+    <div className="home-root" >
+      
       <p className="home-hero-section-p" id="p">
-        Embark on your quest. Forge heroes, conquer dungeons, and claim your destiny!
+        Conquest!
       </p>
-
+      <h2 className="home-message">Embark on your quest. Forge heroes, conquer dungeons, and claim your destiny!</h2>
+        <div style={{background: 'rgba(30, 30, 60, 0.8)', display: 'flex', marginTop: '100px', justifyContent: 'center', gap: '32px', margin: '32px 0', flexWrap: 'wrap' }}>
+          <img src={HolyPaladinImg} alt="Holy Paladin" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={DeathKnightImg} alt="Death Knight" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={ChackieJanImg} alt="Chackie Jan" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={DemonHunterImg} alt="Demon Hunter" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={DragonKnightImg} alt="Dragon Knight" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={EveryItalianEverImg} alt="Every Italian Ever" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={MexicanVaqueroImg} alt="Mexican Vaquero" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={PrimalBarbarianImg} alt="Primal Barbarian" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+          <img src={ShadowAssassinImg} alt="Shadow Assassin" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 16px rgba(255, 215, 0, 0.3)', border: '3px solid #ffd700', background: '#222' }} />
+        </div>
       <div className="home-container">
         <div>
           <form className="home-form" onSubmit={handleSubmit}>
@@ -100,7 +120,7 @@ function Home() {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
