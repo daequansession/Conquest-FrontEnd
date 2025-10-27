@@ -58,6 +58,7 @@ import {
 import "../css/HeroDetail.css";
 import GoldDetail from "./GoldDetails.jsx";
 import { updateGold } from "../services/gold.js";
+import { normalizeStats } from "../utils/combatStats.js";
 
 // Weapon name to image mapping
 const weaponImages = {
@@ -97,9 +98,13 @@ function HeroDetail() {
     if (!heroDetail || (!heroDetail.hero && !heroDetail.shields)) return;
     const hero = heroDetail.hero || heroDetail;
     const shields = hero.shields || [];
-    const shieldIndex = shields.findIndex(s => s.id === shieldId);
+    const shieldIndex = shields.findIndex((s) => s.id === shieldId);
     if (shieldIndex <= 0) return;
-    const newShields = [shields[shieldIndex], ...shields.slice(0, shieldIndex), ...shields.slice(shieldIndex + 1)];
+    const newShields = [
+      shields[shieldIndex],
+      ...shields.slice(0, shieldIndex),
+      ...shields.slice(shieldIndex + 1),
+    ];
     setHeroDetail({ ...heroDetail, hero: { ...hero, shields: newShields } });
   };
   const { user } = useContext(UserContext);
@@ -107,11 +112,36 @@ function HeroDetail() {
   const [heroDetail, setHeroDetail] = useState(null);
   const [allWeapons, setAllWeapons] = useState([]);
   const [allShields, setAllShields] = useState([]);
+  const [originalWeapons, setOriginalWeapons] = useState([]);
+  const [originalShields, setOriginalShields] = useState([]);
   const [toggle, setToggle] = useState(false);
-  const [searchStore, setSearchStore] = useState({ store: "" });
+  const [searchStore, setSearchStore] = useState({
+    type: "name", // dropdown selection
+    value: "",
+  });
 
   let { heroId } = useParams();
   let navigate = useNavigate();
+
+  const fetchWeapons = async () => {
+    try {
+      const weaponsData = await getWeapons();
+      setAllWeapons(weaponsData);
+      setOriginalWeapons(weaponsData);
+    } catch (error) {
+      console.error("Error fetching weapons:", error);
+    }
+  };
+
+  const fetchShields = async () => {
+    try {
+      const shieldsData = await getShields();
+      setAllShields(shieldsData);
+      setOriginalShields(shieldsData);
+    } catch (error) {
+      console.error("Error fetching shields:", error);
+    }
+  };
 
   useEffect(() => {
     // console.log(user.id);
@@ -127,24 +157,6 @@ function HeroDetail() {
       } catch (error) {
         console.error("Error fetching hero or gold:", error);
         if (error.response?.status === 404) navigate("/heroes");
-      }
-    };
-
-    const fetchWeapons = async () => {
-      try {
-        const weaponsData = await getWeapons();
-        setAllWeapons(weaponsData);
-      } catch (error) {
-        console.error("Error fetching weapons:", error);
-      }
-    };
-
-    const fetchShields = async () => {
-      try {
-        const shieldsData = await getShields();
-        setAllShields(shieldsData);
-      } catch (error) {
-        console.error("Error fetching shields:", error);
       }
     };
 
@@ -215,16 +227,98 @@ function HeroDetail() {
     }
   };
 
+  // Live update store search results
+  const liveUpdateStore = (type, value) => {
+    let newShieldArray = originalShields;
+    let newWeaponsArray = originalWeapons;
+    if (!value || value.length < 1) {
+      setAllShields(originalShields);
+      setAllWeapons(originalWeapons);
+      return;
+    }
+    switch (type) {
+      case "name":
+        newShieldArray = originalShields.filter((s) =>
+          s.name.toLowerCase().includes(value.toLowerCase())
+        );
+        newWeaponsArray = originalWeapons.filter((w) =>
+          w.name.toLowerCase().includes(value.toLowerCase())
+        );
+        break;
+      case "cost":
+        newShieldArray = originalShields.filter((s) =>
+          (s.cost !== undefined ? parseInt(s.cost) : 0) <= parseInt(value)
+        );
+        newWeaponsArray = originalWeapons.filter((w) =>
+          (w.cost !== undefined ? parseInt(w.cost) : 0) <= parseInt(value)
+        );
+        break;
+      case "strength":
+        newShieldArray = allShields.filter((s) =>
+          normalizeStats(s).strength >= parseInt(value)
+        );
+        newWeaponsArray = allWeapons.filter((w) =>
+          normalizeStats(w).strength >= parseInt(value)
+        );
+        break;
+      case "defense":
+        newShieldArray = allShields.filter((s) =>
+          normalizeStats(s).defense >= parseInt(value)
+        );
+        newWeaponsArray = allWeapons.filter((w) =>
+          normalizeStats(w).defense >= parseInt(value)
+        );
+        break;
+      case "speed":
+        newShieldArray = allShields.filter((s) =>
+          normalizeStats(s).speed >= parseInt(value)
+        );
+        newWeaponsArray = allWeapons.filter((w) =>
+          normalizeStats(w).speed >= parseInt(value)
+        );
+        break;
+      default:
+        break;
+    }
+    setAllShields(newShieldArray);
+    setAllWeapons(newWeaponsArray);
+  };
+
+  const handleSearchTypeChange = (e) => {
+    const newType = e.target.value;
+    setSearchStore({ type: newType, value: "" });
+    liveUpdateStore(newType, "");
+  };
+
+  const handleSearchValueChange = (e) => {
+    const newValue = e.target.value;
+    setSearchStore((prev) => {
+      const updated = { ...prev, value: newValue };
+      liveUpdateStore(updated.type, newValue);
+      return updated;
+    });
+  };
+
+  const handleClearSearch = (e) => {
+    e.preventDefault();
+    setSearchStore({ type: "name", value: "" });
+    fetchShields();
+    fetchWeapons();
+  };
   // Handler to make a weapon primary (move to index 0)
   const handleMakePrimaryWeapon = async (weaponId) => {
-    if (!heroDetail || !heroDetail.hero && !heroDetail.weapons) return;
+    if (!heroDetail || (!heroDetail.hero && !heroDetail.weapons)) return;
     // Get current weapons array
     const hero = heroDetail.hero || heroDetail;
     const weapons = hero.weapons || [];
-    const weaponIndex = weapons.findIndex(w => w.id === weaponId);
+    const weaponIndex = weapons.findIndex((w) => w.id === weaponId);
     if (weaponIndex <= 0) return; // Already primary or not found
     // Move selected weapon to front
-    const newWeapons = [weapons[weaponIndex], ...weapons.slice(0, weaponIndex), ...weapons.slice(weaponIndex + 1)];
+    const newWeapons = [
+      weapons[weaponIndex],
+      ...weapons.slice(0, weaponIndex),
+      ...weapons.slice(weaponIndex + 1),
+    ];
     // Optionally, update backend here if needed
     // For now, update local state
     setHeroDetail({ ...heroDetail, hero: { ...hero, weapons: newWeapons } });
@@ -346,12 +440,10 @@ function HeroDetail() {
                   <div style={{ background: weapon?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && (
-                    <span className="primary-label"> </span>
-                  )}
-                  {weapon.name} - Strength: {" "}
-                  {weapon.Strength || weapon.strength || "N/A"}, Defense: {" "}
-                  {weapon.Defense || weapon.defense || "N/A"}, Speed: {" "}
+                  {index === 0 && <span className="primary-label"> </span>}
+                  {weapon.name} - Strength:{" "}
+                  {weapon.Strength || weapon.strength || "N/A"}, Defense:{" "}
+                  {weapon.Defense || weapon.defense || "N/A"}, Speed:{" "}
                   {weapon.Speed || weapon.speed || "N/A"}
                 </p>
                 {index > 0 && (
@@ -410,12 +502,10 @@ function HeroDetail() {
                   <div style={{ background: shield?.color }}></div>
                 )}
                 <p>
-                  {index === 0 && (
-                    <span className="primary-label"></span>
-                  )}
-                  {shield.name} - Strength: {" "}
-                  {shield.Strength || shield.strength || "N/A"}, Defense: {" "}
-                  {shield.Defense || shield.defense || "N/A"}, Speed: {" "}
+                  {index === 0 && <span className="primary-label"></span>}
+                  {shield.name} - Strength:{" "}
+                  {shield.Strength || shield.strength || "N/A"}, Defense:{" "}
+                  {shield.Defense || shield.defense || "N/A"}, Speed:{" "}
                   {shield.Speed || shield.speed || "N/A"}
                 </p>
                 {index > 0 && (
@@ -453,24 +543,79 @@ function HeroDetail() {
 
       <div className="hero-store-container">
         <h2>Store</h2>
-
-        <label htmlFor="searchStore">
-          Search Store:
-          <input
-            type="text"
-            name="store"
-            id="searchStore"
-            value={searchStore.store}
-            placeholder="Search for weapons or shields"
-            onChange={(e) =>
-              setSearchStore({
-                ...searchStore,
-                [e.target.name]: e.target.value,
-              })
-            }
-          />
-        </label>
-
+        <form>
+          <label htmlFor="search-type">Search By:</label>
+          <select
+            id="search-type"
+            value={searchStore.type}
+            onChange={handleSearchTypeChange}
+          >
+            <option value="name">Name</option>
+            <option value="cost">Price</option>
+            <option value="strength">Strength</option>
+            <option value="defense">Defense</option>
+            <option value="speed">Speed</option>
+          </select>
+          {searchStore.type === "name" && (
+            <>
+              <label htmlFor="search-value">Name:</label>
+              <input
+                type="text"
+                id="search-value"
+                value={searchStore.value}
+                placeholder="Weapons or shields"
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "cost" && (
+            <>
+              <label htmlFor="search-value">Price:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "strength" && (
+            <>
+              <label htmlFor="search-value">Strength:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "defense" && (
+            <>
+              <label htmlFor="search-value">Defense:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+          {searchStore.type === "speed" && (
+            <>
+              <label htmlFor="search-value">Speed:</label>
+              <input
+                type="number"
+                id="search-value"
+                value={searchStore.value}
+                onChange={handleSearchValueChange}
+              />
+            </>
+          )}
+        </form>
+        <form>
+          <button onClick={handleClearSearch}>Clear Search</button>
+        </form>
         <div className="store-section">
           <h3>Available Weapons</h3>
           {availableWeapons && availableWeapons.length > 0 ? (
@@ -515,7 +660,6 @@ function HeroDetail() {
             <p>No available weapons</p>
           )}
         </div>
-
         <div className="store-section">
           <h3>Available Shields</h3>
           {availableShields && availableShields.length > 0 ? (

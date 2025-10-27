@@ -73,35 +73,9 @@ function CombatStats({ hero, showBreakdown = false, showMatchupInfo = false }) {
         </div>
       )}
 
-      {/* Detailed Breakdown - Optional */}
+      Detailed Breakdown - Optional
       {showBreakdown && (
         <div className="stats-breakdown">
-          <div className="base-stats">
-            <h5>Base Hero Stats</h5>
-            <div className="stat-row">
-              <span>Strength: {combatStats.baseStats.strength}</span>
-              <span>Defense: {combatStats.baseStats.defense}</span>
-              <span>Speed: {combatStats.baseStats.speed}</span>
-            </div>
-          </div>
-
-          <div className="weapon-stats">
-            <h5>Weapon Bonuses</h5>
-            <div className="stat-row">
-              <span>+{combatStats.weaponStats.strength} Strength</span>
-              <span>+{combatStats.weaponStats.defense} Defense</span>
-              <span>+{combatStats.weaponStats.speed} Speed</span>
-            </div>
-          </div>
-
-          <div className="shield-stats">
-            <h5>Shield Bonuses</h5>
-            <div className="stat-row">
-              <span>+{combatStats.shieldStats.strength} Strength</span>
-              <span>+{combatStats.shieldStats.defense} Defense</span>
-              <span>+{combatStats.shieldStats.speed} Speed</span>
-            </div>
-          </div>
         </div>
       )}
     </div>

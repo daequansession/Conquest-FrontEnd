@@ -11,9 +11,42 @@ import HeroSelector from "../components/HeroSelector.jsx";
 import "./CombatArena.css";
 import { getGold } from "../services/gold.js";
 import { getGoldByUserId } from "../services/gold.js";
+import { createBattleLog } from "../services/battles";
+import { motion } from "framer-motion";
+
+import HolyPaladinImg from "../assets/HolyPaladin.png";
+import PrimalBarbarianImg from "../assets/PrimalBarbarian.png";
+import DragonKnightImg from "../assets/DragonKnight.png";
+import ShadowAssassinImg from "../assets/ShadowAssassin.png";
+import DemonHunterImg from "../assets/DemonHunter.png";
+import ChackieJanImg from "../assets/ChackieJan.png";
+import HasidicWarriorImg from "../assets/HasidicWarrior.png";
+import MexicanVaqueroImg from "../assets/MexicanVaquero.png";
+import DeathKnightImg from "../assets/DeathKnight.png";
+
+const heroImages = {
+  A: HolyPaladinImg,
+  B: PrimalBarbarianImg,
+  C: DragonKnightImg,
+  D: ShadowAssassinImg,
+  E: DemonHunterImg,
+  F: ChackieJanImg,
+  G: HasidicWarriorImg,
+  H: MexicanVaqueroImg,
+  I: DeathKnightImg,
+  J: HolyPaladinImg,
+};
+
+const getHeroImage = (hero) => {
+  if (!hero || !hero.character) return HolyPaladinImg;
+  return heroImages[hero.character] || HolyPaladinImg;
+};
 
 function CombatArena() {
-  const { user } = useContext(UserContext);
+  const { user, fetchGold } = useContext(UserContext);
+
+  const [hero1Image, setHero1Image] = useState(null);
+  const [hero2Image, setHero2Image] = useState(null);
 
   // State for heroes and users
   const [allHeroes, setAllHeroes] = useState([]);
@@ -28,11 +61,69 @@ function CombatArena() {
 
   const [gold, setGold] = useState();
 
+  const [battleScript, setBattleScript] = useState([]);
+  const [currentLine, setCurrentLine] = useState("");
+  const [action, setAction] = useState("idle");
+  const [isBattlePlaying, setIsBattlePlaying] = useState(false);
+
   // Helper function to get username from user ID
   const getUsernameById = (userId) => {
     const foundUser = allUsers.find((u) => u.id === userId);
     return foundUser?.username || "Unknown";
   };
+
+  const [isShaking, setIsShaking] = useState(false);
+
+  useEffect(() => {
+    if (action === "attack" || action === "fall") {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 300);
+    }
+  }, [action]);
+
+  useEffect(() => {
+    if (!isBattlePlaying || !battleScript.length) return;
+
+    let i = 0;
+    setCurrentLine(battleScript[0]);
+
+    const interval = setInterval(() => {
+      i++;
+      if (i >= battleScript.length) {
+        clearInterval(interval);
+        setIsBattlePlaying(false);
+        return;
+      }
+      setCurrentLine(battleScript[i]);
+    }, 3000); // 3 seconds per line
+
+    return () => clearInterval(interval);
+  }, [isBattlePlaying, battleScript]);
+
+  useEffect(() => {
+    if (!currentLine) return;
+
+    if (currentLine.includes("strikes") || currentLine.includes("overwhelms")) {
+      setAction("attack");
+    } else if (
+      currentLine.includes("deflects") ||
+      currentLine.includes("defense")
+    ) {
+      setAction("block");
+    } else if (
+      currentLine.includes("defeated") ||
+      currentLine.includes("falls")
+    ) {
+      setAction("fall");
+    } else if (
+      currentLine.includes("enters") ||
+      currentLine.includes("battlefield")
+    ) {
+      setAction("enter");
+    } else {
+      setAction("idle");
+    }
+  }, [currentLine]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,19 +165,33 @@ function CombatArena() {
     fetchData();
   }, []);
 
+  const [isAttacking, setIsAttacking] = useState(null);
+  const [isHit, setIsHit] = useState(null);
+
+  const refreshGold = async () => {
+    try {
+      const updatedGold = await getGold();
+      setGold(updatedGold);
+    } catch (error) {
+      console.error("Failed to refresh gold:", error);
+    }
+  };
+
   const handleCombat = async () => {
     if (
       selectedHero1 &&
       selectedHero2 &&
       selectedHero1.id !== selectedHero2.id
     ) {
+      console.log("Selected Hero 1:", selectedHero1);
+      console.log("Selected Hero 2:", selectedHero2);
+
+      setHero1Image(getHeroImage(selectedHero1));
+      setHero2Image(getHeroImage(selectedHero2));
       const result = simulateCombat(selectedHero1, selectedHero2);
+
       setCombatResult(result);
-      console.log("Winner:", result.winner);
-      console.log("Loser:", result.loser);
-      console.log("User:", user);
-      console.log("gold", gold);
-      // console.log("allHeroes", allHeroes);
+
       if (result.winner.user === user.id) {
         await updateGold(gold.id, { ...gold, amount: gold.amount + 10 });
       } else {
@@ -107,7 +212,55 @@ function CombatArena() {
           amount: rivalGold.amount - 3,
         });
       }
+      await refreshGold();
+      await fetchGold();
+
+      await createBattleLog({
+        winner: result.winner.user,
+        loser: result.loser.user,
+        attacker: user.id,
+        hero_winner: result.winner.name,
+        hero_loser: result.loser.name,
+        hero_attacker: selectedHero1.name,
+        gold_change_winner: result.winner.user === user.id ? +10 : +5,
+        gold_change_loser: result.loser.user === user.id ? -5 : -3,
+      });
+      setBattleScript(result.battleLog);
+      setIsBattlePlaying(true);
+      setCurrentLine(result.battleLog[0]);
+      setAction("enter");
+      playCinematicSequence();
     }
+  };
+
+  const playCinematicSequence = () => {
+    // Entrance animation first
+    setAction("enter");
+
+    setTimeout(() => {
+      // Idle face-off before combat
+      setAction("idle");
+    }, 2000);
+
+    setTimeout(() => {
+      // Attack animation
+      setAction("attack");
+    }, 4000);
+
+    setTimeout(() => {
+      // Block animation
+      setAction("block");
+    }, 5500);
+
+    setTimeout(() => {
+      // Fall animation for the loser
+      setAction("fall");
+    }, 7000);
+
+    setTimeout(() => {
+      // End on idle/victory pose
+      setAction("idle");
+    }, 8500);
   };
 
   const resetCombat = () => {
@@ -201,7 +354,56 @@ function CombatArena() {
         /* Battle Results */
         <div className="combat-results">
           <h2>⚔️ Battle Results ⚔️</h2>
+          {/* 🔥 Animated Battle Scene */}
+          <motion.div
+            className={`battle-scene ${isShaking ? "shake" : ""}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <motion.img
+              src={getHeroImage(selectedHero1)}
+              className="hero-left"
+              animate={
+                action === "attack"
+                  ? { x: [0, 100, 0], scale: [1, 1.2, 1] }
+                  : action === "block"
+                  ? { rotate: [0, -10, 0] }
+                  : action === "fall"
+                  ? { y: [0, 200], opacity: [1, 0.3] }
+                  : action === "enter"
+                  ? { x: [-300, 0] }
+                  : { x: 0, y: 0, opacity: 1 }
+              }
+              transition={{ duration: 0.8 }}
+            />
 
+            <motion.img
+              src={getHeroImage(selectedHero2)}
+              className="hero-right"
+              animate={
+                action === "attack"
+                  ? { x: [0, -100, 0], scale: [1, 1.2, 1] }
+                  : action === "block"
+                  ? { rotate: [0, 10, 0] }
+                  : action === "fall"
+                  ? { y: [0, 200], opacity: [1, 0.3] }
+                  : action === "enter"
+                  ? { x: [300, 0] }
+                  : { x: 0, y: 0, opacity: 1 }
+              }
+              transition={{ duration: 0.8 }}
+            />
+          </motion.div>
+
+          {/* {action === "idle" && combatResult && (
+            <motion.img
+              src={getHeroImage(combatResult.winner)}
+              className="hero-victory"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity }}
+            />
+          )} */}
           <div className="winner-announcement">
             <h3>🏆 {combatResult.winner.name} is Victorious! 🏆</h3>
             <div className="winner-details">

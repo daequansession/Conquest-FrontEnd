@@ -61,9 +61,9 @@ export const calculateCombatStats = (hero, weapons = [], shields = []) => {
  */
 export const calculateCombatPower = (totalStats) => {
   // You can adjust these weights based on how you want to balance combat
-  const strengthWeight = 1.2; // Slightly favor strength
+  const strengthWeight = 1.0; 
   const defenseWeight = 1.0;
-  const speedWeight = 1.1;   // Slightly favor speed
+  const speedWeight = 1.0;
   
   return Math.round(
     (totalStats.strength * strengthWeight) + 

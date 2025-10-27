@@ -1,0 +1,17 @@
+export const monsters = [
+  { name: "Goblin", power: 1 },
+  { name: "Kobold", power: 1 },
+  { name: "Slime", power: 1 },
+  { name: "Skeleton", power: 2 },
+  { name: "Gnoll", power: 2 },
+  { name: "Elemental", power: 3 },
+  { name: "Golem", power: 5 },
+  { name: "Dryad", power: 5 },
+  { name: "Troll", power: 5 },
+  { name: "Minotaur", power: 6 },
+  { name: "Cyclops", power: 8 },
+  { name: "Wyvern", power: 10 },
+  { name: "Chimera", power: 20 },
+  { name: "Demon Lord", power: 22 },
+  { name: "Dragon", power: 25 },
+];

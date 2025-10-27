@@ -41,7 +41,7 @@ nav {
 }
 
 .nav-link {
-  background: linear-gradient(135deg, #4a4a7a, #2a2a5a);
+  background: linear-gradient(135deg, #0e1d2a, #1976d2);
   color: #fff;
   text-decoration: none;
   padding: 12px 20px;
@@ -72,7 +72,7 @@ nav {
 }
 
 .nav-link.active {
-  background: linear-gradient(135deg, #2196f3, #1976d2);
+  background: linear-gradient(135deg, #0e1d2a, #1976d2);
   border-color: #6a5acd;
   color: #fff;
   box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
@@ -246,4 +246,304 @@ nav {
 
 button > span {
   color: white;
+}
+
+.nav-profile-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+.nav-profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  transition: transform 0.2s ease;
+}
+
+.nav-profile-img:hover {
+  transform: scale(1.1);
+}
+
+.nav-profile-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #666;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 2px solid #ccc;
+}
+
+.gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 4px 10px;
+  border-radius: 20px;
+
+  background: linear-gradient(145deg, #3e2c00, #1a1100);
+  border: 1px solid #ffcc00;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+
+  color: #ffe57f;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-shadow: 0 0 3px #000, 0 0 6px #ffcc00;
+
+  letter-spacing: 0.5px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gold:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(255, 220, 50, 0.9);
+}
+
+/* 🔔 Notification wrapper */
+.nav-notifications {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+/* Bell button */
+.bell-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: transform 0.15s ease;
+}
+
+.bell-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Bell icon itself */
+.bell-icon {
+  width: 22px;
+  height: 22px;
+  color: gold;
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.4));
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bell-btn:hover .bell-icon {
+  color: #ffcc33;
+}
+
+/* Red badge for unread notifications */
+.notif-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ff2e2e;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 1px 5px;
+  min-width: 16px;
+  text-align: center;
+  line-height: 1.2;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown container */
+.notif-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 270px;
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  padding: 8px 0;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.notif-item {
+  padding: 8px 12px;
+  color: #ddd;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.notif-item:last-child {
+  border-bottom: none;
+}
+
+.notif-item strong {
+  color: gold;
+}
+
+.notif-item:hover {
+  background-color: rgba(255, 215, 0, 0.08);
+}
+
+/* Empty state text */
+.notif-empty {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  padding: 10px;
+}
+
+/* Notification timestamp */
+.notif-time {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Small animation for dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-bottom: 2px solid #4a4a7a;
+  padding: 0.8rem 1.5rem;
+  color: #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Left side links */
+.nav-left .nav-link {
+  color: #ffd700;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-left .nav-link:hover {
+  color: #ffed4a;
+  transform: translateY(-2px);
+}
+
+/* Right side items */
+.nav-right {
+  gap: 1.2rem;
+}
+
+.gold {
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Notification bell */
+.bell-btn {
+  background: none;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.bell-icon {
+  color: #ffd700;
+  width: 24px;
+  height: 24px;
+}
+
+.notif-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff4040;
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+/* Profile */
+.nav-profile-img,
+.nav-profile-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4a4a7a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #6a5acd;
+  transition: all 0.3s ease;
+}
+
+.nav-profile-img:hover,
+.nav-profile-placeholder:hover {
+  transform: scale(1.05);
+  border-color: #ffd700;
+}
+
+/* Dropdown */
+.notif-dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: rgba(30, 30, 60, 0.95);
+  border: 2px solid #4a4a7a;
+  border-radius: 10px;
+  width: 280px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  padding: 0.8rem;
+  z-index: 100;
+}
+
+.nav-username {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(45deg, #ffd700, #ffed4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-username:hover {
+  transform: scale(1.05);
 }

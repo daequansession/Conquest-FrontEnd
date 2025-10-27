@@ -13,8 +13,8 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    isError: false,
-    errorMsg: "",
+    // isError: false,
+    // errorMsg: "",
   });
 
   const handleChange = (e) => {
@@ -30,25 +30,31 @@ function Register() {
     event.preventDefault();
 
     try {
-      const userData = await signUp(form);
-      setUser(userData);
+      const credentials = {
+        username: form.username,
+        password: form.password,
+        email: form.email || "",
+      };
 
-      if (!userData.id) {
+      const userData = await signUp(credentials);
+
+      if (!userData || userData instanceof Error || userData.error) {
         throw new Error("Invalid Credentials");
       }
 
-      navigate("/heroes");
+      // Registration successful, redirect to sign-in page
+      navigate("/signin");
     } catch (error) {
-      console.error(error);
+      console.error("Registration error:", error);
       setForm((prevForm) => ({
+        ...prevForm,
         isError: true,
         errorMsg: "Invalid Credentials",
-        username: prevForm.username,
-        email: "",
         password: "",
       }));
     }
   };
+
 
   const renderError = () => {
     const toggleForm = form.isError ? "danger" : "";
