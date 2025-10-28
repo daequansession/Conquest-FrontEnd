@@ -10,7 +10,7 @@ const getToken = () => {
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_APP_NODE_ENV === "production"
-      ? "https://your-deployed-app.herokuapp.com"
+      ? "https://conquest-banckend-production.up.railway.app/"
       : "http://localhost:8000",
 });
 
