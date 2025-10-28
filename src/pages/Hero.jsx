@@ -35,6 +35,7 @@ function Hero() {
     const fetchHero = async () => {
       const heroData = await getHeroes();
       setHero(heroData);
+      console.log(heroData);
     };
 
     fetchHero();
@@ -47,7 +48,7 @@ function Hero() {
           Make sure to add some hero!
         </h1>
         <div className="hero-container">
-          {hero.length &&
+          {hero.length > 0 &&
             hero.map((heroObj) => {
               // Use equipped weapons/shields if present, else empty arrays
               const weapons = heroObj.weapons || [];
@@ -108,7 +109,7 @@ function Hero() {
       <h1>Hero List</h1>
       <h2>Choose your hero wisely to conquer the realm!</h2>
       <div className="hero-container">
-        {hero.length &&
+        {hero.length > 0 &&
           hero.map((heroObj) => {
             // Use equipped weapons/shields if present, else empty arrays
             const weapons = heroObj.weapons || [];
@@ -163,41 +164,84 @@ function Hero() {
       <div className="sort-buttons">
         <button
           onClick={() => {
-            const sortedHeroes = [...hero].sort(
-              (a, b) => b.strength - a.strength
-            );
+            const sortedHeroes = [...hero].sort((a, b) => {
+              const aStats = calculateCombatStats(
+                a,
+                a.weapons || [],
+                a.shields || []
+              ).totalStats;
+              const bStats = calculateCombatStats(
+                b,
+                b.weapons || [],
+                b.shields || []
+              ).totalStats;
+              return bStats.strength - aStats.strength;
+            });
             setHero(sortedHeroes);
           }}
         >
           Sort by Strength
         </button>
+
         <button
           onClick={() => {
-            const sortedHeroes = [...hero].sort(
-              (a, b) => b.defense - a.defense
-            );
+            const sortedHeroes = [...hero].sort((a, b) => {
+              const aStats = calculateCombatStats(
+                a,
+                a.weapons || [],
+                a.shields || []
+              ).totalStats;
+              const bStats = calculateCombatStats(
+                b,
+                b.weapons || [],
+                b.shields || []
+              ).totalStats;
+              return bStats.defense - aStats.defense;
+            });
             setHero(sortedHeroes);
           }}
         >
           Sort by Defense
         </button>
+
         <button
           onClick={() => {
-            const sortedHeroes = [...hero].sort((a, b) => b.speed - a.speed);
+            const sortedHeroes = [...hero].sort((a, b) => {
+              const aStats = calculateCombatStats(
+                a,
+                a.weapons || [],
+                a.shields || []
+              ).totalStats;
+              const bStats = calculateCombatStats(
+                b,
+                b.weapons || [],
+                b.shields || []
+              ).totalStats;
+              return bStats.speed - aStats.speed;
+            });
             setHero(sortedHeroes);
           }}
         >
           Sort by Speed
         </button>
+
         <button
           onClick={() => {
-            const sortedHeroes = [...hero].sort(
-              (a, b) =>
-                b.speed +
-                b.defense +
-                b.strength -
-                (a.speed + a.defense + a.strength)
-            );
+            const sortedHeroes = [...hero].sort((a, b) => {
+              const aStats = calculateCombatStats(
+                a,
+                a.weapons || [],
+                a.shields || []
+              ).totalStats;
+              const bStats = calculateCombatStats(
+                b,
+                b.weapons || [],
+                b.shields || []
+              ).totalStats;
+              const aTotal = aStats.strength + aStats.defense + aStats.speed;
+              const bTotal = bStats.strength + bStats.defense + bStats.speed;
+              return bTotal - aTotal;
+            });
             setHero(sortedHeroes);
           }}
         >

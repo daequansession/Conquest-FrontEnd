@@ -27,37 +27,33 @@ function Register() {
   };
 
   const handleSubmit = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  try {
-    // ✅ Send only allowed fields
-    const credentials = {
-      username: form.username,
-      password: form.password,
-      email: form.email || "", // optional if your model allows blank
-    };
+    try {
+      const credentials = {
+        username: form.username,
+        password: form.password,
+        email: form.email || "",
+      };
 
-    const userData = await signUp(credentials);
+      const userData = await signUp(credentials);
 
-    if (!userData || !userData.id) {
-      throw new Error("Invalid Credentials");
+      if (!userData || userData instanceof Error || userData.error) {
+        throw new Error("Invalid Credentials");
+      }
+
+      // Registration successful, redirect to sign-in page
+      navigate("/");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setForm((prevForm) => ({
+        ...prevForm,
+        isError: true,
+        errorMsg: "Invalid Credentials",
+        password: "",
+      }));
     }
-
-    setUser(userData);
-
-    console.log("✅ Token stored:", localStorage.getItem("token"));
-    navigate("/heroes");
-  } catch (error) {
-    console.error("Registration error:", error);
-    setForm((prevForm) => ({
-      ...prevForm,
-      isError: true,
-      errorMsg: "Invalid Credentials",
-      password: "",
-    }));
-  }
-};
-
+  };
 
   const renderError = () => {
     const toggleForm = form.isError ? "danger" : "";

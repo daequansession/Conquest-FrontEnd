@@ -56,6 +56,8 @@ function CombatArena() {
   // Combat state
   const [selectedHero1, setSelectedHero1] = useState(null);
   const [selectedHero2, setSelectedHero2] = useState(null);
+  const [winner, setWinner] = useState();
+  const [loser, setLoser] = useState();
   const [combatResult, setCombatResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -95,7 +97,7 @@ function CombatArena() {
         return;
       }
       setCurrentLine(battleScript[i]);
-    }, 3000); // 3 seconds per line
+    }, 4000); // 4 seconds per line
 
     return () => clearInterval(interval);
   }, [isBattlePlaying, battleScript]);
@@ -212,6 +214,10 @@ function CombatArena() {
           amount: rivalGold.amount - 3,
         });
       }
+      console.log("Winner", result.winner);
+      console.log("Looser", result.loser);
+      setWinner(result.winner);
+      setLoser(result.loser);
       await refreshGold();
       await fetchGold();
 
@@ -362,48 +368,42 @@ function CombatArena() {
             transition={{ duration: 1 }}
           >
             <motion.img
-              src={getHeroImage(selectedHero1)}
+              src={getHeroImage(winner)}
               className="hero-left"
               animate={
                 action === "attack"
-                  ? { x: [0, 100, 0], scale: [1, 1.2, 1] }
+                  ? { x: [0, 80, 0], scale: [1, 1.2, 1] }
                   : action === "block"
-                  ? { rotate: [0, -10, 0] }
-                  : action === "fall"
-                  ? { y: [0, 200], opacity: [1, 0.3] }
+                  ? // ? { rotate: [0, -10, 0] }
+                    // : action === "fall"
+                    { y: [0, 0], opacity: [1, 1] }
                   : action === "enter"
-                  ? { x: [-300, 0] }
-                  : { x: 0, y: 0, opacity: 1 }
+                  ? { x: [-150, 0] }
+                  : { x: 0, y: 0, opacity: 1, scale: [1, 1.2, 1] }
               }
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 6.8 }}
             />
 
             <motion.img
-              src={getHeroImage(selectedHero2)}
+              src={getHeroImage(loser)}
               className="hero-right"
               animate={
                 action === "attack"
-                  ? { x: [0, -100, 0], scale: [1, 1.2, 1] }
+                  ? { x: [0, -80, -0], scale: [1, 1.2, 1] }
                   : action === "block"
-                  ? { rotate: [0, 10, 0] }
+                  ? { rotate: [0, 2000, 0] }
                   : action === "fall"
-                  ? { y: [0, 200], opacity: [1, 0.3] }
+                  ? {
+                      y: [0, 200, 400, 800], // move further down
+                      opacity: [0.01, 0, 0, 0], // fade completely
+                    }
                   : action === "enter"
-                  ? { x: [300, 0] }
-                  : { x: 0, y: 0, opacity: 1 }
+                // ? { x: [150, 0] }
+                // : { x: 0, y: 0, opacity: 1 }
               }
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 6.8 }}
             />
           </motion.div>
-
-          {/* {action === "idle" && combatResult && (
-            <motion.img
-              src={getHeroImage(combatResult.winner)}
-              className="hero-victory"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 1.2, repeat: Infinity }}
-            />
-          )} */}
           <div className="winner-announcement">
             <h3>🏆 {combatResult.winner.name} is Victorious! 🏆</h3>
             <div className="winner-details">
