@@ -13,7 +13,6 @@ Conquest was built to bring classic RPG combat mechanics to the web, allowing us
 ## Getting Started
 
 - **Repo** [Github Repo](https://github.com/daequansession/Conquest-FrontEnd)
-- **Deployed App:** [Conquest Live](https://your-deployed-app-link.com)
 - **Planning Materials:** [Project Planning Docs](https://trello.com/b/ZaHKZpcn/ga-unit-4-project)
 
 ## Attributions
